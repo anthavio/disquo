@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+	<title th:text="'Forum ' + ${forum.id}"></title>
+	
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("#ShowForumJson").overlay({
+		top: '5%',
+		mask: {}
+	});
+	
+});
+</script>
+
+</head>
+
+<body>
+<section layout:fragment="content">
+
+	<h1 th:text="'Forum ' + ${forum.id}">Forum abcdefghijkl</h1>
+	
+	<form action="#" th:action="@{/disqus/forum}" name="SaveForumForm" id="SaveForumForm" th:object="${forum}" method="post" th:fragment="content">
+	
+	<fieldset style="width: 30em; float: left">
+		<dl>
+			<dt><label for="id">Id</label></dt>
+			<dd th:text="${forum.id}">111222333</dd>
+		</dl>
+		<dl>
+			<dt><label for="name">Name</label></dt>
+			<dd th:text="${forum.name}">Forum name</dd>
+		</dl>
+		<dl>
+			<dt><label for="founder">Founder</label></dt>
+			<dd><a th:href="@{'/disqus/user/' + ${forum.founder}}" href="user/1"><span th:text="${forum.author != null}?${forum.author.username}:${forum.founder}">Forum founder</span></a></dd>
+		</dl>
+		<dl>
+			<dt><label for="language">Language</label></dt>
+			<dd th:text="${forum.language}">Forum lang</dd>
+		</dl>
+		<dl>
+			<dt><label for="json">JSON</label></dt>
+			<dd><a href="#" id="ShowForumJson" rel="#ForumJsonOverlay">Show</a></dd>
+		</dl>
+	</fieldset>
+	
+	<div id="ForumJsonOverlay" class="JsonOverlay">
+		<div class="JsonOverlayContent">
+			<strong th:text="'Forum: ' + ${forum.id}">Forum 111222333</strong>
+			<pre th:text="${forum}"></pre>
+		</div>
+	</div>
+	
+	<fieldset id="fieldsSettings" >
+		<dl>
+			<dt><label for="ssoRequired">SsoRequired</label></dt>
+			<dd><input type="checkbox" th:if="${forum.settings.ssoRequired != null}" th:field="*{settings.ssoRequired}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="allowAnonPost">Allow Anonymous</label></dt>
+			<dd><input type="checkbox" th:if="${forum.settings.allowAnonPost != null}" th:field="*{settings.allowAnonPost}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="allowMedia">Allow Media</label></dt>
+			<dd><input type="checkbox" th:if="${forum.settings.allowMedia != null}" th:field="*{settings.allowMedia}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="hasReactions">Has Reactions</label></dt>
+			<dd><input type="checkbox" th:if="${forum.settings.hasReactions != null}" th:field="*{settings.hasReactions}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="audienceSyncEnabled">Audience Sync</label></dt>
+			<dd><input type="checkbox" th:if="${forum.settings.audienceSyncEnabled != null}" th:field="*{settings.audienceSyncEnabled}" disabled="disabled"/></dd>
+		</dl>
+	</fieldset>
+	</form>
+	
+	<fieldset id="fieldsLong" >
+		<dl>
+			<dt><label for="url">URL</label></dt>
+			<dd th:text="${forum.url}">Forum url</dd>
+		</dl>
+		<dl th:if="${forum.favicon != null}" style="height: auto;">
+			<dt><label for="favicon">Favicon</label></dt>
+			<dd>
+				<span th:text="'Permalink: ' + ${forum.favicon.permalink}">favicon permalink</span>
+				<span th:text="'Cache: ' + ${forum.favicon.cache}">favicon cache</span>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<h3><a href="threads" th:href="@{'/disqus/threads'(forum=${forum.id})}">Threads</a></h3>
+
+	<h3 th:if="${users == null}"><a href="users" th:href="@{'/disqus/forum/' + ${forum.id} + '/users'}">Users</a></h3>
+	
+	<section id="users" th:if="${users != null}" th:with="list=${users.response}">
+		
+		<h3>Users</h3>
+		
+		<span th:if="${users.cursor.hasPrev}">
+			<a href="" th:with="baseUrl='/disqus/forum/' + ${forum.id} + '/users'" th:href="@{${baseUrl}(usersCursor=${users.cursor.prev})} ">Prev</a>
+		</span>
+		<span th:if="${users.cursor.hasNext}">
+			<a href="" th:href="@{('/disqus/thread/' + ${forum.id} + '/users')(usersCursor=${users.cursor.next})} ">Next</a>
+		</span>
+		
+		<table id="usersTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>User id</th>
+					<th>Username</th>
+					<th>Full Name</th>
+					<th>Reputation</th>
+					<th>Remote id</th>
+					<th>Joined At</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/user/' + ${user.id}}" href="user/1"><span th:text="${user.id}">111222333</span></a></td>
+					<td th:text="${#strings.abbreviate(user.username,25)}">silvester_stallone_1</td>
+					<td th:text="${#strings.abbreviate(user.name,25)}">Silvester Stallone</td>
+					<td th:text="${user.reputation}"></td>
+					<td th:if="${user.remote != null}" th:text="${user.remote?.domain} + ' ' + ${user.remote?.identifier}"></td>
+					<td th:if="${user.remote == null}"/>
+					<td th:text="${#dates.format(user.joinedAt, 'yyyy-MM-dd HH:mm:ss')}">2001-01-01 23:59:59</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section id="moderators" th:if="${moderators != null}" th:with="list=${moderators.response}">
+		
+		<h3>Moderators</h3>
+		
+		<span th:if="${moderators.code != 0}" th:text="${moderators.response}"></span>
+	
+		<table th:if="${moderators.code == 0 and #lists.isEmpty(list) == false }">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>user</th>
+					<th>username</th>
+					<th>name</th>
+					<th>isPrimary</th>
+					<th>joinedAt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/user/' + ${item.user.id}}" href="user/1"><span th:text="${item.user.id}">111222333</span></a></td>
+					<td th:text="${item.user.username}">username</td>
+					<td th:text="${item.user.name}">name</td>
+					<td th:text="${item.user.isPrimary}">isPrimary</td>
+					<td th:text="${#dates.format(item.user.joinedAt, 'yyyy-MM-dd HH:mm:ss')}">joinedAt</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+	<section id="blacklist" th:if="${blacklist != null}" th:with="list=${blacklist.response}">
+		
+		<h3>Blacklist</h3>	
+		
+		<span th:if="${blacklist.code != 0}" th:text="${blacklist.response}"></span>
+		
+		<table th:if="${blacklist.code == 0 and #lists.isEmpty(list) == false}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>id</th>
+					<th>type</th>
+					<th>value</th>
+					<th>notes</th>
+					<th>createdAt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/forum/' + ${forum.id} + '/filters'}" th:text="${item.id}">111222333</a></td>
+					<td th:text="${item.type}">type</td>
+					<td th:if="${item.type != 'user'}" th:text="${item.value}">value</td>
+					<td th:if="${item.type == 'user'}"><a th:href="@{'/disqus/user/' + ${item.user.id}}" href="user/1" th:text="${item.user.name}">Some User</a></td>
+					<td th:text="${item.notes}">Some note attached</td>
+					<td th:text="${#dates.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}">createdAt</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+	<section id="whitelist" th:if="${whitelist != null}" th:with="list=${whitelist.response}">
+		
+		<h3>Whitelist</h3>
+		
+		<span th:if="${whitelist.code != 0}" th:text="${whitelist.response}"></span>
+	
+		<table th:if="${whitelist.code == 0 and #lists.isEmpty(list) == false}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>id</th>
+					<th>type</th>
+					<th>value</th>
+					<th>notes</th>
+					<th>createdAt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/forum/' + ${forum.id} + '/filters'}" th:text="${item.id}">111222333</a></td>
+					<td th:text="${item.type}">type</td>
+					<td th:if="${item.type != 'user'}" th:text="${item.value}">value</td>
+					<td th:if="${item.type == 'user'}"><a th:href="@{'/disqus/user/' + ${item.user.id}}" href="user/1" th:text="${item.user.name}">Some User</a></td>
+					<td th:text="${item.notes}">Some note attached</td>
+					<td th:text="${#dates.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2000-01-01</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+	<section th:if="${imports != null}"  th:with="list=${imports.response}">
+	
+		<h3><a target="_blank" th:href="${'http://import.disqus.com/' + forum.id + '?a=1'}" href="http://import.disqus.com/">Imports</a></h3>
+		
+		<span th:if="${imports.code != 0}" th:text="${imports.response}"></span>
+	
+		<table th:if="${imports.code == 0 and #lists.isEmpty(list) == false}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Id</th>
+					<th>Platform</th>
+					<th>StartedAt</th>
+					<th>FinishedAt</th>
+					<th>Chunks</th>
+					<th>Status Name</th>
+					<th>Code</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a target="_blank" href="http://import.disqus.com/" th:href="${'http://import.disqus.com/group/' + forum.id + '/' + item.id + '/'}" th:text="${item.id}">111222333</a></td>
+					<td th:text="${item.platform}">Platform</td>
+					<td th:text="${#dates.format(item.startedAt, 'yyyy-MM-dd HH:mm:ss')}">2001-01-01 23:59:59</td>
+					<td th:text="${#dates.format(item.finishedAt, 'yyyy-MM-dd HH:mm:ss')}">2001-01-01 23:59:59</td>
+					<td th:text="${item.chunksDone}">1</td>
+					<td th:text="${item.statusName}">Status</td>
+					<td th:text="${item.statusCode}">100</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section th:if="${categories != null}"  th:with="list=${categories.response}">
+	
+		<h3>Categories</h3>
+		
+		<table id="categoriesTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>category</th>
+					<th>Title</th>
+					<th>Order</th>
+					<th>Default</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/category/' + ${item.id}}" href="category/1" th:text="${item.id}">111222333</a></td>
+					<td th:text="${item.title}">Title</td>
+					<td th:text="${item.order}">1</td>
+					<td th:text="${item.isDefault}">Default</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+</section>
+</body>
+</html>

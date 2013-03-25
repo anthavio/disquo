@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+	
+	<definition name="createlead" template="TilesLayout">
+    <put-attribute name="title" value="Tiles tutorial homepage" />
+    <put-attribute name="header" value="header" />
+    <put-attribute name="navigation" value="navigation" />
+    <put-attribute name="control" value="createleadform" />
+    <put-attribute name="footer" value="Foot" />
+  </definition>
+    
+</tiles-definitions>

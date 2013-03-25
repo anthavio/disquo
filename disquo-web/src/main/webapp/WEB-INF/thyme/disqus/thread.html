@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+	<title th:text="'Thread ' + ${thread.id}"></title>
+
+<style type="text/css">
+
+#fieldsMain {
+	width: 25em; 
+	float: left;
+}
+
+#fieldsMain input, select {
+	width: 16em;
+}
+
+#fieldsBoolean {
+	width: 10em;
+	float: left;
+}
+
+#fieldsNumber {
+	width: 10em;
+}
+
+#fieldsLong input {
+	width: 40em;
+}
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("#ShowThreadJson").overlay({
+		top: '5%',
+		mask: {
+			//color: '#fff',
+			//loadSpeed: 200,
+			//opacity: 0.7
+		}
+	});
+	
+	$("button[rel]").each(function(i) {
+		$(this).overlay({
+			top: '5%',
+			mask: {}
+		});
+	});
+	
+});
+</script>
+
+</head>
+<body>
+<section layout:fragment="content">	
+	<h1 th:text="'Thread: ' + ${thread.id}"></h1>
+	
+	<h3 style="color: red">It takes about 10-20 seconds to change Thread Title or Category</h3>
+
+	<h3 style="color: red">It takes about 1-2 minutes to open/close/remove/restore Thread</h3>
+	
+	<h3 style="color: red">It takes about 10-20 minutes to change Thread Identifier or Link</h3>
+
+	<form action="#" th:action="@{'/disqus/thread/'+ ${thread.id}}" name="ThreadUpdateForm" id="ThreadUpdateForm" th:object="${thread}" method="POST">
+	
+	<fieldset id="fieldsMain">
+		<dl>
+			<dt><label for="id">Id</label></dt>
+			<dd th:text="${thread.id}">111222333</dd>
+		</dl>
+		<dl>
+			<dt><label for="title">Title</label></dt>
+			<dd>
+				<input type="text" th:field="*{title}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title is invalid</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="createdAt">CeatedAt</label></dt>
+			<dd th:text="${#dates.format(thread.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2001-02-02 15:23:32</dd>
+		</dl>
+		<dl>
+			<dt><label for="forum">Forum</label></dt>
+			<dd><a th:href="@{'/disqus/forum/' + ${thread.forum.id}}" th:text="${thread.forum.id}">forum</a></dd>
+		</dl>
+		<dl>
+			<dt><label for="author">Author</label></dt>
+			<dd><a th:href="@{'/disqus/user/' + ${thread.author.id}}" th:text="${thread.author.username}">username</a></dd>
+		</dl>
+		<dl>
+			<dt><label for="category"><a th:href="@{'/disqus/category/' + ${thread.category.id}}">Category</a></label></dt>
+			<dd>
+				<select th:field="*{category}">
+					<option th:each="element,row : ${categories}"  th:value="${element.id}" th:text="${element.title}"></option>
+				</select>
+				<span class="help-inline error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category is invalid</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="identifiers">Identifiers</label></dt>
+			<dd>
+				<input type="text" th:field="*{identifiers}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('identifiers')}" th:errors="*{identifiers}">Identifiers is invalid</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="ipAddress">IP Address</label></dt>
+			<dd th:text="${thread.ipAddress}">127.0.0.1</dd>
+		</dl>
+		<dl>
+			<dt><label for="json">JSON</label></dt>
+			<dd><a href="#" id="ShowThreadJson" rel="#ThreadJsonOverlay">Show</a></dd>
+		</dl>
+	</fieldset>
+	
+	<div id="ThreadJsonOverlay" class="JsonOverlay">
+		<div class="JsonOverlayContent">
+			<strong th:text="'Thread: ' + ${thread.id}">Thread 111222333</strong>
+			<pre th:text="${thread}"></pre>
+		</div>
+	</div>
+	
+	<fieldset id="fieldsBoolean">
+		<dl>
+			<dt><label for="closed">Closed</label></dt>
+			<dd><input type="checkbox" th:if="${thread.isClosed != null}" th:field="*{isClosed}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="deleted">Deleted</label></dt>
+			<dd><input type="checkbox" th:if="${thread.isDeleted != null}" th:field="*{isDeleted}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="canModerate">Can Moderate</label></dt>
+			<dd><input type="checkbox" th:if="${thread.canModerate != null}" th:field="*{canModerate}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="canPost">Can Post</label></dt>
+			<dd><input type="checkbox" th:if="${thread.canPost != null}" th:field="*{canPost}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="userSubscription">User Subscription</label></dt>
+			<dd><input type="checkbox" th:if="${thread.userSubscription != null}" th:field="*{userSubscription}" disabled="disabled"/></dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset id="fieldsNumber">
+		<dl>
+			<dt><label for="posts">Posts</label></dt>
+			<dd th:text="${thread.posts}">0</dd>
+		</dl>
+		<dl>
+			<dt><label for="reactions">Reactions</label></dt>
+			<dd th:text="${thread.reactions}">0</dd>
+		</dl>
+		<dl>
+			<dt><label for="likes">Likes</label></dt>
+			<dd th:text="${thread.likes}">0</dd>
+		</dl>
+		<dl>
+			<dt><label for="dislikes">Dislikes</label></dt>
+			<dd th:text="${thread.dislikes}">0</dd>
+		</dl>
+		<dl>
+			<dt><label for="userScore">User Score</label></dt>
+			<dd th:text="${thread.userScore}">0</dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset id="fieldsLong">
+		<dl>
+			<dt><label for="feed">Feed</label></dt>
+			<dd><a target="_blank" th:href="${thread.feed}" th:text="${thread.feed}">rss feed url here</a></dd>
+		</dl>
+		<dl>
+			<dt><label for="slug">Slug</label></dt>
+			<dd>
+				<input type="text" th:field="*{slug}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}">Slug is invalid</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="link"><a target="_blank" th:href="${thread.link}">Link</a></label></dt>
+			<dd>
+				<input type="text" th:field="*{link}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('link')}" th:errors="*{link}">Link is invalid</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="message">Message</label></dt>
+			<dd>
+				<input size="80" type="text" th:field="*{message}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">Message is invalid</span>
+			</dd>
+		</dl>
+	</fieldset>
+	
+	<div class="form-actions">
+		<button type="submit" name="action" value="update">Update</button>
+		
+		<button type="submit" name="votePlus" value="votePlus">Like</button>
+		<button type="submit" name="voteMinus" value="voteMinus">Dislike</button>
+		<button type="submit" name="voteZero" value="voteZero">Reset</button>
+		
+		<button type="submit" name="subscribe" value="subscribe">Subscribe</button>
+		<button type="submit" name="unsubscribe" value="unsubscribe">Unsubscribe</button>
+		
+		<button th:if="${!thread.isClosed}" type="submit" name="close" value="close">Close</button>
+		<button th:if="${thread.isClosed}" type="submit" name="open" value="open">Open</button>
+		<button th:if="${!thread.isDeleted}" type="submit" name="remove" value="remove">Remove</button>
+		<button th:if="${thread.isDeleted}" type="submit" name="restore" value="restore">Restore</button>
+	</div>
+	
+	</form>	
+
+	<h3>Last Posts</h3>
+	<section id="lastPosts" th:with="list=${lastPosts.response}">
+	
+		<span th:if="${lastPosts.cursor.hasPrev}">
+			<a href="" th:href="@{'/disqus/thread/'+ ${thread.id}} ">First</a>
+			<a href="" th:with="baseUrl='/disqus/thread/'+ ${thread.id}" th:href="@{${baseUrl}(cursor=${lastPosts.cursor.prev})} ">Prev</a>
+		</span>
+		<span th:if="${lastPosts.cursor.hasNext}">
+			<a href="" th:href="@{('/disqus/thread/'+ ${thread.id})(cursor=${lastPosts.cursor.next})} ">Next</a>
+		</span>
+		<table id="postsTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>post</th>
+					<th>parent</th>
+					<th>massage</th>
+					<th>approved</th>
+					<th>deleted</th>
+					<th>spam</th>
+					<th>flagged</th>
+					<th>highlighted</th>
+					<th>author</th>
+					<th>forum</th>
+					<th>createdAt</th>
+					<th>JSON</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="post,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/post/' + ${post.id}}" href="post/1"><span th:text="${post.id}">111222333</span></a></td>
+					<td><a th:href="@{'/disqus/post/' + ${post.parent}}" href="post/1"><span th:text="${post.parent}">111222333</span></a></td>
+					<td th:text="${#strings.abbreviate(post.raw_message,50)}">Message....</td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isApproved}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isDeleted}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isSpam}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isFlagged}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isHighlighted}"/></td>
+					<td th:if="${!post.author.isAnonymous}">
+						<a th:href="@{'/disqus/user/' + ${post.author.id}}" href="user/1"><span th:text="${post.author.name}">User Name</span></a>
+					</td>
+					<td th:if="${post.author.isAnonymous}">
+						<span th:text="${post.author.name}">User Name</span>
+					</td>
+					<td><a th:href="@{'/disqus/forum/' + ${post.forum}}" href="forum/1"><span th:text="${post.forum}">forum123</span></a></td>
+					<td th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}">createdAt</td>
+					<td>
+						<button th:rel="'div.JsonOverlay:eq(' + ${rowStat.count} + ')'" type="button">JSON</button>
+						<div class="JsonOverlay">
+							<div class="JsonOverlayContent">
+								<strong th:text="'Post: ' + ${post.id}">Post 111222333</strong>
+								<pre th:text="${post}"></pre>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+	<section id="Comments"> <!-- th:if="${not #lists.isEmpty(thread.identifiers)}"-->
+		<div id="disqus_thread"></div>
+		<script th:inline="javascript" th:with="identifier=${#lists.isEmpty(thread.identifiers)? '' : thread.identifiers[0]}">
+		/*<![CDATA[*/
+        var disqus_shortname = /*[[${thread.forum.id}]]*/;
+        var disqus_title = /*[[${thread.title}]]*/;
+        var disqus_identifier = /*[[${identifier}]]*/;
+        var disqus_url = /*[[${thread.link}]]*/;
+        var disqus_category_id = /*[[${thread.category.id}]]*/;
+        var disqus_developer = 1;
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+		/*]]>*/
+		</script>
+		<script th:inline="javascript" th:if="${USER_IDENTITY.sso.userId != null}">
+		/*<![CDATA[*/
+			var disqus_config = function () {
+				this.page.remote_auth_s3 = /*[[${beans.identityController.getSsoRemoteAuth(USER_IDENTITY.sso)}]]*/;
+				this.page.api_key = /*[[${beans.identityController.getApiKey()}]]*/;
+			}
+		/*]]>*/
+		</script>
+		
+	</section>
+	
+</section>
+</body>
+</html>

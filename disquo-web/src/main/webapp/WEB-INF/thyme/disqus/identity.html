@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+	<title>Identity</title>
+
+<script type="text/javascript">
+$(function() { 
+	$('#xIdentityForm').submit(function() {
+		var form = $(this);
+		var url = form.attr('action');
+		
+		$.ajax({
+			url : url,
+			type : "POST",
+			dataType : "json",
+			data : $('#IdentityForm').serialize(), 
+			success : function (response) {
+				alert('success ' + response);
+			},
+			error : function (response) {
+				alert('error ' + response);
+			},
+		});
+		
+		return false;
+	});
+});
+</script>
+
+<style type="text/css">
+
+input, select {
+	width: 20em;
+}
+
+</style>
+
+</head>
+<body>
+<section layout:fragment="content">
+
+	<form action="#" th:action="@{/disqus/identity}" name="IdentityForm" id="IdentityForm" th:object="${USER_IDENTITY}" method="post">
+	<fieldset id="fieldsSso">
+		<dl>
+			<dt><label for="userId">Id</label></dt>
+			<dd><input type="text" th:field="*{sso.userId}"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="fullName">Name</label></dt>
+			<dd><input type="text" th:field="*{sso.fullName}"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="email">Email</label></dt>
+			<dd><input type="text" th:field="*{sso.email}"/></dd>
+		</dl>
+		<button type="submit" name="type" value="sso" th:if="${#strings.toString(USER_IDENTITY.type) != 'sso'}">SSO Identity</button>
+	</fieldset>
+	
+	<fieldset id="fieldsOAuth">
+		<dl>
+			<dt><label for="user_id">User id</label></dt>
+			<dd><input type="text" th:field="*{oauth.user_id}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="username">Username</label></dt>
+			<dd><input type="text" th:field="*{oauth.username}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="expires_in">Expires</label></dt>
+			<dd><input type="text" th:field="*{oauth.expires_in}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="token_type">Token type</label></dt>
+			<dd><input type="text" th:field="*{oauth.token_type}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="state">State</label></dt>
+			<dd><input type="text" th:field="*{oauth.state}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="scope">Scope</label></dt>
+			<dd><input type="text" th:field="*{oauth.scope}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="access_token">Access Token</label></dt>
+			<dd><input type="text" th:field="*{oauth.access_token}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="refresh_token">Refresh Token</label></dt>
+			<dd><input type="text" th:field="*{oauth.refresh_token}" disabled="disabled"/></dd>
+		</dl>
+		<button type="submit" name="type" value="oauth" th:if="${!#strings.isEmpty(USER_IDENTITY.oauth.user_id) &amp;&amp; #strings.toString(USER_IDENTITY.type) != 'oauth'}">OAuth Identity</button>
+		<a th:href="@{/disqus/oauth/request}">OAuth request</a>
+	</fieldset>
+	
+	<fieldset id="fieldsApplication">
+		<dl>
+			<dt><label for="applicationToken">Application Token</label></dt>
+			<dd><input type="text" th:field="*{applicationToken}" disabled="disabled"/></dd>
+		</dl>
+		<button type="submit" name="type" value="application" th:if="${#strings.toString(USER_IDENTITY.type) != 'application'}">Application Identity</button>
+	</fieldset>
+		
+	<button type="submit" name="type" value="" th:if="${USER_IDENTITY.type != null}">Unset Identity</button>
+	
+	</form>
+	
+</section>	
+</body>
+</html>

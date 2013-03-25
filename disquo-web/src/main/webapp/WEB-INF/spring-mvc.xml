@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:ctx="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- @Component,@Autowired,... -->
+	<ctx:annotation-config />
+	
+	<!-- Annotations scan -->
+	<ctx:component-scan base-package="com.nature.disqus.browser" />
+	
+	<bean id="DefaultAnnotationHandlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<bean id="LocaleChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+					<property name="paramName" value="locale"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	
+	<!-- localeResolver is magic constant -->
+	<alias alias="localeResolver" name="CookieLocaleResolver" />
+	
+	<bean id="CookieLocaleResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+	
+	<bean id="SessionLocaleResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+	
+	<!-- Rozpitvane <mvc:annotation-driven> -->
+	<bean id="AnnotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+				<property name="validator" ref="ValidatorFactory"/>
+				<property name="conversionService" ref="FormattingConversionService"/>
+			</bean>
+		</property>
+		<property name="messageConverters">
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+		</property>
+		<property name="cacheSeconds" value="0" />
+	</bean>
+	
+	<bean id="FormattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.anthavio.spring.web.EnumIntConverterFactory"/>
+				<bean class="com.anthavio.spring.web.EnumStrConverterFactory"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ValidatorFactory" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+
+	<!-- ViewResolvers -->
+
+	<bean id="ContentNegotiatingViewResolver" class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="1" />
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html"/>
+				<entry key="json" value="application/json"/>
+				<entry key="xml" value="application/xml"/>
+			</map>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean name="JsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+				<!--
+				<bean name="JaxbView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<property name="marshaller" ref="ExampleMessagesBinder" />
+				</bean>
+				-->
+			</list>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<ref local="ThymeleafViewResolver"/>
+				<!--<ref local="ThymeleafTilesViewResolver"/>-->
+				<ref local="JstlViewResolver"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ThymeleafViewResolver" class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="ThymeleafTemplateEngine" />
+		<property name="order" value="2"/>
+		<property name="viewClass" value="org.thymeleaf.spring3.view.ThymeleafView"/>
+		<property name="contentType" value="text/html; charset=UTF-8" />
+		<property name="characterEncoding" value="utf-8"/>
+	</bean>
+
+	<!--
+	<bean id="TilesConfigurer" class="org.thymeleaf.extras.tiles2.spring.web.configurer.ThymeleafTilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="ThymeleafTilesViewResolver" class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="ThymeleafTemplateEngine" />
+		<property name="order" value="3"/>
+		<property name="viewClass" value="org.thymeleaf.extras.tiles2.spring.web.view.ThymeleafTilesView"/>
+	</bean>
+	-->
+	
+	<bean id="ThymeleafTemplateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+		<property name="templateResolver" ref="ThymeleafTemplateResolver"/>
+		<property name="additionalDialects">
+			<set>
+				<bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
+				<!--
+				<bean class="net.sourceforge.pagesdialect.PagesDialect" />
+				<bean class="org.thymeleaf.extras.tiles2.dialect.TilesDialect"/>
+				-->
+			</set>
+		</property>
+	</bean>
+	
+	<bean id="ThymeleafTemplateResolver"	class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="prefix" value="/WEB-INF/thyme/" /> 
+		<property name="suffix" value=".html" />
+		<property name="characterEncoding" value="UTF-8" /> 
+		<property name="templateMode" value="HTML5" /> 
+		<property name="cacheable" value="false"/>
+	</bean>
+	
+	<bean id="JstlViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="4"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="exposeContextBeansAsAttributes" value="true"/>
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>

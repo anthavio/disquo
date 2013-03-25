@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+<title>Threads</title>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css" type="text/css" media="all" />
+
+<script type="text/javascript">
+	var $j = jQuery.noConflict();
+	$j(document).ready(function() {
+		$j.datepicker.setDefaults(
+				$j.extend({showMonthAfterYear: false, firstDay: 1, dateFormat: 'yy-mm-dd'})
+		);
+		$j("#since").datepicker();
+	});
+</script>
+
+<style type="text/css">
+
+#fieldsMain {
+	width: 20em; 
+	float: left;
+}
+
+#fieldsMain dt {
+	width: 6em; 
+}
+
+#fieldsMain input, select {
+	width: 14em;
+}
+
+</style>
+</head>
+<body>
+<section layout:fragment="content">	
+	
+	<h1>Threads</h1>
+	
+	<form action="#" th:action="@{/disqus/threads}" name="ThreadSearchForm" id="ThreadSearchForm" th:object="${THREAD_CRITERIA}" method="post">
+	
+	<div>
+		<ul th:if="${#fields.hasErrors('*')}">
+			<li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+		</ul>
+	</div>
+                                        
+	<fieldset id="fieldsMain">
+		
+		<dl th:class="${#fields.hasErrors('forum')}? 'control-group error'">
+			<dt><label class="control-label" for="forum">Forum</label></dt>
+			<dd>
+				<input type="text" th:field="*{forum}" placeholder="All Forums"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('forum')}" th:errors="*{forum}">Forum is invalid</span>
+			</dd>
+		</dl>
+		
+		<dl th:class="${#fields.hasErrors('thread')}? 'control-group error'">
+			<dt><label class="control-label" for="thread">Thread</label></dt>
+			<dd>
+				<input type="text" th:field="*{thread}" placeholder="All Threads"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('thread')}" th:errors="*{thread}">ThreadId is invalid</span>
+			</dd>
+		</dl>
+		
+		<dl th:class="${#fields.hasErrors('category')}? 'control-group error'">
+			<dt><label class="control-label" for="forum">Category</label></dt>
+			<dd>
+				<select th:field="*{category}">
+					<option label="---" value="" />
+					<option th:each="element,row : ${categories}"  th:value="${element.id}"  th:text="${element.title}"></option>
+				</select>
+				<span class="help-inline error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category is invalid</span>
+			</dd>
+		</dl>
+		
+		<dl th:class="${#fields.hasErrors('since')}? 'control-group error'">
+			<dt><label class="control-label" for="since">Since</label></dt>
+			<dd>
+				<input id="since" type="text" th:field="*{since}" placeholder="2000-12-31 23:59:59"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('since')}" th:errors="*{since}">Since is invalid</span>
+			</dd>
+		</dl>
+		
+	</fieldset>
+	
+	<fieldset id="fieldsStates">
+		<dl th:each="state, row : ${ThreadStates}" th:class="${#fields.hasErrors('since')}? 'control-group error'">
+			<dt><label class="control-label" for="state" th:text="${state}">state</label></dt>
+			<dd>
+				<input type="checkbox" th:field="*{includes}" th:value="${state}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('includes')}" th:errors="*{includes}">state is invalid</span>
+			</dd>
+		</dl>
+	</fieldset>
+		
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">Search</button>
+	</div>
+	
+	</form>
+
+	<h3>Threads</h3>
+	
+	<section id="threads" th:if="${threads != null}" th:with="list=${threads.response}">
+
+		<span th:if="${threads.cursor.hasPrev}">
+			<a href="" th:href="@{'/disqus/threads'} ">First</a>
+			<a href="" th:href="@{('/disqus/threads')(cursor=${threads.cursor.prev})} ">Prev</a>
+		</span>
+		<span th:if="${threads.cursor.hasNext}">
+			<a href="" th:href="@{('/disqus/threads')(cursor=${threads.cursor.next})} ">Next</a>
+		</span>
+		
+		<table id="threadsTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>thread</th>
+					<th>title</th>
+					<th>posts</th>
+					<th>closed</th>
+					<th>deleted</th>
+					<th>identifiers</th>
+					<th>category</th>
+					<th>forum</th>
+					<th>author</th>
+					<th>createdAt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="thread,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/thread/' + ${thread.id}}" href="thread/1"><span th:text="${thread.id}">forum123</span></a></td>
+					<td th:if="${thread.link != null}"><a target="_blank" th:href="${thread.link}" th:title="${thread.title}" th:text="${#strings.abbreviate(thread.title,50)}"></a></td>
+					<td th:if="${thread.link == null}"><span th:text="${#strings.abbreviate(thread.title,50)}" th:title="${thread.title}">Thread title can be long...</span></td>
+					<td th:text="${thread.posts}">0</td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${thread.isClosed}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${thread.isDeleted}"/></td>
+					<td th:text="${#strings.abbreviate(thread.identifiers,25)}" th:title="${thread.identifiers}">identifiers</td>
+					<td><a th:href="@{'/disqus/category/' + ${thread.category.id}}" href="category/1"><span th:text="${thread.category.title}">Category</span></a></td>
+					<td><a th:href="@{'/disqus/forum/' + ${thread.forum}}" href="forum/1"><span th:text="${thread.forum}">forum123</span></a></td>
+					<td><a th:href="@{'/disqus/user/' + ${thread.author.id}}" href="user/1"><span th:text="${thread.author.username}">111222333</span></a></td>
+					<td th:text="${#dates.format(thread.createdAt, 'yyyy-MM-dd HH:mm:ss')}">createdAt</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+</section>
+</body>
+</html>

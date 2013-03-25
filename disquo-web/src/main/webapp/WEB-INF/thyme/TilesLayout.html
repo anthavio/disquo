@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+ 
+<head>
+ 
+<title tiles:string="title">effectiv:Home</title>
+ 
+<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/css/bootstrap-responsive.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/css/thymeleaf-demo.css}" />
+ 
+<style type="text/css">
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+ 
+.sidebar-nav {
+    padding: 9px 0;
+}
+</style>
+ 
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+ 
+</head>
+ 
+<body>
+ 
+    <div tiles:include="header">
+           Header
+    </div>
+ 
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <div tiles:include="navigation">Navigation</div>
+ 
+                <!--/.well -->
+            </div>
+            <!--/span-->
+ 
+            <div class="span9">
+                <div tiles:include="control">Control</div>
+ 
+            </div>
+            <!--/span-->
+ 
+        </div>
+        <!--/row-->
+ 
+        <hr></hr>
+ 
+        <footer>
+            <p>&copy; Company 2012</p>
+        </footer>
+ 
+    </div>
+    <!--/.fluid-container-->
+ 
+</body>
+</html>

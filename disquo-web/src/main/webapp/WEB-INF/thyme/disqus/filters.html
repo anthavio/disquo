@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+	<title th:text="'Forum ' + ${forum.id}"></title>
+	
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("button[rel]").each(function(i) {
+		$(this).overlay({
+			top: '5%',
+			mask: {}
+		});
+	});
+	
+	$(".ShowJson").each(function(i) {
+		$(this).overlay({
+			top: '5%',
+			mask: {}
+		});
+	});
+	
+});
+</script>
+
+</head>
+
+<body>
+<section layout:fragment="content">
+
+	<h1 th:text="'Forum ' + ${forum.id}">Forum abcdefghijkl</h1>
+	
+	<section id="blacklist" th:if="${blacklist != null}" th:with="list=${blacklist.response}">
+		
+		<h3>Blacklist</h3>	
+	
+		<table id="blacklistTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>id</th>
+					<th>type</th>
+					<th>value</th>
+					<th>notes</th>
+					<th>createdAt</th>
+					<th>remove</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td>
+						<a href="#" class="ShowJson" th:rel="'div#BlItem' + ${rowStat.count}" th:text="${item.id}">111222333</a>
+						<div th:id="'BlItem' + ${rowStat.count}" class="JsonOverlay">
+						<div class="JsonOverlayContent">
+							<strong th:text="'Blacklist item: ' + ${item.id}">Item 111222333</strong>
+							<pre th:text="${item}"></pre>
+						</div>
+					</div>
+					</td>
+					<td th:text="${item.type}">type</td>
+					<td th:if="${item.type != 'user'}" th:text="${item.value}">value</td>
+					<td th:if="${item.type == 'user'}"><a th:href="@{'/disqus/user/' + ${item.user.id}}" href="user/1" th:text="${item.user.name}">Some User</a></td>
+					<td th:text="${item.notes}">Some note attached</td>
+					<td th:text="${#dates.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}">createdAt</td>
+					<td><a th:href="@{'/disqus/forum/' + ${forum.id} + '/blacklist/remove/' + ${item.id}}" href="user/1">Remove</a></td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</section>
+	
+	<section id="whitelist" th:if="${whitelist != null}" th:with="list=${whitelist.response}">
+		
+		<h3>Whitelist</h3>	
+	
+		<table id="whitelistTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>id</th>
+					<th>type</th>
+					<th>value</th>
+					<th>notes</th>
+					<th>createdAt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td>
+						<a href="#" class="ShowJson" th:rel="'div#WlItem' + ${rowStat.count}" th:text="${item.id}">111222333</a>
+						<div th:id="'WlItem' + ${rowStat.count}" class="JsonOverlay">
+							<div class="JsonOverlayContent">
+								<strong th:text="'Whitelist item: ' + ${item.id}">White 111222333</strong>
+								<pre th:text="${item}"></pre>
+							</div>
+						</div>
+					</td>
+					<td th:text="${item.type}">type</td>
+					<td th:if="${item.type != 'user'}" th:text="${item.value}">value</td>
+					<td th:if="${item.type == 'user'}"><a th:href="@{'/disqus/user/' + ${item.user.id}}" href="user/1" th:text="${item.user.name}">Some User</a></td>
+					<td th:text="${item.notes}">Some note attached</td>
+					<td th:text="${#dates.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}">createdAt</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+</section>
+</body>
+</html>

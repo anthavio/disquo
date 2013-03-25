@@ -1,0 +1,42 @@
+
+body {
+	font-family: sans-serif;
+	font-size: small;
+}
+
+fieldset {
+	border: 0;
+}
+
+dl {
+	height: 0.5em;
+}
+
+dl dt {
+	float: left;
+	width: 8em;
+}
+
+dl dd {
+	float: rigth;
+	margin: 0 0 1em;
+}
+
+.JsonOverlay {	
+	display:none;
+	z-index:10000;
+	background-color:white;
+	
+	border:1px solid #666;
+	
+	/* CSS3 styling for latest browsers */
+	-moz-box-shadow:0 0 90px 5px #000;
+	-webkit-box-shadow: 0 0 90px #000;
+}
+
+.JsonOverlayContent {
+	color: black;
+	width: 800px;
+	height: 800px;
+	overflow-y: auto;
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+	<title th:text="'User ' + ${user.username}"></title>
+	
+<style type="text/css">
+
+#fieldsMain {
+	width: 20em; 
+	float: left;
+}
+
+#fieldsBoolean {
+	width: 10em;
+	float: left;
+}
+
+#fieldsNumber {
+	width: 12em;
+}
+
+#fieldsLong input {
+	width: 40em;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("#ShowUserJson").overlay({
+		top: '5%',
+		mask: {}
+	});
+	
+});
+</script>
+
+</head>
+<body>
+<section layout:fragment="content">
+
+	<h1 th:text="'User ' + ${user.username}">User username</h1>
+	
+	<form action="#" th:action="@{'/disqus/user/'+ ${user.id}}" name="UserUpdateForm" id="UserUpdateForm" th:object="${user}" method="POST">
+	
+	<fieldset id="fieldsMain">
+		<dl>
+			<dt><label for="id">Id</label></dt>
+			<dd th:text="${user.id}">111222333</dd>
+		</dl>
+		<dl>
+			<dt><label for="username">Username</label></dt>
+			<dd th:text="${#strings.abbreviate(user.username,25)}" th:title="${user.username}">user_name</dd>
+		</dl>
+		<dl>
+			<dt><label for="name">Name</label></dt>
+			<dd th:text="${#strings.abbreviate(user.name,25)}" th:title="${user.name}">User Name</dd>
+		</dl>
+		<dl>
+			<dt><label for="joined">Joined</label></dt>
+			<dd th:text="${#dates.format(user.joinedAt, 'yyyy-MM-dd HH:mm:ss')}">2001-01-01 23:59:59</dd>
+		</dl>
+		<dl>
+			<dt><label for="json">JSON</label></dt>
+			<dd><a href="#" id="ShowUserJson" rel="#UserJsonOverlay">Show</a></dd>
+		</dl>
+	</fieldset>
+	
+	<div id="UserJsonOverlay" class="JsonOverlay">
+		<div class="JsonOverlayContent">
+			<strong th:text="'User: ' + ${user.id}">User 111222333</strong>
+			<pre th:text="${user}"></pre>
+		</div>
+	</div>
+	
+	<fieldset id="fieldsBoolean">
+		<dl>
+			<dt><label for="id">Primary</label></dt>
+			<dd><input type="checkbox" th:if="${user.isPrimary != null}"  th:field="*{isPrimary}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Anonymous</label></dt>
+			<dd><input type="checkbox" th:if="${user.isAnonymous != null}"  th:field="*{isAnonymous}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Verified</label></dt>
+			<dd><input type="checkbox" th:if="${user.isVerified != null}" th:field="*{isVerified}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Folowing</label></dt>
+			<dd><input type="checkbox" th:if="${user.isFollowing != null}" th:field="*{isFollowing}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Followed</label></dt>
+			<dd><input type="checkbox" th:if="${user.isFollowedBy != null}" th:field="*{isFollowedBy}" disabled="disabled"/></dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset id="fieldsNumber">
+		<dl>
+			<dt><label for="reputation">Reputation</label></dt>
+			<dd th:text="${user.reputation}">1.23456</dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Posts</label></dt>
+			<dd th:text="${user.numPosts}">0</dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Likes</label></dt>
+			<dd th:text="${user.numLikesReceived}">0</dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Followers</label></dt>
+			<dd th:text="${user.numFollowers}">0</dd>
+		</dl>
+		<dl>
+			<dt><label for="id">Following</label></dt>
+			<dd th:text="${user.numFollowing}">0</dd>
+		</dl>
+	</fieldset>
+	
+	<fieldset id="fieldLong">
+		<dl>
+			<dt><label for="email">Email</label></dt>
+			<dd th:text="${user.email}">gogo@gege.com</dd>
+		</dl>
+		<dl>
+			<dt><label for="emailHash">Email Hash</label></dt>
+			<dd th:text="${user.emailHash}">0b90e272159b4ccc5ce8bf29d278f000</dd>
+		</dl>
+		<dl>
+			<dt><label for="profileUrl">Profile Url</label></dt>
+			<dd th:text="${user.profileUrl}">http://disqus.com/blahblah</dd>
+		</dl>
+		<dl>
+			<dt><label for="about">About</label></dt>
+			<dd th:text="${user.about}">Blah blah blah...</dd>
+		</dl>
+		<dl>
+			<dt><label for="url">Url</label></dt>
+			<dd th:text="${user.url}">http://xxx.yyy.zz</dd>
+		</dl>
+		<dl>
+			<dt><label for="location">Location</label></dt>
+			<dd th:text="${user.location}">?</dd>
+		</dl>
+		<dl>
+			<dt><label for="connections">Connections</label></dt>
+			<dd th:text="${user.connections}">?</dd>
+		</dl>
+	</fieldset>
+	
+	</form>
+	<ul>
+		<li>remote:
+		<ul th:if="${user.remote != null}">
+			<li>domain: <span th:text="${user.remote.domain}">domain</span></li>
+			<li>identifier: <span th:text="${user.remote.identifier}">identifier</span></li>
+		</ul>
+		</li>
+		
+		<li>avatar:
+		<ul th:if="${user.avatar != null}">
+			<li>isCustom: <span th:text="${user.avatar.isCustom}">isCustom</span></li>
+			<li>permalink: <span th:text="${user.avatar.permalink}">permalink</span></li>
+			<li>cache: <span th:text="${user.avatar.cache}">cache</span></li>
+		</ul>
+		</li>
+		
+	</ul>
+	
+	<h3>Owned Forums</h3>
+	<section id="ownedForums" th:with="list=${ownedForums.response}">
+		<table id="forumsTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>forum</th>
+					<th>name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="forum,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/forum/' + ${forum.id}}" href="forum/1"><span th:text="${forum.id}">111222333</span></a></td>
+					<td th:text="${forum.name}">Name</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+	<h3>Last Posts</h3>
+	<section id="lastPosts" th:with="list=${lastPosts.response}">
+		
+		<span th:if="${lastPosts.cursor.hasPrev}">
+			<a href="" th:href="@{'/disqus/user/'+ ${user.id}} ">First</a>
+			<a href="" th:with="baseUrl='/disqus/user/'+ ${user.id}" th:href="@{${baseUrl}(cursor=${lastPosts.cursor.prev})} ">Prev</a>
+		</span>
+		<span th:if="${lastPosts.cursor.hasNext}">
+			<a href="" th:href="@{('/disqus/user/'+ ${user.id})(cursor=${lastPosts.cursor.next})} ">Next</a>
+		</span>
+		
+		<table id="postsTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>post</th>
+					<th>parent</th>
+					<th>thread</th>
+					<th>message</th>
+					<th>approved</th>
+					<th>spam</th>
+					<th>flagged</th>
+					<th>deleted</th>
+					<th>highlighted</th>
+					<th>forum</th>
+					<th>createdAt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="post,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/post/' + ${post.id}}" href="post/1"><span th:text="${post.id}">111222333</span></a></td>
+					<td><a th:href="@{'/disqus/post/' + ${post.parent}}" href="post/1"><span th:text="${post.parent}">111222333</span></a></td>
+					<td><a th:href="@{'/disqus/thread/' + ${post.thread.id}}" href="thread/1">
+						<span th:title="${post.thread.title}" th:text="${#strings.abbreviate(post.thread.title,25)}">111222333</span>
+					</a></td>
+					<td th:text="${#strings.abbreviate(post.raw_message,50)}">Message....</td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isApproved}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isDeleted}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isSpam}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isFlagged}"/></td>
+					<td><input type="checkbox" disabled="disabled" th:checked="${post.isHighlighted}"/></td>
+					<td><a th:href="@{'/disqus/forum/' + ${post.forum}}" href="forum/1"><span th:text="${post.forum}">forum123</span></a></td>
+					<td th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}">createdAt</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	
+</section>	
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Expires" content="-1"/>
+	<meta http-equiv="CACHE-CONTROL" content="NO-CACHE"/>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css" type="text/css" media="all" />
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/common.css}" />
+
+	<title>Layout Title</title>
+</head>
+<body>
+	<header layout:fragment="custom-header">
+	<span th:if="${USER_IDENTITY.disqusUser == null}">
+		<a th:href="@{/disqus/identity}" >Select Identity</a>
+	</span>
+	<span th:if="${USER_IDENTITY.disqusUser != null}">
+		User : <a th:href="@{'/disqus/user/' + ${USER_IDENTITY.disqusUser.id}}" th:text="${USER_IDENTITY.disqusUser.name}">User: Name and Id</a>
+		<a th:href="@{/disqus/identity}">Change</a>
+	</span>
+	
+	<!--
+		<h1>Layout Title</h1>
+	-->
+	</header>
+	<section layout:fragment="content">
+		<p>Layout Content</p>
+	</section>
+	<footer>
+		<a th:href="@{/disqus/forums}" >Forums</a> 
+		<p layout:fragment="custom-footer"><!--Layout Footer value--></p>
+	</footer>
+</body>
+</html>

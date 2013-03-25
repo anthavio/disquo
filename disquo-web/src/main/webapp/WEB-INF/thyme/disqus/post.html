@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+	<title th:text="'Post ' + ${post.id}"></title>
+	
+<style type="text/css">
+
+#fieldsMain {
+	width: 20em;
+	float: left;
+}
+
+#fieldsBoolean {
+	width: 10em;
+	float: left; 
+}
+
+#fieldsNumeric {
+	width: 20em;
+	float: left; 
+}
+
+#fieldsLongdata {
+	width: 100%;
+}
+
+#fieldsLongdata dl {
+	height: auto;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("#ShowPostJson").overlay({
+		top: '5%',
+		mask: {}
+	});
+	
+});
+</script>
+
+</head>
+<body>
+<section layout:fragment="content">
+
+	<h1 th:text="'Post ' + ${post.id}"></h1>
+	<form action="#" th:action="@{'/disqus/post/'+ ${post.id}}" name="PostUpdateForm" id="PostUpdateForm" th:object="${post}" method="POST">
+	
+	<fieldset id="fieldsMain">
+		<dl>
+			<dt><label for="id">Id</label></dt>
+			<dd th:text="${post.id}">111222333</dd>
+		</dl>
+		<dl>
+			<dt><label for="parent">Parent</label></dt>
+			<dd th:if="${post.parent != null}"><a th:href="@{'/disqus/post/' + ${post.parent}}" th:text="${post.parent}">111222333</a></dd>
+		</dl>
+		<dl>
+			<dt><label for="thread">Thread</label></dt>
+			<dd><a th:href="@{'/disqus/thread/' + ${post.thread.id}}" th:text="${#strings.abbreviate(post.thread.title,25)}" th:title="${post.thread.title}">Thread title</a></dd>
+		</dl>
+		<dl>
+			<dt><label for="Forum">Forum</label></dt>
+			<dd><a th:href="@{'/disqus/forum/' + ${post.forum.id}}" th:text="${post.forum.id}">Forum name</a></dd>
+		</dl>
+		<dl th:if="${post.author.isAnonymous}">
+			<dt><label for="author">Anonymous</label></dt>
+			<dd th:text="${post.author.name}"></dd>
+		</dl>
+		<dl th:if="${!post.author.isAnonymous}">
+			<dt><label for="author">Author</label></dt>
+			<dd><a th:href="@{'/disqus/user/' + ${post.author.id}}" th:text="${#strings.abbreviate(post.author.username,25)}" th:title="${post.author.username}">Username</a></dd>
+		</dl>
+		<dl>
+			<dt><label for="createdAt">Created</label></dt>
+			<dd th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></dd>
+		</dl>
+		<dl>
+			<dt><label for="ipAddress">IP Address</label></dt>
+			<dd th:text="${post.ipAddress}"></dd>
+		</dl>
+		<dl>
+			<dt><label for="json">JSON</label></dt>
+			<dd><a href="#" id="ShowPostJson" rel="#PostJsonOverlay">Show</a></dd>
+		</dl>
+	</fieldset>
+	
+	<div id="PostJsonOverlay" class="JsonOverlay">
+		<div class="JsonOverlayContent">
+			<strong th:text="'Post: ' + ${post.id}">Post 111222333</strong>
+			<pre th:text="${post}"></pre>
+		</div>
+	</div>
+	
+	<fieldset id="fieldsNumeric">
+		<dl>
+			<dt><label for="likes">Likes</label></dt>
+			<dd th:text="${post.likes}"/>
+		</dl>
+		<dl>
+			<dt><label for="dislikes">Dislikes</label></dt>
+			<dd th:text="${post.dislikes}"/>
+		</dl>
+		<dl>
+			<dt><label for="numReports">Reports</label></dt>
+			<dd th:text="${post.numReports}"/>
+		</dl>
+		<dl>
+			<dt><label for="points">Points</label></dt>
+			<dd th:text="${post.points}"/>
+		</dl>
+		<dl>
+			<dt><label for="userScore">User Score</label></dt>
+			<dd th:text="${post.userScore}"/>
+		</dl>
+	</fieldset>
+	
+	<fieldset id="fieldsBoolean">
+		<dl>
+			<dt><label for="isApproved">Approved</label></dt>
+			<dd><input type="checkbox" th:field="*{isApproved}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="isEdited">Edited</label></dt>
+			<dd><input type="checkbox" th:field="*{isEdited}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="isDeleted">Deleted</label></dt>
+			<dd><input type="checkbox" th:field="*{isDeleted}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="isSpam">Spam</label></dt>
+			<dd><input type="checkbox" th:field="*{isSpam}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="isHighlighted">Highlighted</label></dt>
+			<dd><input type="checkbox" th:field="*{isHighlighted}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="isFlagged">Flagged</label></dt>
+			<dd><input type="checkbox" th:field="*{isFlagged}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="isJuliaFlagged">Julia Flag</label></dt>
+			<dd><input type="checkbox" th:field="*{isJuliaFlagged}" disabled="disabled"/></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset id="fieldsLongdata">
+		<dl>
+			<dt><label for="url">URL</label></dt>
+			<dd th:text="${post.url}"><input type="text" th:field="*{url}" disabled="disabled"/></dd>
+		</dl>
+		<dl th:if="${not #arrays.isEmpty(post.media)}">
+			<dt><label for="media">Media</label></dt>
+			<dd th:each="item,rowStat : ${post.media}">
+				<input type="text" th:field="*{media}" disabled="disabled"/>
+			</dd>
+		</dl>
+		<dl th:if="${post.approxLoc != null}">
+			<dt><label for="approxLoc">Location</label></dt>
+			<dd><input type="text" th:field="*{approxLoc}" disabled="disabled"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="raw_message">Raw Message</label></dt>
+			<dd><textarea rows="5" cols="120" th:field="*{raw_message}"></textarea></dd>
+		</dl>
+		<dl>
+			<dt><label for="message">Message</label></dt>
+			<dd><textarea rows="5" cols="120" th:field="*{message}" disabled="disabled"></textarea></dd>
+		</dl>
+	</fieldset>
+	
+	<div class="form-actions">
+		<button type="submit" name="update">Update</button>
+		
+		<button type="submit" name="votePlus">Vote Plus</button>
+		<button type="submit" name="voteMinus">Vote Minus</button>
+		<button type="submit" name="voteZero">Vote Zero</button>
+
+		<button type="submit" name="report">Report</button>		
+		<button type="submit" th:if="${!post.isApproved}" name="approve">Approve</button>
+		<button type="submit" th:if="${!post.isSpam}" name="spam">Spam</button>
+		
+		<button type="submit" th:if="${!post.isHighlighted}" name="highlight">Highlight</button>
+		<button type="submit" th:if="${post.isHighlighted}" name="unhighlight">Unhighlight</button>
+		
+		<button th:if="${!post.isDeleted}" type="submit" name="remove" value="remove">Remove</button>
+		<button th:if="${post.isDeleted}" type="submit" name="restore" value="restore">Restore</button>
+	</div>
+	</form>
+	
+</section>
+</body>
+</html>

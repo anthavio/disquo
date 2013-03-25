@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.anthavio.maven</groupId>
+		<artifactId>anthavio-super-pom</artifactId>
+		<version>1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.anthavio.disquo</groupId>
+	<artifactId>disquo</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>disquo-api</module>
+		<module>disquo-web</module>
+	</modules>
+	
+	<properties>
+		<sjf4j.version>1.7.3</sjf4j.version>
+		<logback.version>1.0.10</logback.version>
+		<spring.version>3.2.1.RELEASE</spring.version>
+		<jetty.version>6.1.26</jetty.version>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>mvanek</id>
+			<name>Martin Vanek</name>
+			<organization>Nature Publishing Group</organization>
+			<organizationUrl>http://www.nature.com/</organizationUrl>
+			<email>Martin.Vanek@nature.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	
+	<dependencyManagement>
+	<dependencies>
+
+		<!-- project -->
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>disquo-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>disquo-web</artifactId>
+			<type>war</type>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>disquo-web</artifactId>
+			<classifier>classes</classifier>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>disquo-web</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- commons -->
+		
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		
+		<!-- jackson -->
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.1.3</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.1.3</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>com.fasterxml.jackson.jaxrs</groupId>
+		  <artifactId>jackson-jaxrs-json-provider</artifactId>
+		  <version>2.1.3</version>
+		</dependency>
+				
+		<!--  spring -->
+		
+		<dependency>
+			<groupId>com.anthavio.maven</groupId>
+			<artifactId>spring-framework-bom</artifactId>
+			<version>${spring.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		
+		<!-- jdbc/jpa/dao -->
+		
+		
+		<!-- logging -->
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${sjf4j.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${sjf4j.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>${sjf4j.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>${sjf4j.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		
+		<!-- test -->
+		
+		<dependency>
+			<groupId>com.anthavio</groupId>
+			<artifactId>anthavio-jetty</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+				
+		<dependency>
+			<groupId>com.anthavio.maven</groupId>
+			<artifactId>jetty-deps-all</artifactId>
+			<version>${jetty.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.8</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert-core</artifactId>
+			<scope>test</scope>
+			<version>2.0M8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+			<version>1.9.5</version>
+		</dependency>
+			
+	</dependencies>
+	</dependencyManagement>
+	
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+-->
+		</plugins>
+	</build>
+	
+</project>

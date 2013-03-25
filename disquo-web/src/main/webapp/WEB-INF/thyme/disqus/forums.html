@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+<title>Forums</title>
+
+</head>
+<body>
+<section layout:fragment="content">	
+	
+	<h1>Forums</h1>
+	
+	<section id="forums" th:if="${forums != null}" th:with="list=${forums.response}">
+
+		<span th:if="${forums.cursor.hasPrev}">
+			<a href="" th:href="@{'/disqus/forums'} ">First</a>
+			<a href="" th:href="@{('/disqus/forums')(cursor=${forums.cursor.prev})} ">Prev</a>
+		</span>
+		<span th:if="${forums.cursor.hasNext}">
+			<a href="" th:href="@{('/disqus/forums')(cursor=${forums.cursor.next})} ">Next</a>
+		</span>
+		<h3>Forums belonging to user <span th:text="${USER_IDENTITY.disqusUser.name}"></span></h3>
+		<table id="forumsTable" th:if="${not #lists.isEmpty(list)}">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>forum</th>
+					<th>name</th>
+					<th>founder</th>
+					<th>language</th>
+					<th>url</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="forum,rowStat : ${list}">
+					<td th:text="${rowStat.count}">1</td>
+					<td><a th:href="@{'/disqus/forum/' + ${forum.id}}" href="forum/1"><span th:text="${forum.id}">forum123</span></a></td>
+					<td th:text="${#strings.abbreviate(forum.name,50)}" th:title="${forum.name}">Forum name can be long...</td>
+					<td><a th:href="@{'/disqus/user/' + ${forum.founder}}" href="user/1"><span th:text="${forum.founder}">111222333</span></a></td>
+					<td th:text="${forum.language}">en</td>
+					<td th:text="${forum.url}">en</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+</section>
+</body>
+</html>
