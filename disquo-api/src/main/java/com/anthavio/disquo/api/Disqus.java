@@ -45,6 +45,7 @@ import com.anthavio.disquo.api.whitelists.DisqusWhitelistsGroup;
 import com.anthavio.hatatitla.Cutils;
 import com.anthavio.hatatitla.GetRequest;
 import com.anthavio.hatatitla.HttpClient4Sender;
+import com.anthavio.hatatitla.HttpHeaderUtil;
 import com.anthavio.hatatitla.HttpSender;
 import com.anthavio.hatatitla.HttpSender.Multival;
 import com.anthavio.hatatitla.PostRequest;
@@ -73,9 +74,7 @@ public class Disqus {
 
 	private final HttpSender sender;
 
-	private final JsonFactory factory = new JsonFactory();
-
-	protected final ObjectMapper mapper = new ObjectMapper(this.factory);
+	protected final ObjectMapper mapper;
 
 	private String defaultToken = null; //access_token or remote_token
 
@@ -125,7 +124,7 @@ public class Disqus {
 			this.sender = sender;
 		}
 
-		initJackson();
+		this.mapper = initJackson();
 	}
 
 	public HttpSender getSender() {
@@ -140,6 +139,9 @@ public class Disqus {
 		return this.defaultToken;
 	}
 
+	/**
+	 * Makes application token to be default authentication token
+	 */
 	public void setUseApplicationToken(boolean value) {
 		if (value) {
 			String appToken = this.keys.getAccessToken();
@@ -154,6 +156,10 @@ public class Disqus {
 		}
 	}
 
+	/**
+	 * Enforces usage of default authentication token over the token provided by resource
+	 * Default token must be set before calling this method
+	 */
 	public void setEnforceDefaultToken(boolean value) {
 		if (value && StringUtils.isBlank(this.defaultToken)) {
 			throw new IllegalStateException("Default token is not set");
@@ -161,25 +167,39 @@ public class Disqus {
 		this.enforceDefaultToken = value;
 	}
 
-	public void setDefaultToken(String defaultToken) {
-		if (StringUtils.isBlank(defaultToken)) {
+	/**
+	 * Sets @param token as default authentication token for methods that needs to be authenticated. 
+	 * This default token is used only when explicit authentication is NOT present in resource
+	 * 
+	 * If @parem token is null or empty string, tehn default token is erased
+	 * 
+	 * @param token - remote_token or access_token
+	 */
+	public void setDefaultToken(String token) {
+		if (StringUtils.isBlank(token)) {
 			this.defaultToken = null;
 			return;
 		}
-
-		this.defaultToken = defaultToken;
+		this.defaultToken = token;
 		try {
-			SsoAuthenticator.decode_remote_auth(defaultToken, this.keys.getSecretKey());
+			//try if it is remote_token
+			SsoAuthenticator.decode_remote_auth(token, this.keys.getSecretKey());
 			this.defaultTokenIsRemoteToken = true;
 		} catch (IllegalArgumentException iax) {
 			this.defaultTokenIsRemoteToken = false;
 		}
 	}
 
+	/**
+	 * If parameter validation before call to Disqus is performed.
+	 */
 	public boolean getStrictParameters() {
 		return this.strictParameters;
 	}
 
+	/**
+	 * Enforces parameter validation before call to Disqus is performed.
+	 */
 	public void setStrictParameters(boolean value) {
 		this.strictParameters = value;
 	}
@@ -236,6 +256,12 @@ public class Disqus {
 		return new DisqusTrendsGroup(this);
 	}
 
+	/**
+	 * Calls Disqus API and parses response. Response is closed automaticaly. 
+	 * DisqusServerException is throw when non OK response is returned.
+	 * DisqusException is thrown when any other Exception is encountered.
+	 * 
+	 */
 	protected <B extends DisqusMethod<?, T>, T> DisqusResponse<T> callApi(DisqusMethod<B, T> resource, Class<T> type) {
 		try {
 			InputStream stream = this.callApi(resource).getStream();
@@ -249,6 +275,11 @@ public class Disqus {
 		}
 	}
 
+	/**
+	 * Complete request (authentication token if needed) and call Disqus API
+	 * 
+	 * Caller is responsible for closing returned SenderResponse
+	 */
 	protected <B extends DisqusMethod<?, T>, T> SenderResponse callApi(DisqusMethod<B, T> resource) {
 		DisqusMethodConfig config = resource.getConfig();
 		boolean tokenSet = resource.isAuthenticated();
@@ -300,6 +331,11 @@ public class Disqus {
 		}
 	}
 
+	/**
+	 * api_key parameter is added to and the http request is sent to disqus api rest endpoint.
+	 * 
+	 * Caller is responsible for closing returned SenderResponse
+	 */
 	protected SenderResponse callApi(Http method, String urlFragment, List<Parameter> params) throws IOException {
 		if (StringUtils.isBlank(urlFragment)) {
 			throw new IllegalArgumentException("Resource url is invalid: '" + urlFragment + "'");
@@ -332,10 +368,16 @@ public class Disqus {
 		return response;
 	}
 
+	/**
+	 * Hackish way to use internal Jackson ObjectMapper
+	 */
 	public <T> T parse(InputStream stream, Class<T> type) throws IOException {
 		return this.mapper.readValue(stream, type);
 	}
 
+	/**
+	 * Disqus returns highly "polymorphic" responses and this method deals with them
+	 */
 	public <T> DisqusResponse<T> parseResponse(InputStream inputStream, Class<T> valueType) throws IOException {
 		if (inputStream == null) {
 			throw new NullArgumentException("inputStream");
@@ -385,12 +427,22 @@ public class Disqus {
 		return new DisqusResponse(code, response, cursor);
 	}
 
-	private void throwException(SenderResponse response) {
+	/**
+	 * Parse Disqus JSON response and throw DisqusException
+	 */
+	private void throwException(SenderResponse response) throws DisqusException {
 		String statusLine = response.getHttpStatusMessage() + " " + response.getHttpStatusMessage();
 		String contentHeader = response.getFirstHeader("Content-Type");
-		if (!"application/json".equals(contentHeader)) {
+		if (contentHeader == null || !contentHeader.startsWith("application/json")) {
 			//Not a JSON response
-			Cutils.close(response);
+			try {
+				String errResponeTxt = HttpHeaderUtil.readAsString(response);
+				throw new DisqusException(statusLine + "\n" + errResponeTxt);
+			} catch (IOException iox) {
+				logger.warn("Failed to read error resonse", iox);
+			} finally {
+				Cutils.close(response);
+			}
 			throw new DisqusException(statusLine);
 		}
 
@@ -411,7 +463,10 @@ public class Disqus {
 		throw new DisqusException(statusLine);
 	}
 
-	private void initJackson() {
+	/**
+	 * Initialize Jackson ObjectMapper to conform it Disqus way
+	 */
+	protected ObjectMapper initJackson() {
 		SimpleModule module = new SimpleModule("DisqusModule");
 		module.addDeserializer(DisqusForum.class, new DisqusForumDeserializer());
 		module.addDeserializer(DisqusThread.class, new DisqusThreadDeserializer());
@@ -427,10 +482,18 @@ public class Disqus {
 				jgen.writeString(formattedDate);
 			}
 		});
-		this.mapper.registerModule(module);
-		this.mapper.setDateFormat(dateFormat);
-		//
-		this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(module);
+		mapper.setDateFormat(dateFormat);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return mapper;
+	}
+
+	/**
+	 * Access to internal Jackson ObjectMapper. Can be used to customize 
+	 */
+	public ObjectMapper getJacksonMapper() {
+		return mapper;
 	}
 
 }

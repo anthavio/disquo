@@ -269,16 +269,17 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 	/**
 	 * Map based type unsafe parameter setter
 	 */
-	public void addParams(Map<String, Object> params) {
+	public B addParams(Map<String, Object> params) {
 		Set<Entry<String, Object>> entrySet = params.entrySet();
 		for (Entry<String, Object> entry : entrySet) {
 			String key = entry.getKey();
 			Object value = entry.getValue();
 			addParam(key, value);
 		}
+		return getB();
 	}
 
-	public void addParam(String name, Object value) {
+	public B addParam(String name, Object value) {
 		if (value == null) {
 			throw new NullArgumentException("Parameter '" + name + "' value");
 		}
@@ -370,10 +371,10 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 			}
 
 		}
-
+		return getB();
 	}
 
-	protected void addParams(String name, Collection<?> list) {
+	protected B addParams(String name, Collection<?> list) {
 		ArgumentConfig aconfig = getArgConfig(name);
 		if (aconfig == null) {
 			throw new IllegalArgumentException("Parameter '" + name + "' is not allowed for " + this.config.getUrlFragment());
@@ -397,9 +398,10 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 				throw new NullArgumentException(name);
 			}
 		}
+		return getB();
 	}
 
-	protected void addParams(String name, Object[] array) {
+	protected B addParams(String name, Object[] array) {
 		ArgumentConfig aconfig = getArgConfig(name);
 		if (aconfig == null) {
 			throw new IllegalArgumentException("Parameter '" + name + "' is not allowed for " + this.config.getUrlFragment());
@@ -423,6 +425,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 				throw new NullArgumentException(name);
 			}
 		}
+		return getB();
 	}
 
 	@Override

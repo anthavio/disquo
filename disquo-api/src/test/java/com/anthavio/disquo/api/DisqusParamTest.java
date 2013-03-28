@@ -8,11 +8,10 @@ import java.util.LinkedList;
 import org.fest.assertions.api.Fail;
 import org.testng.annotations.Test;
 
-import com.anthavio.disquo.api.ArgumentConfig;
-import com.anthavio.disquo.api.Disqus;
-import com.anthavio.disquo.api.DisqusApplicationKeys;
 import com.anthavio.disquo.api.ArgumentConfig.Related;
+import com.anthavio.disquo.api.DisqusMethod.Parameter;
 import com.anthavio.disquo.api.applications.ListUsageMethod;
+import com.anthavio.disquo.api.category.CategoryListMethod;
 import com.anthavio.disquo.api.threads.ThreadDetailsMethod;
 
 @Test
@@ -36,6 +35,23 @@ public class DisqusParamTest {
 		details.addRelated(Related.forum);
 		details.addRelated(Related.author);
 		assertThat(details.getParameters().size()).isEqualTo(3);
+	}
+
+	@Test
+	public void strict_params() {
+		try {
+			disqus.category().list("forum").addParam("nonexisting", "whatever");
+			Fail.fail("Invalid parameter value must not be accepted");
+		} catch (IllegalArgumentException iax) {
+			assertThat(iax.getMessage()).contains("is not allowed for");
+		}
+		disqus.setStrictParameters(false);
+		//now without exception
+		CategoryListMethod method = disqus.category().list("forum").addParam("nonexisting", "whatever");
+		Parameter parameter = method.getParameters().get(1);
+		assertThat(parameter.getName()).isEqualTo("nonexisting");
+		assertThat(parameter.getValue()).isEqualTo("whatever");
+		disqus.setStrictParameters(true);
 	}
 
 	@Test
