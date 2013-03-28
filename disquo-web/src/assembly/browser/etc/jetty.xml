@@ -171,7 +171,7 @@
       <Arg>
         <New class="com.anthavio.jetty.Jetty6WebAppDeployer">
          <Set name="contexts"><Ref id="Contexts"/></Set>
-         <Set name="contextPath">/wafflebot/browser</Set>
+         <Set name="contextPath">/disquo/browser</Set>
          <Set name="resourceBase"><Property name="jetty.home" default="."/>/webapps/browser</Set>
          <Set name="extractWAR">false</Set>
          <Set name="copyWebDir">false</Set>

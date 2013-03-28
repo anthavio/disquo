@@ -5,6 +5,10 @@ import com.anthavio.jetty.Jetty6Wrapper;
 /**
  * Main class in IDE
  * 
+ * -noverify -javaagent:${JREBEL_DIR}/jrebel.jar 
+ * -Ddandelion.dev.mode=true
+ * -Xms128m -Xmx256m -XX:MaxPermSize=128m
+ * 
  * @author martin.vanek
  *
  */

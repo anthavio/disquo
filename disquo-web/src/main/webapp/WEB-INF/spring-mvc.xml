@@ -52,6 +52,11 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		<property name="messageConverters">
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
 		</property>
+		<!--
+		<property name="customArgumentResolver">
+			<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+		</property>
+		-->
 		<property name="cacheSeconds" value="0" />
 	</bean>
 	
@@ -127,6 +132,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		<property name="additionalDialects">
 			<set>
 				<bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
+				<bean class="com.github.dandelion.datatables.thymeleaf.dialect.DataTablesDialect" />
 				<!--
 				<bean class="net.sourceforge.pagesdialect.PagesDialect" />
 				<bean class="org.thymeleaf.extras.tiles2.dialect.TilesDialect"/>

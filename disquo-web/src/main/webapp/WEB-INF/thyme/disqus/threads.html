@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:dt="http://www.thymeleaf.org/dandelion/datatables"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	layout:decorator="disqus/layout">
 <head>
 <title>Threads</title>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css" type="text/css" media="all" />
-
 <script type="text/javascript">
-	var $j = jQuery.noConflict();
-	$j(document).ready(function() {
-		$j.datepicker.setDefaults(
-				$j.extend({showMonthAfterYear: false, firstDay: 1, dateFormat: 'yy-mm-dd'})
+	//jq breaks dandelion
+	//var $jq = jQuery.noConflict();
+	$(document).ready(function() {
+		$.datepicker.setDefaults(
+				$.extend({showMonthAfterYear: false, firstDay: 1, dateFormat: 'yy-mm-dd'})
 		);
-		$j("#since").datepicker();
+		$("#sinceDate").datepicker();
 	});
 </script>
 
@@ -81,7 +80,7 @@
 		<dl th:class="${#fields.hasErrors('since')}? 'control-group error'">
 			<dt><label class="control-label" for="since">Since</label></dt>
 			<dd>
-				<input id="since" type="text" th:field="*{since}" placeholder="2000-12-31 23:59:59"/>
+				<input id="sinceDate" type="text" th:field="*{since}" placeholder="2000-12-31 23:59:59"/>
 				<span class="help-inline error" th:if="${#fields.hasErrors('since')}" th:errors="*{since}">Since is invalid</span>
 			</dd>
 		</dl>
@@ -116,7 +115,7 @@
 			<a href="" th:href="@{('/disqus/threads')(cursor=${threads.cursor.next})} ">Next</a>
 		</span>
 		
-		<table id="threadsTable" th:if="${not #lists.isEmpty(list)}">
+		<table id="threadsTable" th:if="${not #lists.isEmpty(list)}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>

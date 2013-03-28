@@ -80,13 +80,57 @@
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring3</artifactId>
-			<version>2.0.15</version>
+			<version>2.0.16</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>nz.net.ultraq.web.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>1.0.5</version>
+		</dependency>
+
+		<!-- dandelion datatables -->
+		
+		<dependency>
+	    <groupId>com.github.dandelion</groupId>
+	    <artifactId>datatables-servlet2</artifactId>
+	    <version>0.8.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.dandelion</groupId>
+			<artifactId>datatables-thymeleaf</artifactId>
+			<version>0.8.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.dandelion</groupId>
+			<artifactId>datatables-spring3</artifactId>
+			<version>0.8.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.dandelion</groupId>
+			<artifactId>datatables-compression-yui</artifactId>
+			<version>0.8.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.dandelion</groupId>
+			<artifactId>datatables-export-poi</artifactId>
+			<version>0.8.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.dandelion</groupId>
+			<artifactId>datatables-export-poi-ooxml</artifactId>
+			<version>0.8.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.dandelion</groupId>
+			<artifactId>datatables-export-itext</artifactId>
+			<version>0.8.10</version>
 		</dependency>
 		
 		<!-- data access -->

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://www.thymeleaf.org/dandelion/datatables"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	layout:decorator="disqus/layout">
 <head>
 	<title th:text="'Forum ' + ${forum.id}"></title>
@@ -108,7 +110,7 @@ $(document).ready(function() {
 			<a href="" th:href="@{('/disqus/thread/' + ${forum.id} + '/users')(usersCursor=${users.cursor.next})} ">Next</a>
 		</span>
 		
-		<table id="usersTable" th:if="${not #lists.isEmpty(list)}">
+		<table id="usersTable" th:if="${not #lists.isEmpty(list)}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -141,7 +143,7 @@ $(document).ready(function() {
 		
 		<span th:if="${moderators.code != 0}" th:text="${moderators.response}"></span>
 	
-		<table th:if="${moderators.code == 0 and #lists.isEmpty(list) == false }">
+		<table th:if="${moderators.code == 0 and #lists.isEmpty(list) == false }" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -171,7 +173,7 @@ $(document).ready(function() {
 		
 		<span th:if="${blacklist.code != 0}" th:text="${blacklist.response}"></span>
 		
-		<table th:if="${blacklist.code == 0 and #lists.isEmpty(list) == false}">
+		<table th:if="${blacklist.code == 0 and #lists.isEmpty(list) == false}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -202,7 +204,7 @@ $(document).ready(function() {
 		
 		<span th:if="${whitelist.code != 0}" th:text="${whitelist.response}"></span>
 	
-		<table th:if="${whitelist.code == 0 and #lists.isEmpty(list) == false}">
+		<table th:if="${whitelist.code == 0 and #lists.isEmpty(list) == false}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -233,7 +235,7 @@ $(document).ready(function() {
 		
 		<span th:if="${imports.code != 0}" th:text="${imports.response}"></span>
 	
-		<table th:if="${imports.code == 0 and #lists.isEmpty(list) == false}">
+		<table th:if="${imports.code == 0 and #lists.isEmpty(list) == false}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -265,7 +267,7 @@ $(document).ready(function() {
 	
 		<h3>Categories</h3>
 		
-		<table id="categoriesTable" th:if="${not #lists.isEmpty(list)}">
+		<table id="categoriesTable" th:if="${not #lists.isEmpty(list)}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>

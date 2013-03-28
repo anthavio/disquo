@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:dt="http://www.thymeleaf.org/dandelion/datatables"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
 	<title th:text="'Posts'">Posts</title>
 	
@@ -78,7 +80,7 @@
 			<a href="" th:href="@{('/disqus/thread/'+ ${thread.id})(cursor=${posts.cursor.next})} ">Next 50</a>
 		</span>
 		
-		<table id="postsTable" th:if="${not #lists.isEmpty(list)}">
+		<table id="postsTable" th:if="${not #lists.isEmpty(list)}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>

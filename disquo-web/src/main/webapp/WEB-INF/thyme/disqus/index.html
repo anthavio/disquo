@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:dt="http://www.thymeleaf.org/dandelion/datatables"
 	layout:decorator="disqus/layout">
 <head>
 	<title>Disqus Browser</title>
@@ -8,10 +10,6 @@
 <body>
 <section layout:fragment="content">
 	<h1>Disqus Browser</h1>
-	
-	Browse forum <a th:href="@{/disqus/forum/testblogsnnp}">testblogsnnp</a>
-	
-	<br/><br/>
 	
 	View user <a th:href="@{/disqus/user/nature_VIP}">Nature_VIP</a>
 	

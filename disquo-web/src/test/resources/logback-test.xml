@@ -38,6 +38,10 @@
 		<level value="debug"/>
 	</logger>
 	
+	<logger name="com.github.dandelion.datatables.thymeleaf.processor.TdElProcessor">
+		<level value="error"/>
+	</logger>
+	
 	<root>
 		<level value="info" />
 		<appender-ref ref="STDOUT" />

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://www.thymeleaf.org/dandelion/datatables"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	layout:decorator="disqus/layout">
 <head>
 <title>Forums</title>
@@ -20,8 +22,10 @@
 		<span th:if="${forums.cursor.hasNext}">
 			<a href="" th:href="@{('/disqus/forums')(cursor=${forums.cursor.next})} ">Next</a>
 		</span>
+		
 		<h3>Forums belonging to user <span th:text="${USER_IDENTITY.disqusUser.name}"></span></h3>
-		<table id="forumsTable" th:if="${not #lists.isEmpty(list)}">
+		
+		<table id="forumsTable" th:if="${not #lists.isEmpty(list)}" dt:table="true" dt:paginate="false">
 			<thead>
 				<tr>
 					<th>#</th>

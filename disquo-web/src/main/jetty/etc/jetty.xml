@@ -119,7 +119,7 @@
       <Arg>
         <New class="com.anthavio.jetty.Jetty6WebAppDeployer">
          <Set name="contexts"><Ref id="Contexts"/></Set>
-         <Set name="contextPath">/dqsim</Set>
+         <Set name="contextPath">/disquo</Set>
          <Set name="resourceBase"><Property name="jetty.home" default="."/>./../webapp</Set>
         	<!--  
          <Set name="war"><SystemProperty name="jetty.home" default="."/>/webapps/test</Set>

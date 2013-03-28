@@ -1,6 +1,7 @@
 package com.anthavio.disquo.browser;
 
 import java.beans.PropertyEditorSupport;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -111,6 +112,18 @@ public class DisqusController extends ControllerBase {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView modelAndView = new ModelAndView("disqus/index");
+		List<DisqusPost> list = new ArrayList<DisqusPost>();
+		DisqusPost post = new DisqusPost();
+		post.setId(1l);
+		post.setCreatedAt(new Date());
+		post.setRaw_message("Message is here");
+		DisqusThread thread = new DisqusThread();
+		thread.setId(42l);
+		thread.setTitle("Thread Title");
+		post.setThread(thread);
+		list.add(post);
+		list.add(post);
+		modelAndView.addObject("list", list);
 		return modelAndView;
 	}
 
