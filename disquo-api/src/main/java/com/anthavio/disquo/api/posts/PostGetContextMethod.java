@@ -1,8 +1,8 @@
 package com.anthavio.disquo.api.posts;
 
+import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusMethodConfig;
-import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.response.DisqusPost;
 
 /**
@@ -12,7 +12,7 @@ import com.anthavio.disquo.api.response.DisqusPost;
  * @author martin.vanek
  *
  */
-public class PostGetContextMethod extends BaseSingleMultiPostMethod<DisqusPost> {
+public class PostGetContextMethod extends BaseSingleMultiPostMethod<PostGetContextMethod, DisqusPost> {
 
 	public PostGetContextMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Posts.getContext);
@@ -25,6 +25,11 @@ public class PostGetContextMethod extends BaseSingleMultiPostMethod<DisqusPost> 
 
 	public PostGetContextMethod addRelated(Related... related) {
 		addParam("related", related);
+		return this;
+	}
+
+	@Override
+	protected PostGetContextMethod getB() {
 		return this;
 	}
 }

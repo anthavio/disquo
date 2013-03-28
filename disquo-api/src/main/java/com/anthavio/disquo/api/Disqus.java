@@ -46,10 +46,10 @@ import com.anthavio.hatatitla.Cutils;
 import com.anthavio.hatatitla.GetRequest;
 import com.anthavio.hatatitla.HttpClient4Sender;
 import com.anthavio.hatatitla.HttpSender;
+import com.anthavio.hatatitla.HttpSender.Multival;
 import com.anthavio.hatatitla.PostRequest;
 import com.anthavio.hatatitla.SenderRequest;
 import com.anthavio.hatatitla.SenderResponse;
-import com.anthavio.hatatitla.HttpSender.Multival;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -236,7 +236,7 @@ public class Disqus {
 		return new DisqusTrendsGroup(this);
 	}
 
-	protected <T> DisqusResponse<T> callApi(DisqusMethod<T> resource, Class<T> type) {
+	protected <B extends DisqusMethod<?, T>, T> DisqusResponse<T> callApi(DisqusMethod<B, T> resource, Class<T> type) {
 		try {
 			InputStream stream = this.callApi(resource).getStream();
 			try {
@@ -249,7 +249,7 @@ public class Disqus {
 		}
 	}
 
-	protected <T> SenderResponse callApi(DisqusMethod<T> resource) {
+	protected <B extends DisqusMethod<?, T>, T> SenderResponse callApi(DisqusMethod<B, T> resource) {
 		DisqusMethodConfig config = resource.getConfig();
 		boolean tokenSet = resource.isAuthenticated();
 

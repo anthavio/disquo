@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.QUser;
  * @author martin.vanek
  *
  */
-public class FollowMethod extends DisqusMethod<Object> {
+public class FollowMethod extends DisqusMethod<FollowMethod, Object> {
 
 	public FollowMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Users.follow);
@@ -26,6 +26,11 @@ public class FollowMethod extends DisqusMethod<Object> {
 
 	public FollowMethod setUser(QUser user) {
 		addParam("target", user);
+		return this;
+	}
+
+	@Override
+	protected FollowMethod getB() {
 		return this;
 	}
 

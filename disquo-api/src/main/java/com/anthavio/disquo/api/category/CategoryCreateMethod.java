@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusCategory;
  * @author mvanek
  * 
  */
-public class CategoryCreateMethod extends DisqusMethod<DisqusCategory> {
+public class CategoryCreateMethod extends DisqusMethod<CategoryCreateMethod, DisqusCategory> {
 
 	public CategoryCreateMethod(Disqus feature) {
 		super(feature, DisqusMethodConfig.Category.create);
@@ -29,6 +29,11 @@ public class CategoryCreateMethod extends DisqusMethod<DisqusCategory> {
 
 	public CategoryCreateMethod setDefault(boolean value) {
 		addParam("default", value);
+		return this;
+	}
+
+	@Override
+	protected CategoryCreateMethod getB() {
 		return this;
 	}
 

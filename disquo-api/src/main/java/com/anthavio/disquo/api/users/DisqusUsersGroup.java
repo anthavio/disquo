@@ -32,9 +32,7 @@ public class DisqusUsersGroup extends DisqusFeatureGroup {
 	}
 
 	public UserDetailsMethod details(QUser user) {
-		UserDetailsMethod method = new UserDetailsMethod(this.disqus);
-		method.setUser(user);
-		return method;
+		return new UserDetailsMethod(this.disqus).setUser(user);
 	}
 
 	public UserListPostsMethod listPosts() {

@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusUser;
  * @author martin.vanek
  *
  */
-public class ForumListMostActiveUsersMethod extends DisqusCursorMethod<DisqusUser> {
+public class ForumListMostActiveUsersMethod extends DisqusCursorMethod<ForumListMostActiveUsersMethod, DisqusUser> {
 
 	public ForumListMostActiveUsersMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Forums.listMostActiveUsers);
@@ -18,6 +18,11 @@ public class ForumListMostActiveUsersMethod extends DisqusCursorMethod<DisqusUse
 
 	public ForumListMostActiveUsersMethod setForum(String forum) {
 		addParam("forum", forum);
+		return this;
+	}
+
+	@Override
+	protected ForumListMostActiveUsersMethod getB() {
 		return this;
 	}
 

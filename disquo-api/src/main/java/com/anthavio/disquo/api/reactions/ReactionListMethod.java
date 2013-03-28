@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusPost;
  * @author martin.vanek
  *
  */
-public class ReactionListMethod extends DisqusCursorPostsMethod<DisqusPost> {
+public class ReactionListMethod extends DisqusCursorPostsMethod<ReactionListMethod, DisqusPost> {
 
 	public ReactionListMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Reactions.list);
@@ -24,6 +24,11 @@ public class ReactionListMethod extends DisqusCursorPostsMethod<DisqusPost> {
 
 	public ReactionListMethod setReaction(long reaction) {
 		addParam("reaction", reaction);
+		return this;
+	}
+
+	@Override
+	protected ReactionListMethod getB() {
 		return this;
 	}
 

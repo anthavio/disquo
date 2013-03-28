@@ -2,10 +2,10 @@ package com.anthavio.disquo.api.category;
 
 import java.util.Date;
 
+import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusCursorMethod;
 import com.anthavio.disquo.api.DisqusMethodConfig;
-import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.response.DisqusThread;
 
 /**
@@ -14,7 +14,7 @@ import com.anthavio.disquo.api.response.DisqusThread;
  * 
  * XXX extends DisqusCursorThreadMethod
  */
-public class CategoryListThreadsMethod extends DisqusCursorMethod<DisqusThread> {
+public class CategoryListThreadsMethod extends DisqusCursorMethod<CategoryListThreadsMethod, DisqusThread> {
 
 	public CategoryListThreadsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Category.listThreads);
@@ -32,6 +32,11 @@ public class CategoryListThreadsMethod extends DisqusCursorMethod<DisqusThread> 
 
 	public CategoryListThreadsMethod addRelated(Related... related) {
 		addParam("related", related);
+		return this;
+	}
+
+	@Override
+	protected CategoryListThreadsMethod getB() {
 		return this;
 	}
 

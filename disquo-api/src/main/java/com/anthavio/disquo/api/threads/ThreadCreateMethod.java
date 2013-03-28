@@ -12,7 +12,7 @@ import com.anthavio.disquo.api.response.DisqusThread;
  * @author martin.vanek
  *
  */
-public class ThreadCreateMethod extends DisqusMethod<DisqusThread> {
+public class ThreadCreateMethod extends DisqusMethod<ThreadCreateMethod, DisqusThread> {
 
 	public ThreadCreateMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.create);
@@ -55,6 +55,11 @@ public class ThreadCreateMethod extends DisqusMethod<DisqusThread> {
 
 	public ThreadCreateMethod setSlug(String slug) {
 		addParam("slug", slug);
+		return this;
+	}
+
+	@Override
+	protected ThreadCreateMethod getB() {
 		return this;
 	}
 

@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusCategory;
  * @author martin.vanek
  *
  */
-public class CategoryListMethod extends DisqusCursorMethod<DisqusCategory> {
+public class CategoryListMethod extends DisqusCursorMethod<CategoryListMethod, DisqusCategory> {
 
 	public CategoryListMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Category.list);
@@ -24,6 +24,11 @@ public class CategoryListMethod extends DisqusCursorMethod<DisqusCategory> {
 
 	public CategoryListMethod setSince_id(String since_id) {
 		addParam("since_id", since_id);
+		return this;
+	}
+
+	@Override
+	protected CategoryListMethod getB() {
 		return this;
 	}
 

@@ -15,9 +15,7 @@ public class DisqusExportsGroup extends DisqusFeatureGroup {
 	}
 
 	public ExportForumMethod exportForum(String forum) {
-		ExportForumMethod method = new ExportForumMethod(disqus);
-		method.setForum(forum);
-		return method;
+		return new ExportForumMethod(disqus).setForum(forum);
 	}
 
 }

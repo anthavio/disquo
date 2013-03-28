@@ -35,7 +35,7 @@ public class PostsTest extends DisqusMethodTest {
 		method.setParent(0);
 
 		AnonymousData auth = new AnonymousData("username", "email@email.com");
-		method.setAuthorAuth(auth);
+		method.setAuthor(auth);
 		method.setAuthorUrl("http://x.y.com");
 
 		method.setState(PostState.unapproved);

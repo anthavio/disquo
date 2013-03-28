@@ -12,7 +12,7 @@ import com.anthavio.disquo.api.DisqusMethodConfig;
  * @author martin.vanek
  *
  */
-public class ListUsageMethod extends DisqusMethod<Object> {
+public class ListUsageMethod extends DisqusMethod<ListUsageMethod, Object> {
 
 	public ListUsageMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Applications.listUsage);
@@ -28,6 +28,11 @@ public class ListUsageMethod extends DisqusMethod<Object> {
 	 */
 	public ListUsageMethod setDays(int days) {
 		addParam("days", days);
+		return this;
+	}
+
+	@Override
+	protected ListUsageMethod getB() {
 		return this;
 	}
 

@@ -20,14 +20,10 @@ public class DisqusWhitelistsGroup extends DisqusFeatureGroup {
 	}
 
 	public WhitelistAdd add(String forum) {
-		WhitelistAdd method = new WhitelistAdd(disqus);
-		method.setForum(forum);
-		return method;
+		return new WhitelistAdd(disqus).setForum(forum);
 	}
 
 	public WhitelistRemove remove(String forum) {
-		WhitelistRemove method = new WhitelistRemove(disqus);
-		method.setForum(forum);
-		return method;
+		return new WhitelistRemove(disqus).setForum(forum);
 	}
 }

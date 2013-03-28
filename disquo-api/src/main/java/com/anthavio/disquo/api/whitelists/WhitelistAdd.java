@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusFilter;
  * @author martin.vanek
  *
  */
-public class WhitelistAdd extends BaseForumMethod<DisqusFilter> {
+public class WhitelistAdd extends BaseForumMethod<WhitelistAdd, DisqusFilter> {
 
 	public WhitelistAdd(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Whitelists.add);
@@ -31,6 +31,11 @@ public class WhitelistAdd extends BaseForumMethod<DisqusFilter> {
 
 	public WhitelistAdd addEmail(String... email) {
 		addParam("email", email);
+		return this;
+	}
+
+	@Override
+	protected WhitelistAdd getB() {
 		return this;
 	}
 

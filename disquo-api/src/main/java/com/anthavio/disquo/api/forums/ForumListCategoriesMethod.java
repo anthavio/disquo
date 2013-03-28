@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusCategory;
  * @author martin.vanek
  *
  */
-public class ForumListCategoriesMethod extends DisqusCursorMethod<DisqusCategory> {
+public class ForumListCategoriesMethod extends DisqusCursorMethod<ForumListCategoriesMethod, DisqusCategory> {
 
 	public ForumListCategoriesMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Forums.listCategories);
@@ -23,6 +23,11 @@ public class ForumListCategoriesMethod extends DisqusCursorMethod<DisqusCategory
 
 	public ForumListCategoriesMethod setSince_id(String since_id) {
 		addParam("since_id", since_id);
+		return this;
+	}
+
+	@Override
+	protected ForumListCategoriesMethod getB() {
 		return this;
 	}
 

@@ -2,10 +2,10 @@ package com.anthavio.disquo.api.posts;
 
 import java.util.Date;
 
+import com.anthavio.disquo.api.ArgumentConfig.PostState;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusMethod;
 import com.anthavio.disquo.api.DisqusMethodConfig;
-import com.anthavio.disquo.api.ArgumentConfig.PostState;
 import com.anthavio.disquo.api.response.DisqusPost;
 
 /**
@@ -28,7 +28,7 @@ the author_url parameter.
  * @author martin.vanek
  *
  */
-public class PostCreateMethod extends DisqusMethod<DisqusPost> {
+public class PostCreateMethod extends DisqusMethod<PostCreateMethod, DisqusPost> {
 
 	public PostCreateMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Posts.create);
@@ -64,7 +64,7 @@ public class PostCreateMethod extends DisqusMethod<DisqusPost> {
 		return this;
 	}
 
-	public PostCreateMethod setAuthorAuth(AnonymousData anonymous) {
+	public PostCreateMethod setAuthor(AnonymousData anonymous) {
 		addParam("author_name", anonymous.getUsername());
 		addParam("author_email", anonymous.getEmail());
 		return this;
@@ -116,6 +116,11 @@ public class PostCreateMethod extends DisqusMethod<DisqusPost> {
 			this.email = email;
 		}
 
+	}
+
+	@Override
+	protected PostCreateMethod getB() {
+		return this;
 	}
 
 }

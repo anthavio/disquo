@@ -20,14 +20,10 @@ public class DisqusBlacklistsGroup extends DisqusFeatureGroup {
 	}
 
 	public BlacklistAdd add(String forum) {
-		BlacklistAdd method = new BlacklistAdd(disqus);
-		method.setForum(forum);
-		return method;
+		return new BlacklistAdd(disqus).setForum(forum);
 	}
 
 	public BlacklistRemove remove(String forum) {
-		BlacklistRemove method = new BlacklistRemove(disqus);
-		method.setForum(forum);
-		return method;
+		return new BlacklistRemove(disqus).setForum(forum);
 	}
 }

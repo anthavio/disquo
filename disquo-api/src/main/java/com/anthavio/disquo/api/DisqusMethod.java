@@ -33,11 +33,11 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
  * @author vanek
  * 
  */
-public abstract class DisqusMethod<T> {
+public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 
 	//XXX this is done for every new instance so we may cache it...
 	@SuppressWarnings("unchecked")
-	protected Class<T> type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	protected Class<T> type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 
 	private final Disqus disqus;
 
@@ -99,44 +99,46 @@ public abstract class DisqusMethod<T> {
 		this.outputFormat = outputFormat;
 	}
 
+	protected abstract B getB(); //Generic trick
+
 	/**
 	 * Sets caller identity as access_token (OAuth)
 	 */
-	public DisqusMethod<T> setAccessToken(String access_token) {
+	public B setAccessToken(String access_token) {
 		this.parameters.add(new Parameter("access_token", access_token));
-		return this;
+		return getB();
 	}
 
 	/**
 	 * Sets caller identity as sso remote_auth token
 	 */
-	public DisqusMethod<T> setRemoteAuth(String userId, String username, String email) {
+	public B setRemoteAuth(String userId, String username, String email) {
 		SsoAuthData authData = new SsoAuthData(userId, username, email);
 		this.setRemoteAuth(authData);
-		return this;
+		return getB();
 	}
 
 	/**
 	 * Sets caller identity as sso remote_auth token
 	 */
-	public DisqusMethod<T> setRemoteAuth(SsoAuthData ssoAuthData) {
+	public B setRemoteAuth(SsoAuthData ssoAuthData) {
 		if (ssoAuthData == null) {
 			throw new NullArgumentException("ssoAuthData");
 		}
 		String remote_auth = SsoAuthenticator.remote_auth_s3(ssoAuthData, this.disqus.getApplicationKeys().getSecretKey());
 		this.parameters.add(new Parameter("remote_auth", remote_auth));
-		return this;
+		return getB();
 	}
 
 	/**
 	 * Sets caller identity as sso remote_auth token
 	 */
-	public DisqusMethod<T> setRemoteAuth(String remote_auth) {
+	public B setRemoteAuth(String remote_auth) {
 		if (StringUtils.isBlank(remote_auth)) {
 			throw new IllegalArgumentException("remote_auth is blank");
 		}
 		this.parameters.add(new Parameter("remote_auth", remote_auth));
-		return this;
+		return getB();
 	}
 
 	public boolean isAuthenticated() {

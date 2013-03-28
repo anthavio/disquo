@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusForum;
  * @author martin.vanek
  *
  */
-public class UserListActiveForumsMethod extends DisqusCursorMethod<DisqusForum> {
+public class UserListActiveForumsMethod extends DisqusCursorMethod<UserListActiveForumsMethod, DisqusForum> {
 
 	public UserListActiveForumsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Users.listActiveForums);
@@ -32,6 +32,11 @@ public class UserListActiveForumsMethod extends DisqusCursorMethod<DisqusForum> 
 
 	public UserListActiveForumsMethod setUser(QUser user) {
 		addParam("user", user);
+		return this;
+	}
+
+	@Override
+	protected UserListActiveForumsMethod getB() {
 		return this;
 	}
 

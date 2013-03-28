@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusCategory;
  * @author vanek
  * 
  */
-public class CategoryDetailsMethod extends DisqusMethod<DisqusCategory> {
+public class CategoryDetailsMethod extends DisqusMethod<CategoryDetailsMethod, DisqusCategory> {
 
 	public CategoryDetailsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Category.details);
@@ -18,6 +18,11 @@ public class CategoryDetailsMethod extends DisqusMethod<DisqusCategory> {
 
 	public CategoryDetailsMethod setCategory(long category) {
 		addParam("category", category);
+		return this;
+	}
+
+	@Override
+	protected CategoryDetailsMethod getB() {
 		return this;
 	}
 

@@ -10,24 +10,24 @@ import com.anthavio.disquo.api.QThread;
  * @author martin.vanek
  *
  */
-public abstract class BaseSingleThreadMethod<T> extends DisqusMethod<T> {
+public abstract class BaseSingleThreadMethod<B extends DisqusMethod<?, T>, T> extends DisqusMethod<B, T> {
 
 	public BaseSingleThreadMethod(Disqus disqus, DisqusMethodConfig config) {
 		super(disqus, config);
 	}
 
-	public BaseSingleThreadMethod<T> setThread(QThread thread) {
+	public B setThread(QThread thread) {
 		addParam("thread", thread);
-		return this;
+		return getB();
 	}
 
-	public BaseSingleThreadMethod<T> setThread(long thread) {
+	public B setThread(long thread) {
 		return setThread(QThread.build(thread));
 	}
 
-	public BaseSingleThreadMethod<T> setForum(String forum) {
+	public B setForum(String forum) {
 		addParam("forum", forum);
-		return this;
+		return getB();
 	}
 
 }

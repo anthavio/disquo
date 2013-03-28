@@ -12,7 +12,7 @@ import com.anthavio.disquo.api.response.DisqusThread;
  * @author martin.vanek
  *
  */
-public class ThreadListHotMethod extends DisqusCursorPostsMethod<DisqusThread> {
+public class ThreadListHotMethod extends DisqusCursorPostsMethod<ThreadListHotMethod, DisqusThread> {
 
 	public ThreadListHotMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.listHot);
@@ -30,6 +30,11 @@ public class ThreadListHotMethod extends DisqusCursorPostsMethod<DisqusThread> {
 
 	public ThreadListHotMethod addAuthor(String... author) {
 		addParam("author", author);
+		return this;
+	}
+
+	@Override
+	protected ThreadListHotMethod getB() {
 		return this;
 	}
 

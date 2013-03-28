@@ -9,10 +9,15 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class ThreadRemoveMethod extends BaseMultiThreadMethod<DisqusId> {
+public class ThreadRemoveMethod extends BaseMultiThreadMethod<ThreadRemoveMethod, DisqusId> {
 
 	public ThreadRemoveMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.remove);
+	}
+
+	@Override
+	protected ThreadRemoveMethod getB() {
+		return this;
 	}
 
 }

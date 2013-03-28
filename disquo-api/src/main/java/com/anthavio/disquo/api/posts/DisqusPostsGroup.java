@@ -1,8 +1,8 @@
 package com.anthavio.disquo.api.posts;
 
+import com.anthavio.disquo.api.ArgumentConfig.Vote;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusFeatureGroup;
-import com.anthavio.disquo.api.ArgumentConfig.Vote;
 import com.anthavio.disquo.api.auth.SsoAuthData;
 import com.anthavio.disquo.api.posts.PostCreateMethod.AnonymousData;
 
@@ -29,49 +29,33 @@ public class DisqusPostsGroup extends DisqusFeatureGroup {
 	 * Create SSO authenticated post
 	 */
 	public PostCreateMethod create(long thread, String message, SsoAuthData ssoAuth) {
-		PostCreateMethod method = new PostCreateMethod(this.disqus);
-		method.setMessage(message).setThread(thread);
-		method.setRemoteAuth(ssoAuth);
-		return method;
+		return new PostCreateMethod(this.disqus).setMessage(message).setThread(thread).setRemoteAuth(ssoAuth);
 	}
 
 	/**
 	 * Create OAUTH authenticated post
 	 */
 	public PostCreateMethod create(long thread, String message, String userAccessToken) {
-		PostCreateMethod method = new PostCreateMethod(this.disqus);
-		method.setMessage(message).setThread(thread);
-		method.setAccessToken(userAccessToken);
-		return method;
+		return new PostCreateMethod(this.disqus).setMessage(message).setThread(thread).setAccessToken(userAccessToken);
 	}
 
 	/**
 	 * Create anonymous post
 	 */
 	public PostCreateMethod create(long thread, String message, AnonymousData author) {
-		PostCreateMethod method = new PostCreateMethod(this.disqus);
-		method.setMessage(message).setThread(thread);
-		method.setAuthorAuth(author);
-		return method;
+		return new PostCreateMethod(this.disqus).setMessage(message).setThread(thread).setAuthor(author);
 	}
 
 	public PostUpdateMethod update(long post, String message) {
-		PostUpdateMethod method = new PostUpdateMethod(this.disqus);
-		method.setPost(post);
-		method.setMessage(message);
-		return method;
+		return new PostUpdateMethod(this.disqus).setPost(post).setMessage(message);
 	}
 
 	public PostGetContextMethod getContext(long post) {
-		PostGetContextMethod method = new PostGetContextMethod(this.disqus);
-		method.setPost(post);
-		return method;
+		return new PostGetContextMethod(this.disqus).setPost(post);
 	}
 
 	public PostDetailsMethod details(long post) {
-		PostDetailsMethod method = new PostDetailsMethod(this.disqus);
-		method.setPost(post);
-		return method;
+		return new PostDetailsMethod(this.disqus).setPost(post);
 	}
 
 	public PostListMethod list() {
@@ -79,58 +63,39 @@ public class DisqusPostsGroup extends DisqusFeatureGroup {
 	}
 
 	public PostListMethod list(long thread) {
-		PostListMethod method = new PostListMethod(this.disqus);
-		method.addThread(thread);
-		return method;
+		return new PostListMethod(this.disqus).addThread(thread);
 	}
 
 	public HighlightMethod highlight(long post) {
-		HighlightMethod method = new HighlightMethod(this.disqus);
-		method.addPost(post);
-		return method;
+		return new HighlightMethod(this.disqus).addPost(post);
 	}
 
 	public PostUnhighlightMethod unhighlight(long post) {
-		PostUnhighlightMethod method = new PostUnhighlightMethod(this.disqus);
-		method.addPost(post);
-		return method;
+		return new PostUnhighlightMethod(this.disqus).addPost(post);
 	}
 
 	public PostApproveMethod approve(long post) {
-		PostApproveMethod method = new PostApproveMethod(this.disqus);
-		method.addPost(post);
-		return method;
+		return new PostApproveMethod(this.disqus).addPost(post);
 	}
 
 	public PostRemoveMethod remove(long post) {
-		PostRemoveMethod method = new PostRemoveMethod(this.disqus);
-		method.addPost(post);
-		return method;
+		return new PostRemoveMethod(this.disqus).addPost(post);
 	}
 
 	public PostRestoreMethod restore(long post) {
-		PostRestoreMethod method = new PostRestoreMethod(this.disqus);
-		method.addPost(post);
-		return method;
+		return new PostRestoreMethod(this.disqus).addPost(post);
 	}
 
 	public PostSpamMethod spam(long post) {
-		PostSpamMethod method = new PostSpamMethod(this.disqus);
-		method.addPost(post);
-		return method;
+		return new PostSpamMethod(this.disqus).addPost(post);
 	}
 
 	public PostReportMethod report(long post) {
-		PostReportMethod method = new PostReportMethod(this.disqus);
-		method.setPost(post);
-		return method;
+		return new PostReportMethod(this.disqus).setPost(post);
 	}
 
 	public PostVoteMethod vote(long post, Vote vote) {
-		PostVoteMethod method = new PostVoteMethod(this.disqus);
-		method.setVote(vote);
-		method.setPost(post);
-		return method;
+		return new PostVoteMethod(this.disqus).setPost(post).setVote(vote);
 	}
 
 }

@@ -11,25 +11,25 @@ import com.anthavio.disquo.api.ArgumentConfig.Order;
  * @param <T>
  *
  */
-public abstract class DisqusCursorMethod<T> extends DisqusMethod<List<T>> {
+public abstract class DisqusCursorMethod<B extends DisqusMethod<?, List<T>>, T> extends DisqusMethod<B, List<T>> {
 
 	public DisqusCursorMethod(Disqus disqus, DisqusMethodConfig config) {
 		super(disqus, config);
 	}
 
-	public DisqusCursorMethod<T> setCursor(String cursor) {
+	public B setCursor(String cursor) {
 		addParam("cursor", cursor);
-		return this;
+		return getB();
 	}
 
-	public DisqusCursorMethod<T> setLimit(int limit) {
+	public B setLimit(int limit) {
 		addParam("limit", limit);
-		return this;
+		return getB();
 	}
 
-	public DisqusCursorMethod<T> setOrder(Order order) {
+	public B setOrder(Order order) {
 		addParam("order", order);
-		return this;
+		return getB();
 	}
 
 }

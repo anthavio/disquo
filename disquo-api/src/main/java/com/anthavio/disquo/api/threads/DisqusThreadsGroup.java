@@ -3,11 +3,11 @@ package com.anthavio.disquo.api.threads;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.anthavio.disquo.api.ArgumentConfig.Order;
+import com.anthavio.disquo.api.ArgumentConfig.Vote;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusFeatureGroup;
 import com.anthavio.disquo.api.QThread;
-import com.anthavio.disquo.api.ArgumentConfig.Order;
-import com.anthavio.disquo.api.ArgumentConfig.Vote;
 import com.anthavio.disquo.api.response.DisqusPost;
 import com.anthavio.disquo.api.response.DisqusResponse;
 
@@ -32,72 +32,50 @@ public class DisqusThreadsGroup extends DisqusFeatureGroup {
 	}
 
 	public ThreadUpdateMethod update(long thread) {
-		ThreadUpdateMethod method = new ThreadUpdateMethod(this.disqus);
-		method.setThread(QThread.build(thread));
-		return method;
+		return new ThreadUpdateMethod(this.disqus).setThread(thread);
 	}
 
 	public ThreadDetailsMethod details(long thread) {
-		ThreadDetailsMethod method = new ThreadDetailsMethod(this.disqus);
-		method.setThread(QThread.build(thread));
-		return method;
+		return new ThreadDetailsMethod(this.disqus).setThread(thread);
 	}
 
 	/**
 	 * When using thread string ident, forum shortname must be also provided
 	 */
 	public ThreadDetailsMethod details(String threadIdent, String forum) {
-		ThreadDetailsMethod method = new ThreadDetailsMethod(this.disqus);
-		method.setThread(QThread.ByIdent(threadIdent)).setForum(forum);
-		return method;
+		return new ThreadDetailsMethod(this.disqus).setThread(QThread.ByIdent(threadIdent)).setForum(forum);
 	}
 
 	public ThreadCloseMethod close(long... thread) {
-		ThreadCloseMethod method = new ThreadCloseMethod(this.disqus);
-		method.addThread(thread);
-		return method;
+		return new ThreadCloseMethod(this.disqus).addThread(thread);
 	}
 
 	public ThreadCloseMethod close(String threadIdent, String forum) {
-		ThreadCloseMethod method = new ThreadCloseMethod(this.disqus);
-		method.addThread(QThread.ByIdent(threadIdent)).setForum(forum);
-		return method;
+		return new ThreadCloseMethod(this.disqus).addThread(QThread.ByIdent(threadIdent)).setForum(forum);
 	}
 
 	public ThreadOpenMethod open(long... thread) {
-		ThreadOpenMethod method = new ThreadOpenMethod(this.disqus);
-		method.addThread(thread);
-		return method;
+		return new ThreadOpenMethod(this.disqus).addThread(thread);
 	}
 
 	public ThreadOpenMethod open(String threadIdent, String forum) {
-		ThreadOpenMethod method = new ThreadOpenMethod(this.disqus);
-		method.addThread(QThread.ByIdent(threadIdent)).setForum(forum);
-		return method;
+		return new ThreadOpenMethod(this.disqus).addThread(QThread.ByIdent(threadIdent)).setForum(forum);
 	}
 
 	public ThreadRemoveMethod remove(long... thread) {
-		ThreadRemoveMethod method = new ThreadRemoveMethod(this.disqus);
-		method.addThread(thread);
-		return method;
+		return new ThreadRemoveMethod(this.disqus).addThread(thread);
 	}
 
 	public ThreadRemoveMethod remove(String threadIdent, String forum) {
-		ThreadRemoveMethod method = new ThreadRemoveMethod(this.disqus);
-		method.addThread(QThread.ByIdent(threadIdent)).setForum(forum);
-		return method;
+		return new ThreadRemoveMethod(this.disqus).addThread(QThread.ByIdent(threadIdent)).setForum(forum);
 	}
 
 	public ThreadRestoreMethod restore(long... thread) {
-		ThreadRestoreMethod method = new ThreadRestoreMethod(this.disqus);
-		method.addThread(thread);
-		return method;
+		return new ThreadRestoreMethod(this.disqus).addThread(thread);
 	}
 
 	public ThreadRestoreMethod restore(String threadIdent, String forum) {
-		ThreadRestoreMethod method = new ThreadRestoreMethod(this.disqus);
-		method.addThread(QThread.ByIdent(threadIdent)).setForum(forum);
-		return method;
+		return new ThreadRestoreMethod(this.disqus).addThread(QThread.ByIdent(threadIdent)).setForum(forum);
 	}
 
 	/**
@@ -115,9 +93,7 @@ public class DisqusThreadsGroup extends DisqusFeatureGroup {
 	}
 
 	public ThreadSetMethod set(long... thread) {
-		ThreadSetMethod method = new ThreadSetMethod(this.disqus);
-		method.addThread(thread);
-		return method;
+		return new ThreadSetMethod(this.disqus).addThread(thread);
 	}
 
 	/**
@@ -194,10 +170,7 @@ public class DisqusThreadsGroup extends DisqusFeatureGroup {
 	 * User identity not known here. Email is explicit.
 	 */
 	public ThreadSubscribeMethod subscribe(long threadId, String email) {
-		ThreadSubscribeMethod method = new ThreadSubscribeMethod(this.disqus);
-		method.setThread(threadId);
-		method.setEmail(email);
-		return method;
+		return new ThreadSubscribeMethod(this.disqus).setThread(threadId).setEmail(email);
 	}
 
 	/**
@@ -205,9 +178,7 @@ public class DisqusThreadsGroup extends DisqusFeatureGroup {
 	 * Email address is taken from that identity
 	 */
 	public ThreadSubscribeMethod subscribe(long threadId) {
-		ThreadSubscribeMethod method = new ThreadSubscribeMethod(this.disqus);
-		method.setThread(threadId);
-		return method;
+		return new ThreadSubscribeMethod(this.disqus).setThread(threadId);
 	}
 
 	/*
@@ -226,10 +197,7 @@ public class DisqusThreadsGroup extends DisqusFeatureGroup {
 	 * User identity not known here. Email is explicit.
 	 */
 	public ThreadUnsubscribeMethod unsubscribe(long threadId, String email) {
-		ThreadUnsubscribeMethod method = new ThreadUnsubscribeMethod(this.disqus);
-		method.setThread(threadId);
-		method.setEmail(email);
-		return method;
+		return new ThreadUnsubscribeMethod(this.disqus).setThread(threadId).setEmail(email);
 	}
 
 	/**
@@ -237,24 +205,15 @@ public class DisqusThreadsGroup extends DisqusFeatureGroup {
 	 * Email address is taken from that identity
 	 */
 	public ThreadUnsubscribeMethod unsubscribe(long threadId) {
-		ThreadUnsubscribeMethod method = new ThreadUnsubscribeMethod(this.disqus);
-		method.setThread(threadId);
-		return method;
+		return new ThreadUnsubscribeMethod(this.disqus).setThread(threadId);
 	}
 
 	public ThreadVoteMethod vote(String threadIdent, String forum, Vote vote) {
-		ThreadVoteMethod method = new ThreadVoteMethod(this.disqus);
-		method.setThread(QThread.ByIdent(threadIdent));
-		method.setForum(forum);
-		method.setVote(vote);
-		return method;
+		return new ThreadVoteMethod(this.disqus).setThread(QThread.ByIdent(threadIdent)).setForum(forum).setVote(vote);
 	}
 
 	public ThreadVoteMethod vote(long threadId, Vote vote) {
-		ThreadVoteMethod method = new ThreadVoteMethod(this.disqus);
-		method.setThread(threadId);
-		method.setVote(vote);
-		return method;
+		return new ThreadVoteMethod(this.disqus).setThread(threadId).setVote(vote);
 	}
 
 }

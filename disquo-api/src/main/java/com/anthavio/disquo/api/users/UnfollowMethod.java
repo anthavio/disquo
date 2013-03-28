@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.QUser;
  * @author martin.vanek
  *
  */
-public class UnfollowMethod extends DisqusMethod<Object> {
+public class UnfollowMethod extends DisqusMethod<UnfollowMethod, Object> {
 
 	public UnfollowMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Users.unfollow);
@@ -26,6 +26,11 @@ public class UnfollowMethod extends DisqusMethod<Object> {
 
 	public UnfollowMethod setUser(QUser user) {
 		addParam("target", user);
+		return this;
+	}
+
+	@Override
+	protected UnfollowMethod getB() {
 		return this;
 	}
 

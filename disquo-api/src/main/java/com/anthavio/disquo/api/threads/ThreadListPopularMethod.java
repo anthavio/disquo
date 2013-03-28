@@ -14,7 +14,7 @@ import com.anthavio.disquo.api.threads.ThreadListPopularMethod.DisqusThreadWithP
  * 
  */
 public class ThreadListPopularMethod extends
-		DisqusCursorPostsMethod<DisqusThreadWithPostsInInterval> {
+		DisqusCursorPostsMethod<ThreadListPopularMethod, DisqusThreadWithPostsInInterval> {
 
 	public ThreadListPopularMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.listPopular);
@@ -33,15 +33,13 @@ public class ThreadListPopularMethod extends
 	public ThreadListPopularMethod setInterval(String interval) {
 		char unit = interval.charAt(interval.length() - 1);
 		if (unit != 'h' && unit != 'd') {
-			throw new IllegalArgumentException(
-					"Interval unit must be 'h' or 'd' " + interval);
+			throw new IllegalArgumentException("Interval unit must be 'h' or 'd' " + interval);
 		}
 		String number = interval.substring(0, interval.length() - 1);
 		try {
 			Integer.parseInt(number);
 		} catch (NumberFormatException nfx) {
-			throw new IllegalArgumentException(
-					"Interval length must be number " + interval);
+			throw new IllegalArgumentException("Interval length must be number " + interval);
 		}
 		addParam("interval", interval);
 		return this;
@@ -49,6 +47,11 @@ public class ThreadListPopularMethod extends
 
 	public ThreadListPopularMethod setWithTopPost(boolean with_top_post) {
 		addParam("with_top_post", with_top_post);
+		return this;
+	}
+
+	@Override
+	protected ThreadListPopularMethod getB() {
 		return this;
 	}
 
@@ -66,4 +69,5 @@ public class ThreadListPopularMethod extends
 		}
 
 	}
+
 }

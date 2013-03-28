@@ -3,6 +3,7 @@ package com.anthavio.disquo.api.threads;
 import java.util.List;
 
 import com.anthavio.disquo.api.Disqus;
+import com.anthavio.disquo.api.DisqusCursorMethod;
 import com.anthavio.disquo.api.DisqusMethod;
 import com.anthavio.disquo.api.DisqusMethodConfig;
 import com.anthavio.disquo.api.QThread;
@@ -14,25 +15,25 @@ import com.anthavio.disquo.api.QThread;
  * @author martin.vanek
  *
  */
-public abstract class BaseMultiThreadMethod<T> extends DisqusMethod<List<T>> {
+public abstract class BaseMultiThreadMethod<B extends DisqusMethod<?, List<T>>, T> extends DisqusCursorMethod<B, T> {
 
 	public BaseMultiThreadMethod(Disqus disqus, DisqusMethodConfig config) {
 		super(disqus, config);
 	}
 
-	public BaseMultiThreadMethod<T> setForum(String forum) {
+	public B setForum(String forum) {
 		addParam("forum", forum);
-		return this;
+		return getB();
 	}
 
-	public BaseMultiThreadMethod<T> addThread(QThread... thread) {
+	public B addThread(QThread... thread) {
 		addParam("thread", thread);
-		return this;
+		return getB();
 	}
 
-	public BaseMultiThreadMethod<T> addThread(long... thread) {
+	public B addThread(long... thread) {
 		addParam("thread", thread);
-		return this;
+		return getB();
 	}
 
 }

@@ -10,9 +10,14 @@ import com.anthavio.disquo.api.response.DisqusPost;
  * @author martin.vanek
  *
  */
-public class PostReportMethod extends BaseSinglePostMethod<DisqusPost> {
+public class PostReportMethod extends BaseSinglePostMethod<PostReportMethod, DisqusPost> {
 
 	public PostReportMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Posts.report);
+	}
+
+	@Override
+	protected PostReportMethod getB() {
+		return this;
 	}
 }

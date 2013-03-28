@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class RemoveModeratorMethod extends BaseForumMethod<DisqusId> {
+public class RemoveModeratorMethod extends BaseForumMethod<RemoveModeratorMethod, DisqusId> {
 
 	public RemoveModeratorMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Forums.removeModerator);
@@ -18,6 +18,11 @@ public class RemoveModeratorMethod extends BaseForumMethod<DisqusId> {
 
 	public RemoveModeratorMethod setModerator(QUser moderator) {
 		addParam("moderator", moderator);
+		return this;
+	}
+
+	@Override
+	protected RemoveModeratorMethod getB() {
 		return this;
 	}
 

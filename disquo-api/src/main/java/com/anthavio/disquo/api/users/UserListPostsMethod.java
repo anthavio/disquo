@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusPost;
  * @author martin.vanek
  *
  */
-public class UserListPostsMethod extends DisqusCursorPostsMethod<DisqusPost> {
+public class UserListPostsMethod extends DisqusCursorPostsMethod<UserListPostsMethod, DisqusPost> {
 
 	public UserListPostsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Users.listPosts);
@@ -27,6 +27,11 @@ public class UserListPostsMethod extends DisqusCursorPostsMethod<DisqusPost> {
 
 	public UserListPostsMethod setUser(QUser user) {
 		addParam("user", user);
+		return this;
+	}
+
+	@Override
+	protected UserListPostsMethod getB() {
 		return this;
 	}
 

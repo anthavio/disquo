@@ -1,6 +1,7 @@
 package com.anthavio.disquo.api;
 
 import java.util.Date;
+import java.util.List;
 
 import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.ArgumentConfig.ThreadState;
@@ -10,25 +11,25 @@ import com.anthavio.disquo.api.ArgumentConfig.ThreadState;
  * @author martin.vanek
  *
  */
-public abstract class DisqusCursorThreadsMethod<T> extends DisqusCursorMethod<T> {
+public abstract class DisqusCursorThreadsMethod<B extends DisqusMethod<?, List<T>>, T> extends DisqusCursorMethod<B, T> {
 
 	public DisqusCursorThreadsMethod(Disqus disqus, DisqusMethodConfig config) {
 		super(disqus, config);
 	}
 
-	public DisqusCursorThreadsMethod<T> setSince(Date since) {
+	public B setSince(Date since) {
 		addParam("since", since);
-		return this;
+		return getB();
 	}
 
-	public DisqusCursorThreadsMethod<T> addRelated(Related... related) {
+	public B addRelated(Related... related) {
 		addParam("related", related);
-		return this;
+		return getB();
 	}
 
-	public DisqusCursorThreadsMethod<T> addInclude(ThreadState... include) {
+	public B addInclude(ThreadState... include) {
 		addParam("include", include);
-		return this;
+		return getB();
 	}
 
 }

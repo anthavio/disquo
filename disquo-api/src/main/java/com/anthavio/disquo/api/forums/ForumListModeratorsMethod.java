@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusModerator;
  * @author martin.vanek
  *
  */
-public class ForumListModeratorsMethod extends DisqusCursorMethod<DisqusModerator> {
+public class ForumListModeratorsMethod extends DisqusCursorMethod<ForumListModeratorsMethod, DisqusModerator> {
 
 	public ForumListModeratorsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Forums.listModerators);
@@ -18,6 +18,11 @@ public class ForumListModeratorsMethod extends DisqusCursorMethod<DisqusModerato
 
 	public ForumListModeratorsMethod setForum(String forum) {
 		addParam("forum", forum);
+		return this;
+	}
+
+	@Override
+	protected ForumListModeratorsMethod getB() {
 		return this;
 	}
 

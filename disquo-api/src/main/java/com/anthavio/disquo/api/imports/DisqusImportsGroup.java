@@ -15,16 +15,11 @@ public class DisqusImportsGroup extends DisqusFeatureGroup {
 	}
 
 	public ImportListMethod list(String forum) {
-		ImportListMethod method = new ImportListMethod(disqus);
-		method.setForum(forum);
-		return method;
+		return new ImportListMethod(disqus).setForum(forum);
 	}
 
 	public ImportDetailsMethod details(String forum, long group) {
-		ImportDetailsMethod method = new ImportDetailsMethod(disqus);
-		method.setForum(forum);
-		method.setGroup(group);
-		return method;
+		return new ImportDetailsMethod(disqus).setForum(forum).setGroup(group);
 	}
 
 }

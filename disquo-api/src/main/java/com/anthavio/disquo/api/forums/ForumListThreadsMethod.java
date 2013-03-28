@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusThread;
  * @author martin.vanek
  *
  */
-public class ForumListThreadsMethod extends DisqusCursorThreadsMethod<DisqusThread> {
+public class ForumListThreadsMethod extends DisqusCursorThreadsMethod<ForumListThreadsMethod, DisqusThread> {
 
 	public ForumListThreadsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Forums.listThreads);
@@ -24,6 +24,11 @@ public class ForumListThreadsMethod extends DisqusCursorThreadsMethod<DisqusThre
 
 	public ForumListThreadsMethod addThread(QThread... thread) {
 		addParam("thread", thread);
+		return this;
+	}
+
+	@Override
+	protected ForumListThreadsMethod getB() {
 		return this;
 	}
 

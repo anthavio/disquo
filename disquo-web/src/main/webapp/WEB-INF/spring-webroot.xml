@@ -11,7 +11,7 @@
 	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 	<ctx:annotation-config />
 
-	<ctx:component-scan base-package="com.nature.disqus.sim" />
+	<ctx:component-scan base-package="com.anthavio.disquo.simulator" />
 
 	<ctx:property-placeholder location="classpath:browser.properties" file-encoding="utf-8" />
 	
@@ -19,15 +19,15 @@
 	
 	<bean id="Jackson" class="com.fasterxml.jackson.databind.ObjectMapper" />
 	
-	<bean id="DisqusKeys" class="com.nature.disqus.api.DisqusApplicationKeys">
+	<bean id="DisqusKeys" class="com.anthavio.disquo.api.DisqusApplicationKeys">
 		<constructor-arg name="apiKey" value="${disqus_api_key}"/>
 		<constructor-arg name="secretKey" value="${disqus_api_secret}"/>
 		<constructor-arg name="accessToken" value="${disqus_access_token}"/>
 	</bean>
 	
-	<bean id="HttpSender" class="com.nature.client.http.HttpClient4Sender">
+	<bean id="HttpSender" class="com.anthavio.hatatitla.HttpClient4Sender">
 		<constructor-arg name="config">
-			<bean class="com.nature.client.http.HttpClient4Config">
+			<bean class="com.anthavio.hatatitla.HttpClient4Config">
 				<constructor-arg name="url" value="${disqus_url:https://disqus.com/api/3.0}"/>
 				<property name="connectTimeout" value="5000"/>
 				<property name="readTimeout" value="20000"/>
@@ -35,7 +35,7 @@
 		</constructor-arg>
 	</bean>
 			
-	<bean id="Disqus" class="com.nature.disqus.api.Disqus">
+	<bean id="Disqus" class="com.anthavio.disquo.api.Disqus">
 		<constructor-arg name="keys" ref="DisqusKeys"/>
 		<constructor-arg name="sender" ref="HttpSender"/>
 	</bean>

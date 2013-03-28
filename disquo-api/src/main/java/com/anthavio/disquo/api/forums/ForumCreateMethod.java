@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusForum;
  * @author martin.vanek
  *
  */
-public class ForumCreateMethod extends DisqusMethod<DisqusForum> {
+public class ForumCreateMethod extends DisqusMethod<ForumCreateMethod, DisqusForum> {
 
 	public ForumCreateMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Forums.create);
@@ -28,6 +28,11 @@ public class ForumCreateMethod extends DisqusMethod<DisqusForum> {
 
 	public ForumCreateMethod setShortName(String shortName) {
 		addParam("short_name", shortName);
+		return this;
+	}
+
+	@Override
+	protected ForumCreateMethod getB() {
 		return this;
 	}
 

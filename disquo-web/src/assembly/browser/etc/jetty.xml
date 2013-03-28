@@ -169,7 +169,7 @@
     
     <Call name="addLifeCycle">
       <Arg>
-        <New class="com.nature.jetty.Jetty6ContextDeployer">
+        <New class="com.anthavio.jetty.Jetty6WebAppDeployer">
          <Set name="contexts"><Ref id="Contexts"/></Set>
          <Set name="contextPath">/wafflebot/browser</Set>
          <Set name="resourceBase"><Property name="jetty.home" default="."/>/webapps/browser</Set>

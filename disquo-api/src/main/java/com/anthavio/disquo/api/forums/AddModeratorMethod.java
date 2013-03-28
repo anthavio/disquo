@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class AddModeratorMethod extends DisqusMethod<DisqusId> {
+public class AddModeratorMethod extends DisqusMethod<AddModeratorMethod, DisqusId> {
 
 	public AddModeratorMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Forums.addModerator);
@@ -24,6 +24,11 @@ public class AddModeratorMethod extends DisqusMethod<DisqusId> {
 
 	public AddModeratorMethod setForum(String forum) {
 		addParam("forum", forum);
+		return this;
+	}
+
+	@Override
+	protected AddModeratorMethod getB() {
 		return this;
 	}
 

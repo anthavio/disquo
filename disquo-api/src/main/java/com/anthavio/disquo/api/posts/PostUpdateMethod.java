@@ -9,7 +9,7 @@ import com.anthavio.disquo.api.response.DisqusPost;
  * @author martin.vanek
  *
  */
-public class PostUpdateMethod extends BaseSinglePostMethod<DisqusPost> {
+public class PostUpdateMethod extends BaseSinglePostMethod<PostUpdateMethod, DisqusPost> {
 
 	public PostUpdateMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Posts.update);
@@ -17,6 +17,11 @@ public class PostUpdateMethod extends BaseSinglePostMethod<DisqusPost> {
 
 	public PostUpdateMethod setMessage(String message) {
 		addParam("message", message);
+		return this;
+	}
+
+	@Override
+	protected PostUpdateMethod getB() {
 		return this;
 	}
 

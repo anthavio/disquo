@@ -2,11 +2,11 @@ package com.anthavio.disquo.api.blacklists;
 
 import java.util.Date;
 
+import com.anthavio.disquo.api.ArgumentConfig.FilterType;
+import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusCursorMethod;
 import com.anthavio.disquo.api.DisqusMethodConfig;
-import com.anthavio.disquo.api.ArgumentConfig.FilterType;
-import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.response.DisqusFilter;
 
 /**
@@ -14,7 +14,7 @@ import com.anthavio.disquo.api.response.DisqusFilter;
  * @author martin.vanek
  *
  */
-public class BlacklistList extends DisqusCursorMethod<DisqusFilter> {
+public class BlacklistList extends DisqusCursorMethod<BlacklistList, DisqusFilter> {
 
 	public BlacklistList(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Blacklists.list);
@@ -37,6 +37,11 @@ public class BlacklistList extends DisqusCursorMethod<DisqusFilter> {
 
 	public BlacklistList addType(FilterType... type) {
 		addParam("type", type);
+		return this;
+	}
+
+	@Override
+	protected BlacklistList getB() {
 		return this;
 	}
 

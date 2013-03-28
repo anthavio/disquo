@@ -9,10 +9,15 @@ import com.anthavio.disquo.api.forums.BaseForumMethod;
  * @author martin.vanek
  *
  */
-public class ExportForumMethod extends BaseForumMethod<Object> {
+public class ExportForumMethod extends BaseForumMethod<ExportForumMethod, Object> {
 
 	public ExportForumMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Exports.exportForum);
+	}
+
+	@Override
+	protected ExportForumMethod getB() {
+		return this;
 	}
 
 }

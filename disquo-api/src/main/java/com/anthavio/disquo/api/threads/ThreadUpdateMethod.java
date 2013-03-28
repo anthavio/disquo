@@ -9,7 +9,7 @@ import com.anthavio.disquo.api.response.DisqusThread;
  * @author martin.vanek
  *
  */
-public class ThreadUpdateMethod extends BaseSingleThreadMethod<DisqusThread> {
+public class ThreadUpdateMethod extends BaseSingleThreadMethod<ThreadUpdateMethod, DisqusThread> {
 
 	public ThreadUpdateMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.update);
@@ -52,6 +52,11 @@ public class ThreadUpdateMethod extends BaseSingleThreadMethod<DisqusThread> {
 
 	public ThreadUpdateMethod setSlug(String slug) {
 		addParam("slug", slug);
+		return this;
+	}
+
+	@Override
+	protected ThreadUpdateMethod getB() {
 		return this;
 	}
 

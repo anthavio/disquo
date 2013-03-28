@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusFilter;
  * @author martin.vanek
  *
  */
-public class BlacklistRemove extends BaseForumListMethod<DisqusFilter> {
+public class BlacklistRemove extends BaseForumListMethod<BlacklistRemove, DisqusFilter> {
 
 	public BlacklistRemove(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Blacklists.remove);
@@ -41,6 +41,11 @@ public class BlacklistRemove extends BaseForumListMethod<DisqusFilter> {
 
 	public BlacklistRemove addEmail(String... email) {
 		addParam("email", email);
+		return this;
+	}
+
+	@Override
+	protected BlacklistRemove getB() {
 		return this;
 	}
 }

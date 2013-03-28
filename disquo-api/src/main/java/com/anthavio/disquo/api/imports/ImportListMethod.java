@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusImportDetails;
  * @author martin.vanek
  *
  */
-public class ImportListMethod extends BaseForumListMethod<DisqusImportDetails> {
+public class ImportListMethod extends BaseForumListMethod<ImportListMethod, DisqusImportDetails> {
 
 	public ImportListMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Imports.list);
@@ -18,6 +18,11 @@ public class ImportListMethod extends BaseForumListMethod<DisqusImportDetails> {
 
 	public ImportListMethod setCursor(String cursor) {
 		addParam("cursor", cursor);
+		return this;
+	}
+
+	@Override
+	protected ImportListMethod getB() {
 		return this;
 	}
 

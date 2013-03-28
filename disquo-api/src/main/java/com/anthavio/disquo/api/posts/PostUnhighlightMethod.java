@@ -9,10 +9,15 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class PostUnhighlightMethod extends BaseMultiPostMethod<DisqusId> {
+public class PostUnhighlightMethod extends BaseMultiPostMethod<PostUnhighlightMethod, DisqusId> {
 
 	public PostUnhighlightMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Posts.unhighlight);
+	}
+
+	@Override
+	protected PostUnhighlightMethod getB() {
+		return this;
 	}
 
 }

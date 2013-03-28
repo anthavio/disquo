@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusFilter;
  * @author martin.vanek
  *
  */
-public class BlacklistAdd extends BaseForumMethod<DisqusFilter> {
+public class BlacklistAdd extends BaseForumMethod<BlacklistAdd, DisqusFilter> {
 
 	public BlacklistAdd(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Blacklists.add);
@@ -51,6 +51,11 @@ public class BlacklistAdd extends BaseForumMethod<DisqusFilter> {
 
 	public BlacklistAdd addEmail(String... email) {
 		addParam("email", email);
+		return this;
+	}
+
+	@Override
+	protected BlacklistAdd getB() {
 		return this;
 	}
 

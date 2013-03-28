@@ -9,10 +9,15 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class HighlightMethod extends BaseMultiPostMethod<DisqusId> {
+public class HighlightMethod extends BaseMultiPostMethod<HighlightMethod, DisqusId> {
 
 	public HighlightMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Posts.highlight);
+	}
+
+	@Override
+	protected HighlightMethod getB() {
+		return getB();
 	}
 
 }

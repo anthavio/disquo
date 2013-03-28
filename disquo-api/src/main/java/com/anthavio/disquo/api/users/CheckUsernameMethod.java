@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.DisqusMethodConfig;
  * @author martin.vanek
  *
  */
-public class CheckUsernameMethod extends DisqusMethod<String> {
+public class CheckUsernameMethod extends DisqusMethod<CheckUsernameMethod, String> {
 
 	public CheckUsernameMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Users.checkUsername);
@@ -18,6 +18,11 @@ public class CheckUsernameMethod extends DisqusMethod<String> {
 
 	public CheckUsernameMethod setUsername(String username) {
 		addParam("username", username);
+		return this;
+	}
+
+	@Override
+	protected CheckUsernameMethod getB() {
 		return this;
 	}
 

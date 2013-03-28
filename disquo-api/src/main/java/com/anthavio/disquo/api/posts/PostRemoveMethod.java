@@ -9,10 +9,15 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class PostRemoveMethod extends BaseMultiPostMethod<DisqusId> {
+public class PostRemoveMethod extends BaseMultiPostMethod<PostRemoveMethod, DisqusId> {
 
 	public PostRemoveMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Posts.remove);
+	}
+
+	@Override
+	protected PostRemoveMethod getB() {
+		return this;
 	}
 
 }

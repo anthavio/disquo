@@ -17,17 +17,11 @@ public class DisqusForumsGroup extends DisqusFeatureGroup {
 	}
 
 	public AddModeratorMethod addModerator(String forum, QUser user) {
-		AddModeratorMethod method = new AddModeratorMethod(disqus);
-		method.setForum(forum);
-		method.setUser(user);
-		return method;
+		return new AddModeratorMethod(disqus).setForum(forum).setUser(user);
 	}
 
 	public RemoveModeratorMethod removeModerator(String forum, QUser user) {
-		RemoveModeratorMethod method = new RemoveModeratorMethod(disqus);
-		method.setForum(forum);
-		method.setModerator(user);
-		return method;
+		return new RemoveModeratorMethod(disqus).setForum(forum).setModerator(user);
 	}
 
 	public ForumCreateMethod create(String id, String website, String name) {
@@ -35,21 +29,15 @@ public class DisqusForumsGroup extends DisqusFeatureGroup {
 	}
 
 	public ForumDetailsMethod details(String forum) {
-		ForumDetailsMethod method = new ForumDetailsMethod(disqus);
-		method.setForum(forum);
-		return method;
+		return new ForumDetailsMethod(disqus).setForum(forum);
 	}
 
 	public ForumListCategoriesMethod listCategories(String forum) {
-		ForumListCategoriesMethod method = new ForumListCategoriesMethod(disqus);
-		method.setForum(forum);
-		return method;
+		return new ForumListCategoriesMethod(disqus).setForum(forum);
 	}
 
 	public ForumListModeratorsMethod listModerators(String forum) {
-		ForumListModeratorsMethod method = new ForumListModeratorsMethod(disqus);
-		method.setForum(forum);
-		return method;
+		return new ForumListModeratorsMethod(disqus).setForum(forum);
 	}
 
 	public ForumListPostsMethod listPosts(String forum) {

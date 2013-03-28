@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	
-	<display-name>disqus-simulator</display-name>
+	<display-name>disqus-browser</display-name>
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -17,7 +17,7 @@
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>com.nature.jersey.server.SLF4JBridgeInitializer</listener-class>
+		<listener-class>com.anthavio.jersey.server.SLF4JBridgeInitializer</listener-class>
 	</listener>
 
 	<filter>
@@ -47,11 +47,11 @@
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.WadlGeneratorConfig</param-name>
-			<param-value>com.nature.jersey.server.JsonSchemaGeneratingConfig</param-value>
+			<param-value>com.anthavio.jersey.server.JsonSchemaGeneratingConfig</param-value>
 		</init-param>  
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.nature.disqus.sim</param-value>
+			<param-value>com.anthavio.disqus.simulator</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

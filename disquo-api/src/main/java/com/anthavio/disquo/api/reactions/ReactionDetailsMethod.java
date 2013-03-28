@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusPost;
  * @author martin.vanek
  *
  */
-public class ReactionDetailsMethod extends DisqusMethod<DisqusPost> {
+public class ReactionDetailsMethod extends DisqusMethod<ReactionDetailsMethod, DisqusPost> {
 
 	public ReactionDetailsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Reactions.details);
@@ -23,6 +23,11 @@ public class ReactionDetailsMethod extends DisqusMethod<DisqusPost> {
 
 	public ReactionDetailsMethod setForum(String forum) {
 		addParam("forum", forum);
+		return this;
+	}
+
+	@Override
+	protected ReactionDetailsMethod getB() {
 		return this;
 	}
 

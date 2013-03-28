@@ -12,7 +12,7 @@ import com.anthavio.disquo.api.response.DisqusThread;
  * @author martin.vanek
  *
  */
-public class ThreadListMethod extends DisqusCursorThreadsMethod<DisqusThread> {
+public class ThreadListMethod extends DisqusCursorThreadsMethod<ThreadListMethod, DisqusThread> {
 
 	public ThreadListMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.list);
@@ -40,6 +40,11 @@ public class ThreadListMethod extends DisqusCursorThreadsMethod<DisqusThread> {
 
 	public ThreadListMethod addThread(long thread) {
 		addParam("thread", thread);
+		return this;
+	}
+
+	@Override
+	protected ThreadListMethod getB() {
 		return this;
 	}
 

@@ -11,7 +11,7 @@ import com.anthavio.disquo.api.response.DisqusPost;
  * @author martin.vanek
  *
  */
-public class ThreadListReactionsMethod extends DisqusCursorPostsMethod<DisqusPost> {
+public class ThreadListReactionsMethod extends DisqusCursorPostsMethod<ThreadListReactionsMethod, DisqusPost> {
 
 	public ThreadListReactionsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.listPosts);
@@ -29,6 +29,11 @@ public class ThreadListReactionsMethod extends DisqusCursorPostsMethod<DisqusPos
 
 	public ThreadListReactionsMethod setForum(String forum) {
 		addParam("forum", forum);
+		return this;
+	}
+
+	@Override
+	protected ThreadListReactionsMethod getB() {
 		return this;
 	}
 

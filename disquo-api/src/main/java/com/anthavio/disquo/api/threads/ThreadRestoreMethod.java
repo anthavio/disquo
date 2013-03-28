@@ -9,10 +9,15 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class ThreadRestoreMethod extends BaseMultiThreadMethod<DisqusId> {
+public class ThreadRestoreMethod extends BaseMultiThreadMethod<ThreadRestoreMethod, DisqusId> {
 
 	public ThreadRestoreMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.restore);
+	}
+
+	@Override
+	protected ThreadRestoreMethod getB() {
+		return this;
 	}
 
 }

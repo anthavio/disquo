@@ -10,7 +10,7 @@ import com.anthavio.disquo.api.response.DisqusImportDetails;
  * @author martin.vanek
  *
  */
-public class ImportDetailsMethod extends BaseForumMethod<DisqusImportDetails> {
+public class ImportDetailsMethod extends BaseForumMethod<ImportDetailsMethod, DisqusImportDetails> {
 
 	public ImportDetailsMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Imports.details);
@@ -18,6 +18,11 @@ public class ImportDetailsMethod extends BaseForumMethod<DisqusImportDetails> {
 
 	public ImportDetailsMethod setGroup(long group) {
 		addParam("group", group);
+		return this;
+	}
+
+	@Override
+	protected ImportDetailsMethod getB() {
 		return this;
 	}
 

@@ -9,10 +9,15 @@ import com.anthavio.disquo.api.response.DisqusId;
  * @author martin.vanek
  *
  */
-public class ThreadCloseMethod extends BaseMultiThreadMethod<DisqusId> {
+public class ThreadCloseMethod extends BaseMultiThreadMethod<ThreadCloseMethod, DisqusId> {
 
 	public ThreadCloseMethod(Disqus disqus) {
 		super(disqus, DisqusMethodConfig.Threads.close);
+	}
+
+	@Override
+	protected ThreadCloseMethod getB() {
+		return this;
 	}
 
 }

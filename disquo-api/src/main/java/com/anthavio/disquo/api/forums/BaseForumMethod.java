@@ -9,15 +9,15 @@ import com.anthavio.disquo.api.DisqusMethodConfig;
  * @author martin.vanek
  *
  */
-public abstract class BaseForumMethod<T> extends DisqusMethod<T> {
+public abstract class BaseForumMethod<B extends DisqusMethod<?, T>, T> extends DisqusMethod<B, T> {
 
 	public BaseForumMethod(Disqus disqus, DisqusMethodConfig config) {
 		super(disqus, config);
 	}
 
-	public BaseForumMethod<T> setForum(String forum) {
+	public B setForum(String forum) {
 		addParam("forum", forum);
-		return this;
+		return getB();
 	}
 
 }
