@@ -7,7 +7,7 @@ set APP_HOME=%cd%
 
 set APP_CLASSPATH=etc;lib/*;lib/ext/*
 
-set MAIN_CLASS=com.nature.disqus.browser.DisqusBrowserJettyMain
+set MAIN_CLASS=com.anthavio.disquo.browser.DisqusBrowserJettyMain
 set APP_OPTS=
 
 set JMX_PORT=9013
