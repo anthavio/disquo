@@ -15,16 +15,16 @@ public class DisqusTest {
 
 	public static void main(String[] args) {
 
-		TestInputData tidata = TestInputData.load("disqus-nature.properties");
+		TestInputData tidata = TestInputData.load("disqus-dajc.properties");
 		Disqus disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl());
 		try {
 			disqus.setUseApplicationToken(true);
-			DisqusResponse<List<DisqusImportDetails>> ilist = disqus.imports().list("jasmineimporttest").execute();
+			DisqusResponse<List<DisqusImportDetails>> ilist = disqus.imports().list("testnaturefronthalf1").execute();
 
 			DisqusImportDetails stats = ilist.getResponse().get(0);
 			System.out.println(stats);
 
-			DisqusResponse<DisqusImportDetails> idetails = disqus.imports().details("jasmineimporttest", stats.getId())
+			DisqusResponse<DisqusImportDetails> idetails = disqus.imports().details("testnaturefronthalf1", stats.getId())
 					.execute();
 
 			DisqusImportDetails details = idetails.getResponse();
