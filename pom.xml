@@ -19,19 +19,18 @@
 	</modules>
 	
 	<properties>
-		<sjf4j.version>1.7.3</sjf4j.version>
-		<logback.version>1.0.10</logback.version>
+		<sjf4j.version>1.7.5</sjf4j.version>
+		<logback.version>1.0.11</logback.version>
 		<spring.version>3.2.1.RELEASE</spring.version>
 		<jetty.version>6.1.26</jetty.version>
 	</properties>
 
 	<developers>
 		<developer>
-			<id>mvanek</id>
+			<id>anthavio</id>
 			<name>Martin Vanek</name>
 			<organization>Nature Publishing Group</organization>
 			<organizationUrl>http://www.nature.com/</organizationUrl>
-			<email>Martin.Vanek@nature.com</email>
 			<roles>
 				<role>Developer</role>
 			</roles>
