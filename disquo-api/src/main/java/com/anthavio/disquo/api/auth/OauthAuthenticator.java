@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,9 +24,9 @@ import com.anthavio.disquo.api.response.TokenResponse;
 import com.anthavio.hatatitla.Cutils;
 import com.anthavio.hatatitla.GetRequest;
 import com.anthavio.hatatitla.HttpHeaderUtil;
+import com.anthavio.hatatitla.HttpSender.Multival;
 import com.anthavio.hatatitla.PostRequest;
 import com.anthavio.hatatitla.SenderResponse;
-import com.anthavio.hatatitla.HttpSender.Multival;
 import com.anthavio.hatatitla.inout.ResponseBodyExtractor.ExtractedBodyResponse;
 
 /**
@@ -92,14 +94,8 @@ public class OauthAuthenticator {
 	 */
 	public void get_oauth_code(String redirectUrl, String username, String password) {
 
-		String loginPage;
-		try {
-			GetRequest request = new GetRequest(getOauthRequestUrl(redirectUrl));
-			loginPage = this.disqus.getSender().extract(request, String.class).getBody();
-		} catch (IOException iox) {
-			throw new UnhandledException(iox);
-		}
-
+		GetRequest request = new GetRequest(getOauthRequestUrl(redirectUrl));
+		String loginPage = this.disqus.getSender().extract(request, String.class).getBody();
 		System.out.println(loginPage);
 		Pattern pattern = Pattern.compile("<input type='hidden' name='csrfmiddlewaretoken' value='([^\"]*)' />");
 		Matcher matcher = pattern.matcher(loginPage.toString());
@@ -111,17 +107,13 @@ public class OauthAuthenticator {
 			throw new IllegalStateException("Cannot find csrfmiddlewaretoken");
 		}
 
-		Multival params2 = new Multival();
-		params2.add("csrfmiddlewaretoken", csrfToken);
-		params2.add("username", username);
-		params2.add("password", password);
-		try {
-			ExtractedBodyResponse<String> extracted = this.disqus.getSender().POST("/api/oauth/2.0/grant/")
-					.parameters(params2).extract(String.class);
-			System.out.println(extracted.getBody());
-		} catch (IOException iox) {
-			throw new UnhandledException(iox);
-		}
+		Map<String, Object> params2 = new HashMap<String, Object>();
+		params2.put("csrfmiddlewaretoken", csrfToken);
+		params2.put("username", username);
+		params2.put("password", password);
+		ExtractedBodyResponse<String> extracted = this.disqus.getSender().POST("/api/oauth/2.0/grant/").parameters(params2)
+				.extract(String.class);
+		System.out.println(extracted.getBody());
 
 		// Redirect with "code" parameter in url shoud be obtained
 	}
@@ -142,12 +134,12 @@ public class OauthAuthenticator {
 	 * "batman" "user_id": "947103743" }
 	 */
 	public TokenResponse getAccessToken(String redirectUrl, String code) {
-		Multival params = new Multival();
-		params.add("grant_type", "authorization_code");
-		params.add("client_id", this.publicKey);
-		params.add("client_secret", this.secretKey);
-		params.add("redirect_uri", redirectUrl);
-		params.add("code", code);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("grant_type", "authorization_code");
+		params.put("client_id", this.publicKey);
+		params.put("client_secret", this.secretKey);
+		params.put("redirect_uri", redirectUrl);
+		params.put("code", code);
 
 		SenderResponse response = null;
 		try {
@@ -229,11 +221,11 @@ public class OauthAuthenticator {
 	 * different set of parameters:
 	 */
 	public TokenResponse access_token_refresh(String refresh_token) {
-		Multival params = new Multival();
-		params.add("grant_type", "password");
-		params.add("client_id", this.publicKey);
-		params.add("client_secret", this.secretKey);
-		params.add("refresh_token", refresh_token);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("grant_type", "password");
+		params.put("client_id", this.publicKey);
+		params.put("client_secret", this.secretKey);
+		params.put("refresh_token", refresh_token);
 
 		InputStream stream = null;
 		try {
