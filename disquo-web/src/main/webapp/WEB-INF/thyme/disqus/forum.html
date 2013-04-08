@@ -107,7 +107,7 @@ $(document).ready(function() {
 			<a href="" th:with="baseUrl='/disqus/forum/' + ${forum.id} + '/users'" th:href="@{${baseUrl}(usersCursor=${users.cursor.prev})} ">Prev</a>
 		</span>
 		<span th:if="${users.cursor.hasNext}">
-			<a href="" th:href="@{('/disqus/thread/' + ${forum.id} + '/users')(usersCursor=${users.cursor.next})} ">Next</a>
+			<a href="" th:href="@{('/disqus/forum/' + ${forum.id} + '/users')(usersCursor=${users.cursor.next})} ">Next</a>
 		</span>
 		
 		<table id="usersTable" th:if="${not #lists.isEmpty(list)}" dt:table="true" dt:paginate="false">
