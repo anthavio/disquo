@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.StringUtils;
 
-import com.anthavio.hatatitla.Cutils;
+import com.anthavio.httl.Cutils;
 
 /**
  * 

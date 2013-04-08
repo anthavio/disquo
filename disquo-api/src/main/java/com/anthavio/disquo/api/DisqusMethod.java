@@ -23,9 +23,9 @@ import com.anthavio.disquo.api.ArgumentConfig.Vote;
 import com.anthavio.disquo.api.auth.SsoAuthData;
 import com.anthavio.disquo.api.auth.SsoAuthenticator;
 import com.anthavio.disquo.api.response.DisqusResponse;
-import com.anthavio.hatatitla.Cutils;
-import com.anthavio.hatatitla.HttpHeaderUtil;
-import com.anthavio.hatatitla.SenderResponse;
+import com.anthavio.httl.Cutils;
+import com.anthavio.httl.HttpHeaderUtil;
+import com.anthavio.httl.SenderResponse;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 
 /**

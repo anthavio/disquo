@@ -8,8 +8,8 @@ import org.testng.annotations.Test;
 import com.anthavio.disquo.TestInputData;
 import com.anthavio.disquo.api.auth.SsoAuthData;
 import com.anthavio.disquo.api.auth.SsoAuthenticator;
-import com.anthavio.hatatitla.FakeSender;
-import com.anthavio.hatatitla.HttpSender;
+import com.anthavio.httl.FakeSender;
+import com.anthavio.httl.HttpSender;
 
 /**
  * 
