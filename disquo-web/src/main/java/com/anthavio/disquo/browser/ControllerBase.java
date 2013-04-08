@@ -21,7 +21,8 @@ import com.anthavio.disquo.browser.UserIdentity.Type;
  * @author martin.vanek
  *
  */
-@SessionAttributes({ DisqusController.THREAD_CRITERIA, DisqusController.POST_CRITERIA, IdentityController.USER_IDENTITY })
+@SessionAttributes({ DisqusController.THREAD_CRITERIA, DisqusController.POST_CRITERIA, DisqusController.INDEX_CRITERIA,
+		IdentityController.USER_IDENTITY })
 public class ControllerBase {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -34,8 +35,7 @@ public class ControllerBase {
 		//OAuth callback URL
 
 		UserIdentity identity = new UserIdentity();
-
-		SsoAuthData sso = new SsoAuthData("npg_disqus_user_id_test_1", "Npg Disqus User Test 1", "anthavio@post.cz");
+		SsoAuthData sso = new SsoAuthData("654321_id_123456", "John Doe", "example@example.com");
 		identity.setSso(sso);
 		String accessToken = disqus.getApplicationKeys().getAccessToken();
 		identity.setApplicationToken(accessToken);
@@ -67,6 +67,11 @@ public class ControllerBase {
 		states.addAll(ThreadState.CALL);
 		criteria.setIncludes(states);
 		return criteria;
+	}
+
+	@ModelAttribute(DisqusController.INDEX_CRITERIA)
+	public IndexSearchCriteria initIndexSearchCriteria() {
+		return new IndexSearchCriteria();
 	}
 
 }

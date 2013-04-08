@@ -1,7 +1,6 @@
 package com.anthavio.disquo.browser;
 
 import java.beans.PropertyEditorSupport;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -83,6 +82,8 @@ public class DisqusController extends ControllerBase {
 	static final String THREAD_CRITERIA = "THREAD_CRITERIA";
 	static final String POST_CRITERIA = "POST_CRITERIA";
 
+	static final String INDEX_CRITERIA = "INDEX_CRITERIA";
+
 	public DisqusController() {
 	}
 
@@ -112,18 +113,27 @@ public class DisqusController extends ControllerBase {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView modelAndView = new ModelAndView("disqus/index");
-		List<DisqusPost> list = new ArrayList<DisqusPost>();
-		DisqusPost post = new DisqusPost();
-		post.setId(1l);
-		post.setCreatedAt(new Date());
-		post.setRaw_message("Message is here");
-		DisqusThread thread = new DisqusThread();
-		thread.setId(42l);
-		thread.setTitle("Thread Title");
-		post.setThread(thread);
-		list.add(post);
-		list.add(post);
-		modelAndView.addObject("list", list);
+		return modelAndView;
+	}
+
+	/**
+	 * Search index page
+	 */
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public ModelAndView indexSearch(@ModelAttribute(INDEX_CRITERIA) IndexSearchCriteria criteria, BindingResult binding) {
+
+		ModelAndView modelAndView = new ModelAndView("disqus/index");
+
+		if (binding.hasErrors()) {
+			return modelAndView;
+		}
+
+		if (StringUtils.isNotEmpty(criteria.getForumShort())) {
+			return new ModelAndView("redirect:/disqus/forum/" + criteria.getForumShort());
+		} else if (StringUtils.isNotEmpty(criteria.getUserName())) {
+			return new ModelAndView("redirect:/disqus/user/" + criteria.getUserName());
+		}
+
 		return modelAndView;
 	}
 

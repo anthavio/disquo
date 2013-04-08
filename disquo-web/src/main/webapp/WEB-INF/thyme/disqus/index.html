@@ -11,7 +11,28 @@
 <section layout:fragment="content">
 	<h1>Disqus Browser</h1>
 	
-	View user <a th:href="@{/disqus/user/nature_VIP}">Nature_VIP</a>
+	<form action="#" th:action="@{/disqus/}" name="FindForm" id="FindForumForm" th:object="${INDEX_CRITERIA}" method="post">
+	<fieldset style="width: 30em;">
+		<dl th:class="${#fields.hasErrors('forumShort')}? 'control-group error'">
+			<dt><label class="control-label" for="forumShort">Forum</label></dt>
+			<dd>
+				<input type="text" th:field="*{forumShort}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('forumShort')}" th:errors="*{forumShort}">Forum is invalid</span>
+			</dd>
+		</dl>
+		<dl th:class="${#fields.hasErrors('userName')}? 'control-group error'">
+			<dt><label class="control-label" for="forum">Username</label></dt>
+			<dd>
+				<input type="text" th:field="*{userName}"/>
+				<span class="help-inline error" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username is invalid</span>
+			</dd>
+		</dl>
+	</fieldset>
+	<div>
+		<button type="submit">Show</button>
+	</div>
+	</form>
+	
 	
 </section>
 </body>

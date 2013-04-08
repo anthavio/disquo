@@ -25,12 +25,12 @@
 		<constructor-arg name="accessToken" value="${disqus_access_token}"/>
 	</bean>
 	
-	<bean id="HttpSender" class="com.anthavio.hatatitla.HttpClient4Sender">
+	<bean id="HttpSender" class="com.anthavio.httl.HttpClient4Sender">
 		<constructor-arg name="config">
-			<bean class="com.anthavio.hatatitla.HttpClient4Config">
+			<bean class="com.anthavio.httl.HttpClient4Config">
 				<constructor-arg name="url" value="${disqus_url:https://disqus.com/api/3.0}"/>
-				<property name="connectTimeout" value="5000"/>
-				<property name="readTimeout" value="20000"/>
+				<property name="connectTimeoutMillis" value="5000"/>
+				<property name="readTimeoutMillis" value="20000"/>
 			</bean>
 		</constructor-arg>
 	</bean>

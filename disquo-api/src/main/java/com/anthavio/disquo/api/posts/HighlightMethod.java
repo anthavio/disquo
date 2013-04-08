@@ -17,7 +17,7 @@ public class HighlightMethod extends BaseMultiPostMethod<HighlightMethod, Disqus
 
 	@Override
 	protected HighlightMethod getB() {
-		return getB();
+		return this;
 	}
 
 }

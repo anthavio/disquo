@@ -126,8 +126,8 @@ $(document).ready(function() {
 				<tr th:each="user,rowStat : ${list}">
 					<td th:text="${rowStat.count}">1</td>
 					<td><a th:href="@{'/disqus/user/' + ${user.id}}" href="user/1"><span th:text="${user.id}">111222333</span></a></td>
-					<td th:text="${#strings.abbreviate(user.username,25)}">silvester_stallone_1</td>
-					<td th:text="${#strings.abbreviate(user.name,25)}">Silvester Stallone</td>
+					<td th:text="${#strings.abbreviate(user.username,30)}">silvester_stallone_1</td>
+					<td th:text="${#strings.abbreviate(user.name,30)}">Silvester Stallone</td>
 					<td th:text="${user.reputation}"></td>
 					<td th:if="${user.remote != null}" th:text="${user.remote?.domain} + ' ' + ${user.remote?.identifier}"></td>
 					<td th:if="${user.remote == null}"/>

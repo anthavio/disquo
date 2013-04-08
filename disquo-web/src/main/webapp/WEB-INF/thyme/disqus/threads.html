@@ -140,7 +140,7 @@
 					<td th:text="${thread.posts}">0</td>
 					<td><input type="checkbox" disabled="disabled" th:checked="${thread.isClosed}"/></td>
 					<td><input type="checkbox" disabled="disabled" th:checked="${thread.isDeleted}"/></td>
-					<td th:text="${#strings.abbreviate(thread.identifiers,25)}" th:title="${thread.identifiers}">identifiers</td>
+					<td th:text="${#strings.abbreviate(thread.identifiers,30)}" th:title="${thread.identifiers}">identifiers</td>
 					<td><a th:href="@{'/disqus/category/' + ${thread.category.id}}" href="category/1"><span th:text="${thread.category.title}">Category</span></a></td>
 					<td><a th:href="@{'/disqus/forum/' + ${thread.forum}}" href="forum/1"><span th:text="${thread.forum}">forum123</span></a></td>
 					<td><a th:href="@{'/disqus/user/' + ${thread.author.id}}" href="user/1"><span th:text="${thread.author.username}">111222333</span></a></td>

@@ -18,7 +18,11 @@
 		<level value="debug"/>
 	</logger>
 	
-	<logger name="org.mortbay">
+	<logger name="org.mortbay.jetty">
+		<level value="info"/>
+	</logger>
+	
+	<logger name="org.eclipse.jetty">
 		<level value="info"/>
 	</logger>
 	
@@ -34,7 +38,7 @@
 		<level value="info"/>
 	</logger>
 	
-	<logger name="com.nature">
+	<logger name="com.anthavio">
 		<level value="debug"/>
 	</logger>
 	

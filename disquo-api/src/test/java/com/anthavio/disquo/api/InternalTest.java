@@ -21,7 +21,7 @@ public class InternalTest {
 	@Test
 	public void testSsoToken() {
 		SsoAuthData ssoIn = new SsoAuthData("XYZ-123465789-Q", "Anthavio Lenz", "anthavio@example.com");
-		TestInputData tidata = TestInputData.load("disqus-dajc.properties");
+		TestInputData tidata = TestInputData.load("disqus.properties");
 		String remote_auth = SsoAuthenticator.remote_auth_s3(ssoIn, tidata.getSecretKey());
 		SsoAuthData ssoOut = SsoAuthenticator.decode_remote_auth(remote_auth, tidata.getSecretKey());
 
@@ -50,8 +50,8 @@ public class InternalTest {
 	}
 
 	private Disqus getDisqus(int httpCode, String responseJson) {
-		HttpSender sender = new FakeSender(httpCode, responseJson);
-		TestInputData tidata = TestInputData.load("disqus-dajc.properties");
+		HttpSender sender = new FakeSender(httpCode, "application/json; charset=utf-8", responseJson);
+		TestInputData tidata = TestInputData.load("disqus.properties");
 		Disqus disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl(), sender);
 		return disqus;
 	}

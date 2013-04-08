@@ -22,7 +22,7 @@ public class DisqusMethodTest {
 	@BeforeClass
 	public void setup() {
 
-		TestInputData tidata = TestInputData.load("disqus-dajc.properties");
+		TestInputData tidata = TestInputData.load("disqus.properties");
 		disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl());
 	}
 
