@@ -87,12 +87,12 @@
 		<level value="info" /><!-- trace -->
 	</logger>
 
-	<logger name="com.nature">
-		<level value="INFO" />
-	</logger>
-
-	<logger name="com.nature.wafflebot">
+	<logger name="com.anthavio">
 		<level value="debug" />
+	</logger>
+	
+	<logger name="com.github.dandelion.datatables.thymeleaf.processor.TdElProcessor">
+		<level value="error"/>
 	</logger>
 
 	<root>
