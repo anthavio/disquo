@@ -28,6 +28,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 				<bean id="LocaleChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 					<property name="paramName" value="locale"/>
 				</bean>
+				<bean class="com.anthavio.disquo.browser.AppKeysInterceptor"/>
 			</list>
 		</property>
 	</bean>

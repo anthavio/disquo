@@ -41,7 +41,63 @@ input, select {
 <body>
 <section layout:fragment="content">
 
-	<form action="#" th:action="@{/disqus/identity}" name="IdentityForm" id="IdentityForm" th:object="${USER_IDENTITY}" method="post">
+	<form action="#" th:action="@{/disqus/identity}" name="IdentityForm" id="IdentityForm" th:object="${identity}" method="post">
+	
+	<h1>Identity</h1>
+	
+	<p><a href="http://disqus.com/api/docs/auth/" target="_blank">Documentation</a></p>
+	
+	<strong>Application</strong>
+	
+	<fieldset id="fieldsApplication">
+		<dl>
+			<dt><label for="applicationToken">Application Token</label></dt>
+			<dd><input type="text" th:field="*{applicationToken}" readonly="readonly"/></dd>
+		</dl>
+		<button type="submit" name="type" value="application" th:if="${#strings.toString(identity.type) != 'application'}">Set Identity</button>
+	</fieldset>
+	
+	<strong>OAuth 2</strong>
+	
+	<fieldset id="fieldsOAuth">
+		<dl>
+			<dt><label for="user_id">User id</label></dt>
+			<dd><input type="text" th:field="*{oauth.user_id}" readonly="readonly"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="username">Username</label></dt>
+			<dd><input type="text" th:field="*{oauth.username}" readonly="readonly"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="expires_in">Expires</label></dt>
+			<dd><input type="text" th:field="*{oauth.expires_in}" readonly="readonly"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="token_type">Token type</label></dt>
+			<dd><input type="text" th:field="*{oauth.token_type}" readonly="readonly"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="state">State</label></dt>
+			<dd><input type="text" th:field="*{oauth.state}" readonly="readonly"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="scope">Scope</label></dt>
+			<dd><input type="text" th:field="*{oauth.scope}" readonly="readonly"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="access_token">Access Token</label></dt>
+			<dd><input type="text" th:field="*{oauth.access_token}" readonly="readonly"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="refresh_token">Refresh Token</label></dt>
+			<dd><input type="text" th:field="*{oauth.refresh_token}" readonly="readonly"/></dd>
+		</dl>
+		<button type="submit" name="type" value="oauth" th:if="${!#strings.isEmpty(identity.oauth.user_id) &amp;&amp; #strings.toString(identity.type) != 'oauth'}">Set Identity</button>
+		<a th:href="@{/disqus/oauth/request}">OAuth request</a>
+	</fieldset>
+	
+	<strong>Single sign-on</strong> (Pro or VIP account required)
+	
 	<fieldset id="fieldsSso">
 		<dl>
 			<dt><label for="userId">Id</label></dt>
@@ -55,55 +111,10 @@ input, select {
 			<dt><label for="email">Email</label></dt>
 			<dd><input type="text" th:field="*{sso.email}"/></dd>
 		</dl>
-		<button type="submit" name="type" value="sso" th:if="${#strings.toString(USER_IDENTITY.type) != 'sso'}">SSO Identity</button>
+		<button type="submit" name="type" value="sso" th:if="${#strings.toString(identity.type) != 'sso'}">Set Identity</button>
 	</fieldset>
 	
-	<fieldset id="fieldsOAuth">
-		<dl>
-			<dt><label for="user_id">User id</label></dt>
-			<dd><input type="text" th:field="*{oauth.user_id}" disabled="disabled"/></dd>
-		</dl>
-		<dl>
-			<dt><label for="username">Username</label></dt>
-			<dd><input type="text" th:field="*{oauth.username}" disabled="disabled"/></dd>
-		</dl>
-		<dl>
-			<dt><label for="expires_in">Expires</label></dt>
-			<dd><input type="text" th:field="*{oauth.expires_in}" disabled="disabled"/></dd>
-		</dl>
-		<dl>
-			<dt><label for="token_type">Token type</label></dt>
-			<dd><input type="text" th:field="*{oauth.token_type}" disabled="disabled"/></dd>
-		</dl>
-		<dl>
-			<dt><label for="state">State</label></dt>
-			<dd><input type="text" th:field="*{oauth.state}" disabled="disabled"/></dd>
-		</dl>
-		<dl>
-			<dt><label for="scope">Scope</label></dt>
-			<dd><input type="text" th:field="*{oauth.scope}" disabled="disabled"/></dd>
-		</dl>
-		<dl>
-			<dt><label for="access_token">Access Token</label></dt>
-			<dd><input type="text" th:field="*{oauth.access_token}" disabled="disabled"/></dd>
-		</dl>
-		<dl>
-			<dt><label for="refresh_token">Refresh Token</label></dt>
-			<dd><input type="text" th:field="*{oauth.refresh_token}" disabled="disabled"/></dd>
-		</dl>
-		<button type="submit" name="type" value="oauth" th:if="${!#strings.isEmpty(USER_IDENTITY.oauth.user_id) &amp;&amp; #strings.toString(USER_IDENTITY.type) != 'oauth'}">OAuth Identity</button>
-		<a th:href="@{/disqus/oauth/request}">OAuth request</a>
-	</fieldset>
-	
-	<fieldset id="fieldsApplication">
-		<dl>
-			<dt><label for="applicationToken">Application Token</label></dt>
-			<dd><input type="text" th:field="*{applicationToken}" disabled="disabled"/></dd>
-		</dl>
-		<button type="submit" name="type" value="application" th:if="${#strings.toString(USER_IDENTITY.type) != 'application'}">Application Identity</button>
-	</fieldset>
-		
-	<button type="submit" name="type" value="" th:if="${USER_IDENTITY.type != null}">Unset Identity</button>
+	<button type="submit" name="type" value="" th:if="${identity.type != null}">Unset Identity</button>
 	
 	</form>
 	

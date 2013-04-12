@@ -141,9 +141,9 @@ public class DisqusController extends ControllerBase {
 	public ModelAndView forums(@RequestParam(required = false) String cursor) {
 		ModelAndView modelAndView = new ModelAndView("disqus/forums");
 
-		UserListForumsMethod listForums = this.disqus.users().listForums();
+		UserListForumsMethod listForums = this.session.getDriver().users().listForums();
 
-		//listForums.setAccessToken(this.disqus.getApplicationKeys().getAccessToken());
+		//listForums.setAccessToken(this.disqus.getDriver().getApplicationKeys().getAccessToken());
 
 		if (StringUtils.isNotBlank(cursor)) {
 			listForums.setCursor(cursor);
@@ -158,30 +158,32 @@ public class DisqusController extends ControllerBase {
 			Model model) {
 		ModelAndView modelAndView = new ModelAndView("disqus/forum");
 
-		DisqusResponse<DisqusForum> details = this.disqus.forums().details(forum).addRelated(Related.author).execute();
+		DisqusResponse<DisqusForum> details = this.session.getDriver().forums().details(forum).addRelated(Related.author)
+				.execute();
 		modelAndView.addObject("forum", details.getResponse());
 
-		ForumListCategoriesMethod listCategories = this.disqus.forums().listCategories(forum);
+		ForumListCategoriesMethod listCategories = this.session.getDriver().forums().listCategories(forum);
 		listCategories.setLimit(100);
 		listCategories.setOrder(Order.desc);
 		DisqusResponse<List<DisqusCategory>> categories = listCategories.execute();
 		modelAndView.addObject("categories", categories);
 
 		try {
-			ImportListMethod mimports = this.disqus.imports().list(forum);
+			ImportListMethod mimports = this.session.getDriver().imports().list(forum);
 			if (StringUtils.isNotBlank(importsCursor)) {
 				mimports.setCursor(importsCursor);
 			}
 			DisqusResponse<List<DisqusImportDetails>> imports = mimports.execute();
 			modelAndView.addObject("imports", imports);
 
-			DisqusResponse<List<DisqusModerator>> moderators = this.disqus.forums().listModerators(forum).execute();
+			DisqusResponse<List<DisqusModerator>> moderators = this.session.getDriver().forums().listModerators(forum)
+					.execute();
 			modelAndView.addObject("moderators", moderators);
 
-			DisqusResponse<List<DisqusFilter>> blacklist = this.disqus.blacklists().list(forum).execute();
+			DisqusResponse<List<DisqusFilter>> blacklist = this.session.getDriver().blacklists().list(forum).execute();
 			modelAndView.addObject("blacklist", blacklist);
 
-			DisqusResponse<List<DisqusFilter>> whitelist = this.disqus.whitelists().list(forum).execute();
+			DisqusResponse<List<DisqusFilter>> whitelist = this.session.getDriver().whitelists().list(forum).execute();
 			modelAndView.addObject("whitelist", whitelist);
 
 		} catch (DisqusServerException dsx) {
@@ -205,7 +207,7 @@ public class DisqusController extends ControllerBase {
 	public ModelAndView userList(@PathVariable String forum, @RequestParam(required = false) String usersCursor,
 			Model model) {
 
-		ForumListUsersMethod musers = disqus.forums().listUsers(forum);
+		ForumListUsersMethod musers = session.getDriver().forums().listUsers(forum);
 		musers.setLimit(100);
 		if (StringUtils.isNotBlank(usersCursor)) {
 			musers.setCursor(usersCursor);
@@ -235,22 +237,23 @@ public class DisqusController extends ControllerBase {
 	public ModelAndView filterList(@PathVariable String forum, Model model) {
 		ModelAndView modelAndView = new ModelAndView("disqus/filters");
 
-		DisqusResponse<DisqusForum> details = this.disqus.forums().details(forum).addRelated(Related.author).execute();
+		DisqusResponse<DisqusForum> details = this.session.getDriver().forums().details(forum).addRelated(Related.author)
+				.execute();
 		modelAndView.addObject("forum", details.getResponse());
 
-		DisqusResponse<List<DisqusFilter>> blacklist = this.disqus.blacklists().list(forum).execute();
+		DisqusResponse<List<DisqusFilter>> blacklist = this.session.getDriver().blacklists().list(forum).execute();
 		modelAndView.addObject("blacklist", blacklist);
 
-		DisqusResponse<List<DisqusFilter>> whitelist = this.disqus.whitelists().list(forum).execute();
+		DisqusResponse<List<DisqusFilter>> whitelist = this.session.getDriver().whitelists().list(forum).execute();
 		modelAndView.addObject("whitelist", whitelist);
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "forum/{forum}/blacklist/remove/{filterId}", method = RequestMethod.GET)
 	public ModelAndView removeBlacklist(@PathVariable String forum, @PathVariable Long filterId, Model model) {
-		BlacklistRemove remove = disqus.blacklists().remove(forum);
+		BlacklistRemove remove = session.getDriver().blacklists().remove(forum);
 		//we don't know type of item, so download blacklist
-		List<DisqusFilter> blacklist = disqus.blacklists().list(forum).execute().getResponse();
+		List<DisqusFilter> blacklist = session.getDriver().blacklists().list(forum).execute().getResponse();
 		for (DisqusFilter filter : blacklist) {
 			if (filter.getId().longValue() == filterId.longValue()) {
 				if (filter.getType().equals("domain")) {
@@ -274,11 +277,11 @@ public class DisqusController extends ControllerBase {
 	@RequestMapping(value = "category/{categoryId}", method = RequestMethod.GET)
 	public ModelAndView categoryDetail(@PathVariable long categoryId, @RequestParam(required = false) String cursor) {
 		ModelAndView modelAndView = new ModelAndView("disqus/category");
-		DisqusResponse<DisqusCategory> response = this.disqus.category().details(categoryId).execute();
+		DisqusResponse<DisqusCategory> response = this.session.getDriver().category().details(categoryId).execute();
 		modelAndView.addObject("category", response.getResponse());
 
 		//CategoryListThreadsMethod threadsMethod = disqus.category().listThreads(categoryId);
-		ThreadListMethod threadsListMethod = this.disqus.threads().list();
+		ThreadListMethod threadsListMethod = this.session.getDriver().threads().list();
 		threadsListMethod.addCategory(categoryId);
 		threadsListMethod.addRelated(Related.author, Related.category);
 		threadsListMethod.addInclude(ThreadState.ALL);
@@ -305,13 +308,13 @@ public class DisqusController extends ControllerBase {
 			quser = QUser.build(user);
 		}
 
-		DisqusResponse<DisqusUser> details = this.disqus.users().details(quser).execute();
+		DisqusResponse<DisqusUser> details = this.session.getDriver().users().details(quser).execute();
 		modelAndView.addObject("user", details.getResponse());
 
-		DisqusResponse<List<DisqusForum>> ownedForums = this.disqus.users().listForums(quser).execute();
+		DisqusResponse<List<DisqusForum>> ownedForums = this.session.getDriver().users().listForums(quser).execute();
 		modelAndView.addObject("ownedForums", ownedForums);
 
-		UserListPostsMethod listPostsMethod = this.disqus.users().listPosts(quser);
+		UserListPostsMethod listPostsMethod = this.session.getDriver().users().listPosts(quser);
 		listPostsMethod.addRelated(Related.thread);
 		listPostsMethod.addInclude(PostState.ALL);
 		listPostsMethod.setLimit(100);
@@ -328,17 +331,17 @@ public class DisqusController extends ControllerBase {
 	public ModelAndView threadDetail(@PathVariable long threadId, @RequestParam(required = false) String cursor) {
 		ModelAndView modelAndView = new ModelAndView("disqus/thread");
 
-		ThreadDetailsMethod detailsMethod = this.disqus.threads().details(threadId);
+		ThreadDetailsMethod detailsMethod = this.session.getDriver().threads().details(threadId);
 		detailsMethod.addRelated(Related.forum, Related.author, Related.category);
 		DisqusResponse<DisqusThread> response = detailsMethod.execute();
 		DisqusThread thread = response.getResponse();
 		modelAndView.addObject("thread", thread);
 
-		List<DisqusCategory> categories = this.disqus.category().list(((DisqusForum) thread.getForum()).getId()).execute()
-				.getResponse();
+		List<DisqusCategory> categories = this.session.getDriver().category()
+				.list(((DisqusForum) thread.getForum()).getId()).execute().getResponse();
 		modelAndView.addObject("categories", categories);
 
-		ThreadListPostsMethod postsMethod = this.disqus.threads().listPosts(threadId);
+		ThreadListPostsMethod postsMethod = this.session.getDriver().threads().listPosts(threadId);
 		postsMethod.addInclude(PostState.unapproved, PostState.approved, PostState.spam, PostState.deleted,
 				PostState.flagged);
 		if (cursor != null) {
@@ -359,7 +362,7 @@ public class DisqusController extends ControllerBase {
 			return modelAndView;
 		}
 		//create update method
-		ThreadUpdateMethod method = this.disqus.threads().update(threadId);
+		ThreadUpdateMethod method = this.session.getDriver().threads().update(threadId);
 
 		method.setTitle(thread.getTitle());
 
@@ -391,25 +394,25 @@ public class DisqusController extends ControllerBase {
 
 	@RequestMapping(value = "thread/{threadId}", params = "close", method = RequestMethod.POST)
 	public ModelAndView threadClose(@PathVariable long threadId) {
-		ThreadCloseMethod method = this.disqus.threads().close(threadId);
+		ThreadCloseMethod method = this.session.getDriver().threads().close(threadId);
 		return threadExecute(threadId, method);
 	}
 
 	@RequestMapping(value = "thread/{threadId}", params = "open", method = RequestMethod.POST)
 	public ModelAndView threadOpen(@PathVariable long threadId) {
-		ThreadOpenMethod method = this.disqus.threads().open(threadId);
+		ThreadOpenMethod method = this.session.getDriver().threads().open(threadId);
 		return threadExecute(threadId, method);
 	}
 
 	@RequestMapping(value = "thread/{threadId}", params = "remove", method = RequestMethod.POST)
 	public ModelAndView threadDelete(@PathVariable long threadId) {
-		ThreadRemoveMethod method = this.disqus.threads().remove(threadId);
+		ThreadRemoveMethod method = this.session.getDriver().threads().remove(threadId);
 		return threadExecute(threadId, method);
 	}
 
 	@RequestMapping(value = "thread/{threadId}", params = "restore", method = RequestMethod.POST)
 	public ModelAndView threadRestore(@PathVariable long threadId) {
-		ThreadRestoreMethod method = this.disqus.threads().restore(threadId);
+		ThreadRestoreMethod method = this.session.getDriver().threads().restore(threadId);
 		return threadExecute(threadId, method);
 	}
 
@@ -429,14 +432,14 @@ public class DisqusController extends ControllerBase {
 	}
 
 	private ModelAndView threadVote(long threadId, Vote vote) {
-		ThreadVoteMethod method = this.disqus.threads().vote(threadId, vote);
+		ThreadVoteMethod method = this.session.getDriver().threads().vote(threadId, vote);
 		return threadExecute(threadId, method);
 	}
 
 	@RequestMapping(value = "thread/{threadId}", params = "subscribe", method = RequestMethod.POST)
 	public ModelAndView threadSubscribe(@PathVariable long threadId) {
 		String email = "";
-		ThreadSubscribeMethod method = this.disqus.threads().subscribe(threadId, email);
+		ThreadSubscribeMethod method = this.session.getDriver().threads().subscribe(threadId, email);
 		method.execute();
 		return new ModelAndView("redirect:/disqus/thread/" + threadId);
 	}
@@ -444,7 +447,7 @@ public class DisqusController extends ControllerBase {
 	@RequestMapping(value = "thread/{threadId}", params = "unsubscribe", method = RequestMethod.POST)
 	public ModelAndView threadUnsubscribe(@PathVariable long threadId) {
 		String email = "";
-		ThreadUnsubscribeMethod method = this.disqus.threads().unsubscribe(threadId, email);
+		ThreadUnsubscribeMethod method = this.session.getDriver().threads().unsubscribe(threadId, email);
 		return threadExecute(threadId, method);
 	}
 
@@ -460,8 +463,8 @@ public class DisqusController extends ControllerBase {
 	@RequestMapping(value = "post/{postId}", method = RequestMethod.GET)
 	public ModelAndView postDetail(@PathVariable long postId) {
 		ModelAndView modelAndView = new ModelAndView("disqus/post");
-		DisqusResponse<DisqusPost> response = this.disqus.posts().details(postId).addRelated(Related.forum, Related.thread)
-				.execute();
+		DisqusResponse<DisqusPost> response = this.session.getDriver().posts().details(postId)
+				.addRelated(Related.forum, Related.thread).execute();
 		modelAndView.addObject("post", response.getResponse());
 
 		return modelAndView;
@@ -475,37 +478,37 @@ public class DisqusController extends ControllerBase {
 			return modelAndView;
 		}
 
-		PostUpdateMethod method = this.disqus.posts().update(postId, post.getRaw_message());
+		PostUpdateMethod method = this.session.getDriver().posts().update(postId, post.getRaw_message());
 		return postExecute(postId, method);
 	}
 
 	@RequestMapping(value = "post/{postId}", params = "remove", method = RequestMethod.POST)
 	public ModelAndView postDelete(@PathVariable long postId) {
-		PostRemoveMethod method = this.disqus.posts().remove(postId);
+		PostRemoveMethod method = this.session.getDriver().posts().remove(postId);
 		return postExecute(postId, method);
 	}
 
 	@RequestMapping(value = "post/{postId}", params = "restore", method = RequestMethod.POST)
 	public ModelAndView postRestore(@PathVariable long postId) {
-		PostRestoreMethod method = this.disqus.posts().restore(postId);
+		PostRestoreMethod method = this.session.getDriver().posts().restore(postId);
 		return postExecute(postId, method);
 	}
 
 	@RequestMapping(value = "post/{postId}", params = "approve", method = RequestMethod.POST)
 	public ModelAndView postApprove(@PathVariable long postId) {
-		PostApproveMethod method = this.disqus.posts().approve(postId);
+		PostApproveMethod method = this.session.getDriver().posts().approve(postId);
 		return postExecute(postId, method);
 	}
 
 	@RequestMapping(value = "post/{postId}", params = "report", method = RequestMethod.POST)
 	public ModelAndView postReport(@PathVariable long postId) {
-		PostReportMethod method = this.disqus.posts().report(postId);
+		PostReportMethod method = this.session.getDriver().posts().report(postId);
 		return postExecute(postId, method);
 	}
 
 	@RequestMapping(value = "post/{postId}", params = "spam", method = RequestMethod.POST)
 	public ModelAndView postSpam(@PathVariable long postId) {
-		PostSpamMethod method = this.disqus.posts().spam(postId);
+		PostSpamMethod method = this.session.getDriver().posts().spam(postId);
 		return postExecute(postId, method);
 	}
 
@@ -525,19 +528,19 @@ public class DisqusController extends ControllerBase {
 	}
 
 	private ModelAndView postVote(long postId, Vote vote) {
-		PostVoteMethod method = this.disqus.posts().vote(postId, vote);
+		PostVoteMethod method = this.session.getDriver().posts().vote(postId, vote);
 		return postExecute(postId, method);
 	}
 
 	@RequestMapping(value = "post/{postId}", params = "highlight", method = RequestMethod.POST)
 	public ModelAndView postHighlight(@PathVariable long postId) {
-		HighlightMethod method = this.disqus.posts().highlight(postId);
+		HighlightMethod method = this.session.getDriver().posts().highlight(postId);
 		return postExecute(postId, method);
 	}
 
 	@RequestMapping(value = "post/{postId}", params = "unhighlight", method = RequestMethod.POST)
 	public ModelAndView postUnhighlight(@PathVariable long postId) {
-		PostUnhighlightMethod method = this.disqus.posts().unhighlight(postId);
+		PostUnhighlightMethod method = this.session.getDriver().posts().unhighlight(postId);
 		return postExecute(postId, method);
 	}
 
@@ -568,7 +571,8 @@ public class DisqusController extends ControllerBase {
 		//now use session criteria value
 		if (StringUtils.isNotEmpty(criteria.getForum())) {
 			try {
-				List<DisqusCategory> categories = this.disqus.category().list(criteria.getForum()).execute().getResponse();
+				List<DisqusCategory> categories = this.session.getDriver().category().list(criteria.getForum()).execute()
+						.getResponse();
 				modelAndView.addObject("categories", categories);
 			} catch (DisqusServerException dsx) {
 				binding
@@ -577,7 +581,7 @@ public class DisqusController extends ControllerBase {
 			}
 		}
 
-		ThreadListMethod listMethod = this.disqus.threads().list();
+		ThreadListMethod listMethod = this.session.getDriver().threads().list();
 		listMethod.addRelated(Related.author, Related.category);
 		listMethod.setLimit(100);
 		listMethod.setOrder(Order.desc);
@@ -610,7 +614,7 @@ public class DisqusController extends ControllerBase {
 		//if no criteria are set - use special :moderated
 		if (!criteria.isNotEmpty()) {
 			listMethod.addForum(":moderated");
-			listMethod.setAccessToken(this.disqus.getApplicationKeys().getAccessToken());
+			listMethod.setAccessToken(this.session.getDriver().getApplicationKeys().getAccessToken());
 		}
 
 		try {
@@ -652,7 +656,7 @@ public class DisqusController extends ControllerBase {
 		}
 
 		try {
-			List<DisqusCategory> categories = this.disqus.category().list(criteria.getForum()).execute().getResponse();
+			List<DisqusCategory> categories = this.disqus.getDriver().category().list(criteria.getForum()).execute().getResponse();
 			modelAndView.addObject("categories", categories);
 		} catch (DisqusServerException dsx) {
 			binding.addError(new FieldError(binding.getObjectName(), "forum", "This forum does not exist"));
@@ -678,7 +682,7 @@ public class DisqusController extends ControllerBase {
 		//TODO perform search
 
 		try {
-			List<DisqusCategory> categories = this.disqus.category().list(criteria.getForum()).execute().getResponse();
+			List<DisqusCategory> categories = this.disqus.getDriver().category().list(criteria.getForum()).execute().getResponse();
 			modelAndView.addObject("categories", categories);
 		} catch (DisqusServerException dsx) {
 			binding.addError(new FieldError(binding.getObjectName(), "forum", "This forum does not exist"));

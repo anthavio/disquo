@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="10 seconds">
+
+	<appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>logs/disquo-browser.log</File>
+		<Append>true</Append>
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
+			<pattern>%d|%-10t|%-5p|%c{40}: %m%n</pattern>
+		</encoder>
+				
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/disquo-browser-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		
+	</appender>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
+			<pattern>%d|%-10t|%-5p|%c{40}: %m%n</pattern>
+		</encoder>
+
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>warn</level> 
+		</filter>
+	</appender>
+
+	<logger name="org.eclipse.jetty">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.mortbay.jetty">
+		<level value="info" />
+	</logger>
+
+	<logger name="net.sf.dozer">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.apache.commons.digester">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.apache.commons.beanutils">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.apache.commons.httpclient">
+		<level value="info" />
+	</logger>
+
+	<logger name="httpclient.wire">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.jms">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.jdbc.core.JdbcTemplate">
+		<level value="debug" />
+	</logger>
+
+	<logger name="org.springframework.security">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.hibernate">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.hibernate.SQL">
+		<level value="debug" /> <!-- debug -->
+	</logger>
+
+	<logger name="org.hibernate.type">
+		<level value="info" /><!-- trace -->
+	</logger>
+
+	<logger name="com.anthavio">
+		<level value="debug" />
+	</logger>
+	
+	<logger name="com.github.dandelion.datatables.thymeleaf.processor.TdElProcessor">
+		<level value="error"/>
+	</logger>
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="LOGFILE" />
+	</root>
+
+</configuration>

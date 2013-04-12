@@ -94,7 +94,7 @@ public abstract class BaseRestEndpoint {
 				// sso user
 				SsoAuthData authData;
 				try {
-					authData = SsoAuthenticator.decode_remote_auth(remote_auth, application.getKeys().getSecretKey());
+					authData = SsoAuthenticator.decode_remote_auth(remote_auth, application.getKeys().getApiSecret());
 				} catch (Exception x) {
 					return null; //skip the cheater
 				}

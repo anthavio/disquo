@@ -125,7 +125,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 		if (ssoAuthData == null) {
 			throw new NullArgumentException("ssoAuthData");
 		}
-		String remote_auth = SsoAuthenticator.remote_auth_s3(ssoAuthData, this.disqus.getApplicationKeys().getSecretKey());
+		String remote_auth = SsoAuthenticator.remote_auth_s3(ssoAuthData, this.disqus.getApplicationKeys().getApiSecret());
 		this.parameters.add(new Parameter("remote_auth", remote_auth));
 		return getB();
 	}

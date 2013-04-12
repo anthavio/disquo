@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Properties;
 
 import org.apache.commons.lang.NullArgumentException;
@@ -17,13 +18,15 @@ import com.anthavio.httl.Cutils;
  * @author martin.vanek
  *
  */
-public class DisqusApplicationKeys {
+public class DisqusApplicationKeys implements Serializable {
 
-	private final String apiKey;
+	private static final long serialVersionUID = 1L;
 
-	private final String secretKey;
+	private String apiKey;
 
-	private final String accessToken;
+	private String apiSecret;
+
+	private String accessToken;
 
 	public static DisqusApplicationKeys load(String resource) {
 		return load(resource, "api_key", "api_secret", "access_token");
@@ -82,6 +85,10 @@ public class DisqusApplicationKeys {
 		return new DisqusApplicationKeys(publicKey, secretKey, accessToken);
 	}
 
+	public DisqusApplicationKeys() {
+		//default - setters to setup keys
+	}
+
 	/**
 	 * sets accessToken to null to disallow application authenticated calls (end user token must be provided)
 	 */
@@ -98,7 +105,7 @@ public class DisqusApplicationKeys {
 		if (StringUtils.isBlank(secretKey)) {
 			throw new NullArgumentException(secretKey);
 		}
-		this.secretKey = secretKey;
+		this.apiSecret = secretKey;
 
 		//allow null token
 		this.accessToken = accessToken;
@@ -108,12 +115,30 @@ public class DisqusApplicationKeys {
 		return this.apiKey;
 	}
 
-	public String getSecretKey() {
-		return this.secretKey;
+	public String getApiSecret() {
+		return this.apiSecret;
 	}
 
 	public String getAccessToken() {
 		return this.accessToken;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public void setApiSecret(String apiSecret) {
+		this.apiSecret = apiSecret;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	@Override
+	public String toString() {
+		return "DisqusApplicationKeys [apiKey=" + apiKey + ", apiSecret=" + apiSecret + ", accessToken=" + accessToken
+				+ "]";
 	}
 
 }

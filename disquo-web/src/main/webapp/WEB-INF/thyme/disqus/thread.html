@@ -299,8 +299,8 @@ $(document).ready(function() {
 		<script th:inline="javascript" th:if="${USER_IDENTITY.sso.userId != null}">
 		/*<![CDATA[*/
 			var disqus_config = function () {
-				this.page.remote_auth_s3 = /*[[${beans.identityController.getSsoRemoteAuth(USER_IDENTITY.sso)}]]*/;
-				this.page.api_key = /*[[${beans.identityController.getApiKey()}]]*/;
+				this.page.remote_auth_s3 = /*[[${beans.disqusSessionData.getSsoRemoteAuth(USER_IDENTITY.sso)}]]*/;
+				this.page.api_key = /*[[${beans.disqusSessionData.getApiKey()}]]*/;
 			}
 		/*]]>*/
 		</script>

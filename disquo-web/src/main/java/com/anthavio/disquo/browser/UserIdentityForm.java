@@ -1,5 +1,7 @@
 package com.anthavio.disquo.browser;
 
+import java.io.Serializable;
+
 import com.anthavio.disquo.api.auth.SsoAuthData;
 import com.anthavio.disquo.api.response.DisqusUser;
 import com.anthavio.disquo.api.response.JsonStringBuilder;
@@ -10,7 +12,9 @@ import com.anthavio.disquo.api.response.TokenResponse;
  * @author martin.vanek
  *
  */
-public class UserIdentity {
+public class UserIdentityForm implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static enum Type {
 		sso, oauth, application;

@@ -15,7 +15,7 @@ public class SsoAuthData {
 
 	private String email;
 
-	protected SsoAuthData() {
+	public SsoAuthData() {
 		//
 	}
 

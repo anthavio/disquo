@@ -230,6 +230,7 @@
 		<plugins>
 			
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<attachClasses>true</attachClasses>
@@ -237,6 +238,15 @@
 			</plugin>
 			
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
@@ -253,6 +263,12 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+		<plugin>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-maven-plugin</artifactId>
+			<version>1.7.4</version>
+		</plugin>
 			
 		</plugins>
 	</build>

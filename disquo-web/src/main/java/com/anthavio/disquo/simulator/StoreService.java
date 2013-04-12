@@ -127,7 +127,7 @@ public class StoreService {
 	public DisqusApplication getApplicationBySecretKey(String secret_key) {
 		Collection<DisqusApplication> values = applications.values();
 		for (DisqusApplication app : values) {
-			if (app.getKeys().getSecretKey().equals(secret_key)) {
+			if (app.getKeys().getApiSecret().equals(secret_key)) {
 				return app;
 			}
 		}

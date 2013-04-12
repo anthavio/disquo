@@ -1,11 +1,15 @@
 package com.anthavio.disquo.browser;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author martin.vanek
  *
  */
-public class IndexSearchCriteria {
+public class IndexSearchCriteria implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String userName;
 

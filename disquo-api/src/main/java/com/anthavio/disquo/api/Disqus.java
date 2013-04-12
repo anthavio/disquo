@@ -47,10 +47,10 @@ import com.anthavio.httl.GetRequest;
 import com.anthavio.httl.HttpClient4Sender;
 import com.anthavio.httl.HttpHeaderUtil;
 import com.anthavio.httl.HttpSender;
+import com.anthavio.httl.HttpSender.Multival;
 import com.anthavio.httl.PostRequest;
 import com.anthavio.httl.SenderRequest;
 import com.anthavio.httl.SenderResponse;
-import com.anthavio.httl.HttpSender.Multival;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -127,6 +127,14 @@ public class Disqus {
 		this.mapper = initJackson();
 	}
 
+	public void close() {
+		try {
+			this.sender.close();
+		} catch (Exception x) {
+			//ignore
+		}
+	}
+
 	public HttpSender getSender() {
 		return this.sender;
 	}
@@ -183,7 +191,7 @@ public class Disqus {
 		this.defaultToken = token;
 		try {
 			//try if it is remote_token
-			SsoAuthenticator.decode_remote_auth(token, this.keys.getSecretKey());
+			SsoAuthenticator.decode_remote_auth(token, this.keys.getApiSecret());
 			this.defaultTokenIsRemoteToken = true;
 		} catch (IllegalArgumentException iax) {
 			this.defaultTokenIsRemoteToken = false;

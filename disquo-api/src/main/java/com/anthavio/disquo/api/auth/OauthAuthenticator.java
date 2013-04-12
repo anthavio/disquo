@@ -50,7 +50,7 @@ public class OauthAuthenticator {
 		}
 		this.disqus = disqus;
 		this.publicKey = disqus.getApplicationKeys().getApiKey();
-		this.secretKey = disqus.getApplicationKeys().getSecretKey();
+		this.secretKey = disqus.getApplicationKeys().getApiSecret();
 	}
 
 	public String getOauthRequestUrl(String callbackUrl) {

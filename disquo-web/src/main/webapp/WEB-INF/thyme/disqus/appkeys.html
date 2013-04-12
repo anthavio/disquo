@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="disqus/layout">
+<head>
+<title>Application Keys</title>
+</head>
+<body>
+<section layout:fragment="content">
+
+	Disuqs application keys can be obtained <a href="http://disqus.com/api/applications/" target="_blank">here</a>
+
+	<form action="#" th:action="@{/disqus/appkeys}" name="AppKeysForm" id="AppKeysForm" th:object="${AppKeysForm}" method="post">
+	<fieldset id="fieldsApplication">
+		<dl>
+			<dt><label for="apiKey">API Key</label></dt>
+			<dd><input type="text" th:field="*{apiKey}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apiSecret">API Secret</label></dt>
+			<dd><input type="text" th:field="*{apiSecret}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="accessToken">Access Token</label></dt>
+			<dd><input type="text" th:field="*{accessToken}" /></dd>
+		</dl>
+		<button type="submit" name="type" value="gogogogogo">Set Keys</button>
+	</fieldset>
+	</form>
+	
+</section>
+</body>
+</html>

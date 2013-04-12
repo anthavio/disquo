@@ -1,6 +1,5 @@
 package com.anthavio.disquo.browser;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,36 +11,19 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.anthavio.disquo.api.ArgumentConfig.PostState;
 import com.anthavio.disquo.api.ArgumentConfig.ThreadState;
-import com.anthavio.disquo.api.Disqus;
-import com.anthavio.disquo.api.auth.SsoAuthData;
-import com.anthavio.disquo.browser.UserIdentity.Type;
 
 /**
  * 
  * @author martin.vanek
  *
  */
-@SessionAttributes({ DisqusController.THREAD_CRITERIA, DisqusController.POST_CRITERIA, DisqusController.INDEX_CRITERIA,
-		IdentityController.USER_IDENTITY })
+@SessionAttributes({ DisqusController.THREAD_CRITERIA, DisqusController.POST_CRITERIA, DisqusController.INDEX_CRITERIA })
 public class ControllerBase {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	protected Disqus disqus;
-
-	@ModelAttribute(IdentityController.USER_IDENTITY)
-	public UserIdentity initUserIdentity() throws MalformedURLException {
-		//OAuth callback URL
-
-		UserIdentity identity = new UserIdentity();
-		SsoAuthData sso = new SsoAuthData("654321_id_123456", "John Doe", "example@example.com");
-		identity.setSso(sso);
-		String accessToken = disqus.getApplicationKeys().getAccessToken();
-		identity.setApplicationToken(accessToken);
-		identity.setType(Type.sso);
-		return identity;
-	}
+	protected DisquoSessionData session;
 
 	@ModelAttribute(DisqusController.POST_CRITERIA)
 	public PostSearchCriteria initPostSearchCriteria() {
