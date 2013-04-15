@@ -21,13 +21,13 @@ import org.apache.http.message.BasicNameValuePair;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusServerException;
 import com.anthavio.disquo.api.response.TokenResponse;
-import com.anthavio.httl.Cutils;
 import com.anthavio.httl.GetRequest;
-import com.anthavio.httl.HttpHeaderUtil;
 import com.anthavio.httl.PostRequest;
 import com.anthavio.httl.SenderResponse;
 import com.anthavio.httl.HttpSender.Multival;
 import com.anthavio.httl.inout.ResponseBodyExtractor.ExtractedBodyResponse;
+import com.anthavio.httl.util.Cutils;
+import com.anthavio.httl.util.HttpHeaderUtil;
 
 /**
  * 

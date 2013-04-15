@@ -26,7 +26,7 @@ import com.anthavio.disquo.api.response.DisqusUser;
 import com.anthavio.disquo.api.response.TokenResponse;
 import com.anthavio.disquo.api.users.UserDetailsMethod;
 import com.anthavio.disquo.browser.UserIdentityForm.Type;
-import com.anthavio.httl.Cutils;
+import com.anthavio.httl.util.Cutils;
 
 /**
  * 
