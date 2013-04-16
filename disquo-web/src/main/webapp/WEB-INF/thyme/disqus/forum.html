@@ -254,7 +254,7 @@ $(document).ready(function() {
 					<td><a target="_blank" href="http://import.disqus.com/" th:href="${'http://import.disqus.com/group/' + forum.id + '/' + item.id + '/'}" th:text="${item.id}">111222333</a></td>
 					<td th:text="${item.platform}">Platform</td>
 					<td th:text="${#dates.format(item.startedAt, 'yyyy-MM-dd HH:mm:ss')}">2001-01-01 23:59:59</td>
-					<td th:text="${#dates.format(item.finishedAt, 'yyyy-MM-dd HH:mm:ss')}">2001-01-01 23:59:59</td>
+					<td><span th:if="${item.finishedAt != null}" th:text="${#dates.format(item.finishedAt, 'yyyy-MM-dd HH:mm:ss')}">2001-01-01 23:59:59</span></td>
 					<td th:text="${item.chunksDone}">1</td>
 					<td th:text="${item.statusName}">Status</td>
 					<td th:text="${item.statusCode}">100</td>
