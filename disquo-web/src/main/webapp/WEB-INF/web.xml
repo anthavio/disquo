@@ -94,7 +94,17 @@
 	<servlet-mapping>
 		<servlet-name>SpringMvcServlet</servlet-name>
 		<url-pattern>/disqus/*</url-pattern>
-		<url-pattern>/article/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>IltschiRestServlet</servlet-name>
+		<servlet-class>com.anthavio.rest.IltschiRestServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>IltschiRestServlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 	<session-config>

@@ -26,7 +26,6 @@ import com.anthavio.disquo.api.response.DisqusUser;
 import com.anthavio.disquo.api.response.TokenResponse;
 import com.anthavio.disquo.api.users.UserDetailsMethod;
 import com.anthavio.disquo.browser.UserIdentityForm.Type;
-import com.anthavio.httl.util.Cutils;
 
 /**
  * 
@@ -62,7 +61,7 @@ public class SettingsController extends ControllerBase {
 			return modelAndView;
 		}
 
-		if (Cutils.isBlank(appKeys.getApiKey())) {
+		if (StringUtils.isBlank(appKeys.getApiKey())) {
 			return modelAndView; //empty key is not an answer!
 		}
 

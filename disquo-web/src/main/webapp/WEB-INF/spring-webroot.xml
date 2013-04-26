@@ -15,10 +15,11 @@
 
 	<ctx:property-placeholder location="classpath:browser.properties" file-encoding="utf-8" />
 -->	
+<!--
 	<bean id="Dozer" class="org.dozer.DozerBeanMapper"/>
 	
 	<bean id="Jackson" class="com.fasterxml.jackson.databind.ObjectMapper" />
-	<!--
+	
 	<bean id="DisqusKeys" class="com.anthavio.disquo.api.DisqusApplicationKeys">
 		<constructor-arg name="apiKey" value="${disqus_api_key}"/>
 		<constructor-arg name="secretKey" value="${disqus_api_secret}"/>

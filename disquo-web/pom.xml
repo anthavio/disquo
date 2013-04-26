@@ -27,38 +27,7 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
-			<version>5.3.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<!-- jax-rs -->
-		
-		<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-spring</artifactId>
-			<version>1.15</version>
-		</dependency>
-		
-		<dependency>
-		  <groupId>com.fasterxml.jackson.jaxrs</groupId>
-		  <artifactId>jackson-jaxrs-json-provider</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>4.3.1.Final</version>
-		</dependency>
-		
+	
 		<dependency>
 			<groupId>com.anthavio</groupId>
 			<artifactId>anthavio-spring</artifactId>
@@ -66,6 +35,12 @@
 		</dependency>
 		
 		<!-- web-ui -->
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.1.Final</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -86,7 +61,7 @@
 		<dependency>
 			<groupId>nz.net.ultraq.web.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
-			<version>1.0.5</version>
+			<version>1.0.6</version>
 		</dependency>
 
 		<!-- dandelion datatables -->
@@ -134,7 +109,7 @@
 		</dependency>
 		
 		<!-- data access -->
-		
+		<!--
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -163,7 +138,7 @@
 			<artifactId>guava</artifactId>
 			<version>13.0.1</version>		
 		</dependency>
-
+-->
 <!--
 		oauth library
 		<dependency>
