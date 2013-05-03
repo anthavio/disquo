@@ -42,7 +42,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 	
 	<bean id="SessionLocaleResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
 	
-	<!-- Rozpitvane <mvc:annotation-driven> -->
+	<!-- Buthered <mvc:annotation-driven>
 	<bean id="AnnotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="webBindingInitializer">
 			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
@@ -51,15 +51,44 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 			</bean>
 		</property>
 		<property name="messageConverters">
-			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+			<list>
+				<bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+					<constructor-arg  ref="OxmMarshaller"/>
+					<property name="supportedMediaTypes" value="application/xml"/>
+				</bean>
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+					<property name="prettyPrint" value="true"/>
+					<property name="supportedMediaTypes" value="application/json"/>
+				</bean>
+			</list>
 		</property>
-		<!--
+		-
 		<property name="customArgumentResolver">
 			<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
 		</property>
-		-->
+		-
 		<property name="cacheSeconds" value="0" />
 	</bean>
+	-->
+	
+	<mvc:annotation-driven validator="ValidatorFactory" conversion-service="FormattingConversionService">
+		<mvc:message-converters>
+			<!--
+			<bean class="com.google.protobuf.spring.http.ProtobufHttpMessageConverter"/>
+			-->
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="prettyPrint" value="true"/>
+			</bean>
+			<bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+				<constructor-arg  ref="OxmMarshaller"/>
+			</bean>
+		</mvc:message-converters>
+		<!--
+		<mvc:argument-resolvers>
+			<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+		</mvc:argument-resolvers>
+		-->
+	</mvc:annotation-driven>
 	
 	<bean id="FormattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
@@ -73,6 +102,19 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 	<bean id="ValidatorFactory" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="validationMessageSource" ref="messageSource"/>
 	</bean>
+	
+	<bean id="OxmMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="supportJaxbElementClass" value="true"/>
+		<property name="classesToBeBound">
+			<list>
+				<value>com.anthavio.disquo.api.response.DisqusForum</value>
+				<value>com.anthavio.disquo.api.response.DisqusThread</value>
+				<value>com.anthavio.disquo.api.response.DisqusPost</value>
+				<value>com.anthavio.disquo.api.response.DisqusUser</value>
+				<value>com.anthavio.disquo.api.response.DisqusCategory</value>
+			</list>
+		</property>
+	</bean>
 
 	<!-- ViewResolvers -->
 
@@ -81,20 +123,22 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		<property name="mediaTypes">
 			<map>
 				<entry key="html" value="text/html"/>
-				<entry key="json" value="application/json"/>
+				<!--
 				<entry key="xml" value="application/xml"/>
+				<entry key="json" value="application/json"/>
+				-->
 			</map>
 		</property>
+		<!--
 		<property name="defaultViews">
 			<list>
-				<bean name="JsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
-				<!--
 				<bean name="JaxbView" class="org.springframework.web.servlet.view.xml.MarshallingView">
-					<property name="marshaller" ref="ExampleMessagesBinder" />
+					<property name="marshaller" ref="OxmMarshaller" />
 				</bean>
-				-->
+				<bean name="JsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
 			</list>
 		</property>
+		-->
 		<property name="viewResolvers">
 			<list>
 				<ref local="ThymeleafViewResolver"/>

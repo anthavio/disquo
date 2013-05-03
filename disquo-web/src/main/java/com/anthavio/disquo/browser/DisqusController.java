@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.anthavio.disquo.api.ArgumentConfig.Order;
@@ -153,14 +157,26 @@ public class DisqusController extends ControllerBase {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "forum/{forum}", method = RequestMethod.GET)
-	public ModelAndView forumDetail(@PathVariable String forum, @RequestParam(required = false) String importsCursor,
+	@RequestMapping(value = "forum/{forum}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	DisqusForum forumJson(@PathVariable String forum) {
+		return this.session.getDriver().forums().details(forum).addRelated(Related.author).execute().getResponse();
+	}
+
+	@RequestMapping(value = "forum/{forum}", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	JAXBElement<DisqusForum> forumXml(@PathVariable String forum) {
+		DisqusForum forumx = forumJson(forum);
+		return new JAXBElement<DisqusForum>(new QName("forum"), DisqusForum.class, forumx);
+	}
+
+	@RequestMapping(value = "forum/{forum}", method = RequestMethod.GET, headers = "Accept=text/html")
+	public ModelAndView forumView(@PathVariable String forum, @RequestParam(required = false) String importsCursor,
 			Model model) {
 		ModelAndView modelAndView = new ModelAndView("disqus/forum");
 
-		DisqusResponse<DisqusForum> details = this.session.getDriver().forums().details(forum).addRelated(Related.author)
-				.execute();
-		modelAndView.addObject("forum", details.getResponse());
+		DisqusForum forumx = forumJson(forum);
+		modelAndView.addObject("forum", forumx);
 
 		ForumListCategoriesMethod listCategories = this.session.getDriver().forums().listCategories(forum);
 		listCategories.setLimit(100);
@@ -215,7 +231,7 @@ public class DisqusController extends ControllerBase {
 		DisqusResponse<List<DisqusUser>> users = musers.execute();
 		model.addAttribute("users", users);
 
-		return forumDetail(forum, null, model);
+		return forumView(forum, null, model);
 
 	}
 
@@ -327,14 +343,35 @@ public class DisqusController extends ControllerBase {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "thread/{threadId}", method = RequestMethod.GET)
-	public ModelAndView threadDetail(@PathVariable long threadId, @RequestParam(required = false) String cursor) {
-		ModelAndView modelAndView = new ModelAndView("disqus/thread");
-
+	/**
+	 * JSON representation is piece of cake, requires just MappingJackson2HttpMessageConverter to be registered
+	 */
+	@RequestMapping(value = "thread/{threadId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	DisqusThread threadJson(@PathVariable long threadId) {
 		ThreadDetailsMethod detailsMethod = this.session.getDriver().threads().details(threadId);
 		detailsMethod.addRelated(Related.forum, Related.author, Related.category);
 		DisqusResponse<DisqusThread> response = detailsMethod.execute();
-		DisqusThread thread = response.getResponse();
+		return response.getResponse();
+	}
+
+	/**
+	 * XML representation requires MarshallingHttpMessageConverter to be reistered
+	 * Because Disqus response classes do not have @XmlRootElement annotations, we need to wrap them into JAXBElement<T>
+	 * This also requires Jaxb2Marshaller to have supportJaxbElementClass = true
+	 */
+	@RequestMapping(value = "thread/{threadId}", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	JAXBElement<DisqusThread> threadJaxb(@PathVariable long threadId) {
+		DisqusThread thread = threadJson(threadId);
+		return new JAXBElement<DisqusThread>(new QName("thread"), DisqusThread.class, thread);
+	}
+
+	@RequestMapping(value = "thread/{threadId}", method = RequestMethod.GET, headers = "Accept=text/html")
+	public ModelAndView threadView(@PathVariable long threadId, @RequestParam(required = false) String cursor) {
+		ModelAndView modelAndView = new ModelAndView("disqus/thread");
+
+		DisqusThread thread = threadJson(threadId);
 		modelAndView.addObject("thread", thread);
 
 		List<DisqusCategory> categories = this.session.getDriver().category()
@@ -458,14 +495,34 @@ public class DisqusController extends ControllerBase {
 	}
 
 	/**
-	 * Post Detail
+	 * Post JSON
 	 */
-	@RequestMapping(value = "post/{postId}", method = RequestMethod.GET)
-	public ModelAndView postDetail(@PathVariable long postId) {
-		ModelAndView modelAndView = new ModelAndView("disqus/post");
+	@RequestMapping(value = "post/{postId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody
+	DisqusPost postJson(@PathVariable long postId) {
 		DisqusResponse<DisqusPost> response = this.session.getDriver().posts().details(postId)
 				.addRelated(Related.forum, Related.thread).execute();
-		modelAndView.addObject("post", response.getResponse());
+		return response.getResponse();
+	}
+
+	/**
+	 * Post XML
+	 */
+	@RequestMapping(value = "post/{postId}", method = RequestMethod.GET, headers = "Accept=application/xml")
+	public @ResponseBody
+	JAXBElement<DisqusPost> postXml(@PathVariable long postId) {
+		DisqusPost post = postJson(postId);
+		return new JAXBElement<DisqusPost>(new QName("post"), DisqusPost.class, post);
+	}
+
+	/**
+	 * Post Detail
+	 */
+	@RequestMapping(value = "post/{postId}", method = RequestMethod.GET, headers = "Accept=text/html")
+	public ModelAndView postView(@PathVariable long postId) {
+		ModelAndView modelAndView = new ModelAndView("disqus/post");
+		DisqusPost post = postJson(postId);
+		modelAndView.addObject("post", post);
 
 		return modelAndView;
 	}

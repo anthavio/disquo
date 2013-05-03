@@ -296,11 +296,11 @@ $(document).ready(function() {
         })();
 		/*]]>*/
 		</script>
-		<script th:inline="javascript" th:if="${USER_IDENTITY.sso.userId != null}">
+		<script th:inline="javascript" th:if="${beans.SessionData?.identity?.sso != null}">
 		/*<![CDATA[*/
 			var disqus_config = function () {
-				this.page.remote_auth_s3 = /*[[${beans.disqusSessionData.getSsoRemoteAuth(USER_IDENTITY.sso)}]]*/;
-				this.page.api_key = /*[[${beans.disqusSessionData.getApiKey()}]]*/;
+				this.page.remote_auth_s3 = /*[[${beans.SessionData.getSsoRemoteAuth()}]]*/;
+				this.page.api_key = /*[[${beans.SessionData.getApiKey()}]]*/;
 			}
 		/*]]>*/
 		</script>

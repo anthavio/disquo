@@ -18,15 +18,18 @@ public class AppKeysInterceptor extends HandlerInterceptorAdapter {
 
 	/**
 	 * Keep user on appkeys page until he enters app keys and initializes Disqus driver
+	 * 
+	 * @param handler is the @Controller that will 
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		String appKeysPath = request.getContextPath() + "/disqus/appkeys";
 		if (disqus.getDriver() == null) {
-			if (request.getRequestURI().indexOf("appkeys") == -1) {
-				response.sendRedirect("appkeys");
+			if (request.getRequestURI().indexOf(appKeysPath) == -1) {
+				response.sendRedirect(appKeysPath);
+				return false; //false = stop processing and do NOT continute to controller
 			}
 		}
-		//request.getSession().getId()
 		return true;
 	}
 	/*
