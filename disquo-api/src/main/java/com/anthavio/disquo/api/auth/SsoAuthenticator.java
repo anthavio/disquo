@@ -73,7 +73,7 @@ public class SsoAuthenticator {
 			Mac mac = Mac.getInstance("HmacSHA1");
 			mac.init(secretKey);
 			byte[] rawHmac = mac.doFinal(textBytes);
-			return Hex.encodeHexString(rawHmac);
+			return new String(Hex.encodeHex(rawHmac));
 			//byte[] base64 = Base64.encodeBase64(finalBytes);
 			//return new String(base64).trim();
 		} catch (GeneralSecurityException gsx) {
@@ -82,8 +82,9 @@ public class SsoAuthenticator {
 	}
 
 	private static SsoAuthData DeBase64Json(String message) {
-		byte[] decodeBase64 = Base64.decodeBase64(message);
-		InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(decodeBase64), Charset.forName("UTF-8"));
+		Charset charset = Charset.forName("UTF-8");
+		byte[] decodeBase64 = Base64.decodeBase64(message.getBytes(charset));
+		InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(decodeBase64), charset);
 		try {
 			Map<String, String> map = mapper.readValue(reader, Map.class);
 			return new SsoAuthData(map.get("id"), map.get("username"), map.get("email"));
@@ -117,6 +118,6 @@ public class SsoAuthenticator {
 		} catch (IOException iox) {
 			throw new UnhandledException(iox);
 		}
-		return Base64.encodeBase64String(baos.toByteArray());
+		return new String(Base64.encodeBase64(baos.toByteArray()));
 	}
 }

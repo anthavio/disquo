@@ -22,9 +22,9 @@ import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusServerException;
 import com.anthavio.disquo.api.response.TokenResponse;
 import com.anthavio.httl.GetRequest;
+import com.anthavio.httl.HttpSender.Multival;
 import com.anthavio.httl.PostRequest;
 import com.anthavio.httl.SenderResponse;
-import com.anthavio.httl.HttpSender.Multival;
 import com.anthavio.httl.inout.ResponseBodyExtractor.ExtractedBodyResponse;
 import com.anthavio.httl.util.Cutils;
 import com.anthavio.httl.util.HttpHeaderUtil;
@@ -180,7 +180,7 @@ public class OauthAuthenticator {
 		params.add("scope", "read,write");
 
 		String baseAuth = username + ":" + password;
-		String base64password = Base64.encodeBase64String(baseAuth.getBytes(Charset.forName("utf-8")));
+		String base64password = new String(Base64.encodeBase64(baseAuth.getBytes(Charset.forName("utf-8"))));
 		SenderResponse response = null;
 		try {
 			response = this.disqus.getSender().POST(URL_ACCESS_TOKEN).header("Authorization", "Basic " + base64password)
