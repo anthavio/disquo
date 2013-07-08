@@ -1,11 +1,15 @@
 package com.anthavio.disquo.api.response;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author martin.vanek
  *
  */
-public class DisqusMedia {
+public class DisqusMedia implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String forum;
 

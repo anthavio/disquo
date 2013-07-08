@@ -1,6 +1,5 @@
 package com.anthavio.disquo.api.response;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +10,7 @@ import java.util.List;
  * 
  */
 public class DisqusThread implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	private Long id;

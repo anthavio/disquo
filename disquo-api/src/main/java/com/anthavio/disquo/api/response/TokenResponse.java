@@ -1,12 +1,16 @@
 package com.anthavio.disquo.api.response;
 
+import java.io.Serializable;
+
 /**
  * http://disqus.com/api/docs/auth/#response
  * 
  * @author martin.vanek
  *
  */
-public class TokenResponse {
+public class TokenResponse implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String username;
 
