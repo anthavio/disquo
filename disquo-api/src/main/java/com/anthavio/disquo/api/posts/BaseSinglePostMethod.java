@@ -5,6 +5,7 @@ import com.anthavio.disquo.api.DisqusMethod;
 import com.anthavio.disquo.api.DisqusMethodConfig;
 
 /**
+ * Sinlge input, Single output
  * 
  * @author martin.vanek
  *

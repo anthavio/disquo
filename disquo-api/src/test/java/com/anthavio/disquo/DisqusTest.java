@@ -8,6 +8,7 @@ import java.util.List;
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.posts.PostGetContextMethod;
 import com.anthavio.disquo.api.response.DisqusImportDetails;
+import com.anthavio.disquo.api.response.DisqusPost;
 import com.anthavio.disquo.api.response.DisqusResponse;
 import com.anthavio.disquo.api.response.DisqusThread;
 import com.anthavio.disquo.api.threads.ThreadCreateMethod;
@@ -36,7 +37,6 @@ public class DisqusTest {
 			DisqusResponse<DisqusThread> response = method.execute();
 			DisqusThread thread = response.getResponse();
 			System.out.println(thread);
-
 			if (true)
 				return;
 
@@ -52,10 +52,12 @@ public class DisqusTest {
 			System.out.println(details);
 			if (true)
 				return;
-
 			String forum = tidata.getForum();
 			PostGetContextMethod context = disqus.posts().getContext(768827349);
-			context.pretty();
+			DisqusResponse<List<DisqusPost>> execute = context.execute();
+			for (DisqusPost post : execute.getResponse()) {
+				System.out.println(post);
+			}
 		} catch (Exception x) {
 			x.printStackTrace();
 		}

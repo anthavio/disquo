@@ -8,6 +8,7 @@ import com.anthavio.disquo.api.DisqusMethod;
 import com.anthavio.disquo.api.DisqusMethodConfig;
 
 /**
+ * Multiple posts on input, multiple on output
  * 
  * @author martin.vanek
  *

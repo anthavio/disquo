@@ -6,15 +6,17 @@ import java.util.Date;
 
 import org.testng.annotations.Test;
 
-import com.anthavio.disquo.api.DisqusMethodTest;
 import com.anthavio.disquo.api.ArgumentConfig.Order;
 import com.anthavio.disquo.api.ArgumentConfig.PostState;
 import com.anthavio.disquo.api.ArgumentConfig.Related;
 import com.anthavio.disquo.api.ArgumentConfig.Vote;
+import com.anthavio.disquo.api.DisqusMethodTest;
 import com.anthavio.disquo.api.posts.HighlightMethod;
 import com.anthavio.disquo.api.posts.PostApproveMethod;
 import com.anthavio.disquo.api.posts.PostCreateMethod;
+import com.anthavio.disquo.api.posts.PostCreateMethod.AnonymousData;
 import com.anthavio.disquo.api.posts.PostDetailsMethod;
+import com.anthavio.disquo.api.posts.PostGetContextMethod;
 import com.anthavio.disquo.api.posts.PostListMethod;
 import com.anthavio.disquo.api.posts.PostRemoveMethod;
 import com.anthavio.disquo.api.posts.PostReportMethod;
@@ -23,7 +25,6 @@ import com.anthavio.disquo.api.posts.PostSpamMethod;
 import com.anthavio.disquo.api.posts.PostUnhighlightMethod;
 import com.anthavio.disquo.api.posts.PostUpdateMethod;
 import com.anthavio.disquo.api.posts.PostVoteMethod;
-import com.anthavio.disquo.api.posts.PostCreateMethod.AnonymousData;
 
 public class PostsTest extends DisqusMethodTest {
 
@@ -47,6 +48,13 @@ public class PostsTest extends DisqusMethodTest {
 	@Test
 	public void details() {
 		PostDetailsMethod method = disqus.posts().details(1);
+		method.addRelated(Related.forum, Related.thread);
+		assertThat(getParameters(method).size()).isEqualTo(3);
+	}
+
+	@Test
+	public void context() {
+		PostGetContextMethod method = disqus.posts().getContext(1);
 		method.addRelated(Related.forum, Related.thread);
 		assertThat(getParameters(method).size()).isEqualTo(3);
 	}
