@@ -81,7 +81,9 @@ public class DisqusMedia implements Serializable {
 		this.metadata = metadata;
 	}
 
-	public static class Metadata {
+	public static class Metadata implements Serializable {
+
+		private static final long serialVersionUID = 1L;
 
 		private String create_method;
 

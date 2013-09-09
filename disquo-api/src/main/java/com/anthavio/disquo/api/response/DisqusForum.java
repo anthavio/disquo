@@ -124,7 +124,10 @@ public class DisqusForum implements Serializable {
 		this.author = author;
 	}
 
-	public static class ForumSettings {
+	public static class ForumSettings implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+
 		private Boolean ssoRequired;
 		private Boolean allowAnonPost;
 		private Boolean allowMedia;
