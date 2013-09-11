@@ -1,5 +1,7 @@
 package com.anthavio.disquo.api.threads;
 
+import java.io.Serializable;
+
 import com.anthavio.disquo.api.Disqus;
 import com.anthavio.disquo.api.DisqusCursorPostsMethod;
 import com.anthavio.disquo.api.DisqusMethodConfig;
@@ -55,7 +57,7 @@ public class ThreadListPopularMethod extends
 		return this;
 	}
 
-	public static class DisqusThreadWithPostsInInterval extends DisqusThread {
+	public static class DisqusThreadWithPostsInInterval extends DisqusThread implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		private Integer postsInInterval;
