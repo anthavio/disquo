@@ -118,6 +118,6 @@ public class SsoAuthenticator {
 		} catch (IOException iox) {
 			throw new UnhandledException(iox);
 		}
-		return new String(Base64.encodeBase64(baos.toByteArray()));
+		return new String(Base64.encodeBase64(baos.toByteArray(), false));
 	}
 }
