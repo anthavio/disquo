@@ -36,13 +36,13 @@ Maven Repository & Coordinates
 
 Fluent foolproof API
 -------------
-Fluent buiders pattern is used for complex request creation and execution
+Fluent Buider pattern is used for complex request creation and execution
 
 ```java
 /*
 To obtain Application keys
-  1. Visit http://disqus.com/api/applications/ and Log in to Disqus or Create an Account
-  2. Visit http://disqus.com/api/applications/ and Register new application
+  1. Visit https://disqus.com/profile/login and Log in to Disqus or Create an Account
+  2. Visit http://disqus.com/api/applications and Register new application
   3. Use generated "Public Key" and "Secret Key" (Access Token is optional)
 */
 DisqusApplicationKeys keys = new DisqusApplicationKeys("...api_key...", "...secret_key...");
