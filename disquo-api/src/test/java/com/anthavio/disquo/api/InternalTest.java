@@ -21,7 +21,7 @@ public class InternalTest {
 	@Test
 	public void testSsoToken() {
 		SsoAuthData ssoIn = new SsoAuthData("XYZ-123465789-Q", "Anthavio Lenz", "anthavio@example.com");
-		TestInputData tidata = TestInputData.load("disqus.properties");
+		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		String remote_auth = SsoAuthenticator.remote_auth_s3(ssoIn, tidata.getSecretKey());
 		SsoAuthData ssoOut = SsoAuthenticator.decode_remote_auth(remote_auth, tidata.getSecretKey());
 

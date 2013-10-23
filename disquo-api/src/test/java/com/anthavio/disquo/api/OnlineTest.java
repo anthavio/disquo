@@ -44,7 +44,7 @@ public class OnlineTest {
 	@BeforeClass
 	public void setup() {
 
-		TestInputData tidata = TestInputData.load("disqus.properties");
+		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		this.disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl());
 
 		this.forum = tidata.getForum();

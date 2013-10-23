@@ -162,7 +162,7 @@ public class SettingsController extends ControllerBase {
 		if (StringUtils.isNotBlank(code)) {
 			URL callbackUrl = getCallbackURL(request);
 			OauthAuthenticator oauth = new OauthAuthenticator(session.getDriver());
-			TokenResponse tokenResponse = oauth.getAccessToken(callbackUrl.toString(), code);
+			TokenResponse tokenResponse = oauth.getAccessTokenForCode(callbackUrl.toString(), code);
 			session.getIdentity().setOauth(tokenResponse);
 		}
 		return "redirect:/disqus/identity";

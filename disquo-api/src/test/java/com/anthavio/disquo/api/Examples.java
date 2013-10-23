@@ -1,44 +1,40 @@
-Disquo
-======
+package com.anthavio.disquo.api;
 
-Disqus Rest Api Java Client Library - see http://disqus.com/api/docs/
+import static org.fest.assertions.api.Assertions.assertThat;
 
-* Fluent foolproof API
-* Covers All Rest Resources
-* Scalable and multithreaded
-* Authentication - OAuth2, SSO
+import java.util.Date;
+import java.util.List;
 
+import com.anthavio.disquo.api.ArgumentConfig.Order;
+import com.anthavio.disquo.api.ArgumentConfig.Related;
+import com.anthavio.disquo.api.auth.OauthAuthenticator;
+import com.anthavio.disquo.api.auth.SsoAuthData;
+import com.anthavio.disquo.api.posts.PostListMethod;
+import com.anthavio.disquo.api.response.DisqusForum;
+import com.anthavio.disquo.api.response.DisqusPost;
+import com.anthavio.disquo.api.response.DisqusResponse;
+import com.anthavio.disquo.api.response.DisqusThread;
+import com.anthavio.disquo.api.response.TokenResponse;
 
-Maven Repository & coordinates
--------------
+/**
+ * 
+ * @author martin.vanek
+ *
+ */
+public class Examples {
 
-```xml
-    <repository>
-        <id>sonatype-oss-public</id>
-        <url>https://oss.sonatype.org/content/groups/public/</url>
-        <releases>
-            <enabled>true</enabled>
-        </releases>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </repository>
-```
+	private static String forumName = "test";
 
-```xml
-    <dependency>
-        <groupId>com.anthavio</groupId>
-        <artifactId>disquo-api</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-```
+	private static int threadId = 333;
 
+	public static void main(String[] args) {
+		paging();
+	}
 
-Fluent foolproof API
--------------
-Fluent buiders pattern is used for complex request creation and execution
-
-```java
+	/**
+	 * 
+	 */
+	private static void basic() {
 		/*
 		To obtain Application keys
 		  1. Visit http://disqus.com/api/applications/ and Log in to Disqus or Create an Account
@@ -58,14 +54,11 @@ Fluent buiders pattern is used for complex request creation and execution
 			System.out.println(text);
 		}
 		disqus.close();
-```
+	}
 
-Paging
--------------
-When returning list, Disqus API returns 30 items. This size can be maxed to 100 items. 
-To paginate through larger sets of items, you need to use cursor
-For details visit http://disqus.com/api/docs/cursors/
-```java
+	private static void paging() {
+		
+		//For details visit http://disqus.com/api/docs/cursors/
 			
 		DisqusApplicationKeys keys = new DisqusApplicationKeys("...api_key...", "...secret_key...");
 		Disqus disqus = new Disqus(keys);
@@ -87,13 +80,10 @@ For details visit http://disqus.com/api/docs/cursors/
 			}
 		} while (cursor != null);
 		disqus.close();
-```
+	}
 
-Joins
---------------
+	private static void join() {
 
-
-```java
 		DisqusApplicationKeys keys = new DisqusApplicationKeys("...api_key...", "...secret_key...");
 		Disqus disqus = new Disqus(keys);
 		//Get basic thread details
@@ -107,14 +97,16 @@ Joins
 		//Field forum is now Bean with many fields
 		assertThat(joinedResponse.getResponse().getForum()).isInstanceOf(DisqusForum.class);
 		disqus.close();
-```
+	}
 
-Authentication
--------------
-While reading or listing API operations does not usually need authentication, writing calls must be authenticated
-For details visit http://disqus.com/api/docs/auth/
+	/**
+	 * For details visit http://disqus.com/api/docs/auth/
+	 * 
+	 */
+	private static void authentication() {
 
-```java
+		//While reading or listing API operations does not usually need authentication, writing calls must be authenticated
+
 		//Authenticating as the Account Owner
 
 		//Application access_token can be used when creating Disqus API client optionaly
@@ -156,4 +148,5 @@ For details visit http://disqus.com/api/docs/auth/
 		disqus.posts().create(threadId, "Hello world " + new Date(), tokenResponse2.getAccess_token());
 
 		disqus.close();
-```
+	}
+}

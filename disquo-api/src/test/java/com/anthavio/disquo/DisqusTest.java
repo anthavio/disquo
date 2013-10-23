@@ -20,7 +20,7 @@ public class DisqusTest {
 
 	public static void main(String[] args) {
 
-		TestInputData tidata = TestInputData.load("disqus.properties");
+		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		Disqus disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl());
 		try {
 			disqus.setUseApplicationToken(true);

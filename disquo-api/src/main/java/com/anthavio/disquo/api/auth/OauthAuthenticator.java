@@ -71,6 +71,47 @@ public class OauthAuthenticator {
 	}
 
 	/**
+	 * OAuth code -> Disqus access_token
+	 * 
+	 * POST https://disqus.com/api/oauth/2.0/access_token/?
+	 * grant_type=authorization_code& client_id=PUBLIC_KEY&
+	 * client_secret=SECRET_KEY&
+	 * redirect_uri=http://www.example.com/oauth_redirect& code=CODE
+	 * 
+	 * Response: Json with access_token
+	 * (http://disqus.com/api/docs/auth/#response)
+	 * 
+	 * { "access_token": "c2d06abacfbb40179e47f62f06546ea9", "refresh_token":
+	 * "9182211bf2f746a4b5c5b1e3766443d6", "expires_in": 2592000, "username":
+	 * "batman" "user_id": "947103743" }
+	 */
+	public TokenResponse getAccessTokenForCode(String redirectUrl, String code) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("grant_type", "authorization_code");
+		params.put("client_id", this.publicKey);
+		params.put("client_secret", this.secretKey);
+		params.put("redirect_uri", redirectUrl);
+		params.put("code", code);
+
+		SenderResponse response = null;
+		try {
+			PostRequest request = this.disqus.getSender().POST(URL_ACCESS_TOKEN).parameters(params)
+					.header("Content-Type", "application/json").build();
+			response = this.disqus.getSender().execute(request);
+			if (response.getHttpStatusCode() != 200) {
+				throw new DisqusServerException(response.getHttpStatusCode(), 0, "Oauth Error: "
+						+ HttpHeaderUtil.readAsString(response));
+			}
+			InputStream stream = response.getStream();
+			return this.disqus.parse(stream, TokenResponse.class);
+		} catch (IOException iox) {
+			throw new UnhandledException(iox);
+		} finally {
+			Cutils.close(response);
+		}
+	}
+	
+	/**
 	 * Documentation http://disqus.com/api/docs/auth/
 	 * 
 	 * Redirect URL hostname must be in Applications > Settings > Domains
@@ -92,6 +133,7 @@ public class OauthAuthenticator {
 	 * redirect_uri?error=access_denied
 	 * 
 	 */
+	/*
 	public void get_oauth_code(String redirectUrl, String username, String password) {
 
 		GetRequest request = new GetRequest(getOauthRequestUrl(redirectUrl));
@@ -117,47 +159,8 @@ public class OauthAuthenticator {
 
 		// Redirect with "code" parameter in url shoud be obtained
 	}
+	*/
 
-	/**
-	 * OAuth code -> Disqus access_token
-	 * 
-	 * POST https://disqus.com/api/oauth/2.0/access_token/?
-	 * grant_type=authorization_code& client_id=PUBLIC_KEY&
-	 * client_secret=SECRET_KEY&
-	 * redirect_uri=http://www.example.com/oauth_redirect& code=CODE
-	 * 
-	 * Response: Json with access_token
-	 * (http://disqus.com/api/docs/auth/#response)
-	 * 
-	 * { "access_token": "c2d06abacfbb40179e47f62f06546ea9", "refresh_token":
-	 * "9182211bf2f746a4b5c5b1e3766443d6", "expires_in": 2592000, "username":
-	 * "batman" "user_id": "947103743" }
-	 */
-	public TokenResponse getAccessToken(String redirectUrl, String code) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("grant_type", "authorization_code");
-		params.put("client_id", this.publicKey);
-		params.put("client_secret", this.secretKey);
-		params.put("redirect_uri", redirectUrl);
-		params.put("code", code);
-
-		SenderResponse response = null;
-		try {
-			PostRequest request = this.disqus.getSender().POST(URL_ACCESS_TOKEN).parameters(params)
-					.header("Content-Type", "application/json").build();
-			response = this.disqus.getSender().execute(request);
-			if (response.getHttpStatusCode() != 200) {
-				throw new DisqusServerException(response.getHttpStatusCode(), 0, "Oauth Error: "
-						+ HttpHeaderUtil.readAsString(response));
-			}
-			InputStream stream = response.getStream();
-			return this.disqus.parse(stream, TokenResponse.class);
-		} catch (IOException iox) {
-			throw new UnhandledException(iox);
-		} finally {
-			Cutils.close(response);
-		}
-	}
 
 	/**
 	 * http://disqus.com/api/docs/auth/
@@ -172,7 +175,7 @@ public class OauthAuthenticator {
 	 * "9182211bf2f746a4b5c5b1e3766443d6", "expires_in": 2592000, "username":
 	 * "batman" "user_id": "947103743" }
 	 */
-	public TokenResponse access_token_client(String username, String password) {
+	public TokenResponse getAccessTokenForUser(String username, String password) {
 		Multival params = new Multival();
 		params.add("grant_type", "password");
 		params.add("client_id", this.publicKey);
