@@ -27,7 +27,7 @@
 	
 	<logger name="org.thymeleaf" level="info" />
 	
-	<logger name="com.anthavio" level="debug" />
+	<logger name="net.anthavio" level="debug" />
 	
 	<logger name="com.github.dandelion.datatables.thymeleaf.processor.TdElProcessor" level="error"/>
 	

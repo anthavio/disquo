@@ -20,7 +20,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 	<ctx:annotation-config />
 	
 	<!-- Annotations scan -->
-	<ctx:component-scan base-package="com.anthavio.disquo.browser" />
+	<ctx:component-scan base-package="net.anthavio.disquo.browser" />
 	
 	<bean id="DefaultAnnotationHandlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="interceptors">
@@ -28,7 +28,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 				<bean id="LocaleChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 					<property name="paramName" value="locale"/>
 				</bean>
-				<bean class="com.anthavio.disquo.browser.AppKeysInterceptor"/>
+				<bean class="net.anthavio.disquo.browser.AppKeysInterceptor"/>
 			</list>
 		</property>
 	</bean>
@@ -93,8 +93,8 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 	<bean id="FormattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
 			<list>
-				<bean class="com.anthavio.spring.web.EnumIntConverterFactory"/>
-				<bean class="com.anthavio.spring.web.EnumStrConverterFactory"/>
+				<bean class="net.anthavio.spring.web.EnumIntConverterFactory"/>
+				<bean class="net.anthavio.spring.web.EnumStrConverterFactory"/>
 			</list>
 		</property>
 	</bean>
@@ -107,11 +107,11 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		<property name="supportJaxbElementClass" value="true"/>
 		<property name="classesToBeBound">
 			<list>
-				<value>com.anthavio.disquo.api.response.DisqusForum</value>
-				<value>com.anthavio.disquo.api.response.DisqusThread</value>
-				<value>com.anthavio.disquo.api.response.DisqusPost</value>
-				<value>com.anthavio.disquo.api.response.DisqusUser</value>
-				<value>com.anthavio.disquo.api.response.DisqusCategory</value>
+				<value>net.anthavio.disquo.api.response.DisqusForum</value>
+				<value>net.anthavio.disquo.api.response.DisqusThread</value>
+				<value>net.anthavio.disquo.api.response.DisqusPost</value>
+				<value>net.anthavio.disquo.api.response.DisqusUser</value>
+				<value>net.anthavio.disquo.api.response.DisqusCategory</value>
 			</list>
 		</property>
 	</bean>

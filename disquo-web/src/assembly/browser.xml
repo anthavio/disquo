@@ -12,7 +12,7 @@
 		<dependencySet>
 			<outputDirectory>lib</outputDirectory>
 			<includes>
-				<include>com.anthavio.disquo:*</include>
+				<include>net.anthavio.disquo:*</include>
 			</includes>
 			<excludes>
 				<exclude>*:war:*</exclude>
@@ -21,7 +21,7 @@
 		<dependencySet>
 			<outputDirectory>lib/ext</outputDirectory>
 			<excludes>
-				<exclude>com.anthavio.disquo:*</exclude>
+				<exclude>net.anthavio.disquo:*</exclude>
 				<exclude>*:war:*</exclude>
 			</excludes>
 		</dependencySet>
@@ -29,7 +29,7 @@
 		<dependencySet>
 			<outputDirectory>lib/ext</outputDirectory>
 			<excludes>
-				<exclude>com.anthavio.disquo:*</exclude>
+				<exclude>net.anthavio.disquo:*</exclude>
 				<exclude>*:war:*</exclude>
 			</excludes>
 			<scope>provided</scope>

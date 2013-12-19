@@ -17,7 +17,7 @@ if [ "$cygwin" = "true" ]; then
 	APP_CLASSPATH=`cygpath --path --windows "$APP_CLASSPATH"` 
 fi
 
-MAIN_CLASS=com.anthavio.disquo.browser.DisqusBrowserJettyMain
+MAIN_CLASS=net.anthavio.disquo.browser.DisqusBrowserJettyMain
 
 APP_OPTS=
 

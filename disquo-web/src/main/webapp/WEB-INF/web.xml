@@ -18,7 +18,7 @@
 	</listener>
 	<!--
 	<listener>
-		<listener-class>com.anthavio.jersey.server.SLF4JBridgeInitializer</listener-class>
+		<listener-class>net.anthavio.jersey.server.SLF4JBridgeInitializer</listener-class>
 	</listener>
 	-->
 	<filter>
@@ -67,11 +67,11 @@
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.WadlGeneratorConfig</param-name>
-			<param-value>com.anthavio.jersey.server.JsonSchemaGeneratingConfig</param-value>
+			<param-value>net.anthavio.jersey.server.JsonSchemaGeneratingConfig</param-value>
 		</init-param>  
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.anthavio.disqus.simulator</param-value>
+			<param-value>net.anthavio.disqus.simulator</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -98,7 +98,7 @@
 	
 	<servlet>
 		<servlet-name>IltschiRestServlet</servlet-name>
-		<servlet-class>com.anthavio.rest.IltschiRestServlet</servlet-class>
+		<servlet-class>net.anthavio.rest.IltschiRestServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
