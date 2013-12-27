@@ -22,13 +22,13 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.anthavio.httl.GetRequest;
-import com.anthavio.httl.HttpSender.Multival;
-import com.anthavio.httl.PostRequest;
-import com.anthavio.httl.SenderResponse;
-import com.anthavio.httl.inout.ResponseBodyExtractor.ExtractedBodyResponse;
-import com.anthavio.httl.util.Cutils;
-import com.anthavio.httl.util.HttpHeaderUtil;
+import net.anthavio.httl.GetRequest;
+import net.anthavio.httl.HttpSender.Multival;
+import net.anthavio.httl.PostRequest;
+import net.anthavio.httl.SenderResponse;
+import net.anthavio.httl.inout.ResponseBodyExtractor.ExtractedBodyResponse;
+import net.anthavio.httl.util.Cutils;
+import net.anthavio.httl.util.HttpHeaderUtil;
 
 /**
  * 

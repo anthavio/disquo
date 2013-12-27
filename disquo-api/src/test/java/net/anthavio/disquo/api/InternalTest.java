@@ -11,8 +11,8 @@ import net.anthavio.disquo.api.auth.SsoAuthenticator;
 import org.fest.assertions.api.Fail;
 import org.testng.annotations.Test;
 
-import com.anthavio.httl.HttpSender;
-import com.anthavio.httl.util.FakeSender;
+import net.anthavio.httl.HttpSender;
+import net.anthavio.httl.util.FakeSender;
 
 /**
  * 

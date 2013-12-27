@@ -163,7 +163,7 @@
 				
 		<dependency>
 			<groupId>net.anthavio.maven</groupId>
-			<artifactId>jetty-deps-core</artifactId>
+			<artifactId>jetty-essentials</artifactId>
 			<version>${jetty.version}</version>
 			<type>pom</type>
 		</dependency>

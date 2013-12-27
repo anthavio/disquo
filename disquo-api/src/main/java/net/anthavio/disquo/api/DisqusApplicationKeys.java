@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.StringUtils;
 
-import com.anthavio.httl.util.Cutils;
+import net.anthavio.httl.util.Cutils;
 
 /**
  * 

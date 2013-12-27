@@ -38,9 +38,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.anthavio</groupId>
+			<groupId>net.anthavio</groupId>
 			<artifactId>hatatitla</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

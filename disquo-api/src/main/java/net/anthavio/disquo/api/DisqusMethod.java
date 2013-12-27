@@ -24,9 +24,9 @@ import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 
-import com.anthavio.httl.SenderResponse;
-import com.anthavio.httl.util.Cutils;
-import com.anthavio.httl.util.HttpHeaderUtil;
+import net.anthavio.httl.SenderResponse;
+import net.anthavio.httl.util.Cutils;
+import net.anthavio.httl.util.HttpHeaderUtil;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 
 /**
