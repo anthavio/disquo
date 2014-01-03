@@ -44,7 +44,7 @@ public class ThreadListMethod extends DisqusCursorThreadsMethod<ThreadListMethod
 	}
 
 	@Override
-	protected ThreadListMethod getB() {
+	protected ThreadListMethod getSelf() {
 		return this;
 	}
 

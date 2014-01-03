@@ -33,7 +33,7 @@ public class ThreadListReactionsMethod extends DisqusCursorPostsMethod<ThreadLis
 	}
 
 	@Override
-	protected ThreadListReactionsMethod getB() {
+	protected ThreadListReactionsMethod getSelf() {
 		return this;
 	}
 

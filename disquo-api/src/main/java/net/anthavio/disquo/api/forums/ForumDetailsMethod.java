@@ -22,7 +22,7 @@ public class ForumDetailsMethod extends BaseForumMethod<ForumDetailsMethod, Disq
 	}
 
 	@Override
-	protected ForumDetailsMethod getB() {
+	protected ForumDetailsMethod getSelf() {
 		return this;
 	}
 

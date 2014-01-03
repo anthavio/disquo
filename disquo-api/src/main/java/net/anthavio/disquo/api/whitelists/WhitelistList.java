@@ -42,7 +42,7 @@ public class WhitelistList extends DisqusCursorMethod<WhitelistList, DisqusFilte
 	}
 
 	@Override
-	protected WhitelistList getB() {
+	protected WhitelistList getSelf() {
 		return this;
 	}
 

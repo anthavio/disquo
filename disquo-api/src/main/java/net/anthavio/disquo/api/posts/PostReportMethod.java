@@ -17,7 +17,7 @@ public class PostReportMethod extends BaseSinglePostMethod<PostReportMethod, Dis
 	}
 
 	@Override
-	protected PostReportMethod getB() {
+	protected PostReportMethod getSelf() {
 		return this;
 	}
 }

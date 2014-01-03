@@ -22,6 +22,6 @@ public abstract class BaseMultiPostMethod<B extends DisqusMethod<?, List<T>>, T>
 
 	public B addPost(long... post) {
 		addParam("post", post);
-		return getB();
+		return getSelf();
 	}
 }

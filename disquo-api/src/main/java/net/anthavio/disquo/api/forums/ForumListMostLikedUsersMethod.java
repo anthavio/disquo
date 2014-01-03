@@ -22,7 +22,7 @@ public class ForumListMostLikedUsersMethod extends DisqusCursorMethod<ForumListM
 	}
 
 	@Override
-	protected ForumListMostLikedUsersMethod getB() {
+	protected ForumListMostLikedUsersMethod getSelf() {
 		return this;
 	}
 

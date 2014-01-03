@@ -22,7 +22,7 @@ public class ImportDetailsMethod extends BaseForumMethod<ImportDetailsMethod, Di
 	}
 
 	@Override
-	protected ImportDetailsMethod getB() {
+	protected ImportDetailsMethod getSelf() {
 		return this;
 	}
 

@@ -60,7 +60,7 @@ public class ThreadCreateMethod extends DisqusMethod<ThreadCreateMethod, DisqusT
 	}
 
 	@Override
-	protected ThreadCreateMethod getB() {
+	protected ThreadCreateMethod getSelf() {
 		return this;
 	}
 

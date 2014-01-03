@@ -38,7 +38,7 @@ public class PostListMethod extends DisqusCursorPostsMethod<PostListMethod, Disq
 	}
 
 	@Override
-	protected PostListMethod getB() {
+	protected PostListMethod getSelf() {
 		return this;
 	}
 

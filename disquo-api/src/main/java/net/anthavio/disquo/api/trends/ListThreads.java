@@ -34,7 +34,7 @@ public class ListThreads extends DisqusMethod<ListThreads, DisqusThread> {
 	}
 
 	@Override
-	protected ListThreads getB() {
+	protected ListThreads getSelf() {
 		return this;
 	}
 

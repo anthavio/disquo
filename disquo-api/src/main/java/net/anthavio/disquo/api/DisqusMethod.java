@@ -34,11 +34,11 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
  * @author vanek
  * 
  */
-public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
+public abstract class DisqusMethod<B extends DisqusMethod<?, R>, R> {
 
 	//XXX this is done for every new instance so we may cache it...
 	@SuppressWarnings("unchecked")
-	protected Class<T> type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+	protected Class<R> type = (Class<R>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 
 	private final Disqus disqus;
 
@@ -100,14 +100,14 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 		this.outputFormat = outputFormat;
 	}
 
-	protected abstract B getB(); //Generic trick
+	protected abstract B getSelf(); //Generic trick
 
 	/**
 	 * Sets caller identity as access_token (OAuth)
 	 */
 	public B setAccessToken(String access_token) {
 		this.parameters.add(new Parameter("access_token", access_token));
-		return getB();
+		return getSelf();
 	}
 
 	/**
@@ -116,7 +116,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 	public B setRemoteAuth(String userId, String username, String email) {
 		SsoAuthData authData = new SsoAuthData(userId, username, email);
 		this.setRemoteAuth(authData);
-		return getB();
+		return getSelf();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 		}
 		String remote_auth = SsoAuthenticator.remote_auth_s3(ssoAuthData, this.disqus.getApplicationKeys().getApiSecret());
 		this.parameters.add(new Parameter("remote_auth", remote_auth));
-		return getB();
+		return getSelf();
 	}
 
 	/**
@@ -139,7 +139,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 			throw new IllegalArgumentException("remote_auth is blank");
 		}
 		this.parameters.add(new Parameter("remote_auth", remote_auth));
-		return getB();
+		return getSelf();
 	}
 
 	public boolean isAuthenticated() {
@@ -150,7 +150,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 		return this.parameters;
 	}
 
-	public DisqusResponse<T> execute() {
+	public DisqusResponse<R> execute() {
 		validate();
 		return this.disqus.callApi(this, this.type);
 	}
@@ -277,7 +277,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 			Object value = entry.getValue();
 			addParam(key, value);
 		}
-		return getB();
+		return getSelf();
 	}
 
 	public B addParam(String name, Object value) {
@@ -372,7 +372,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 			}
 
 		}
-		return getB();
+		return getSelf();
 	}
 
 	protected B addParams(String name, Collection<?> list) {
@@ -399,7 +399,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 				throw new NullArgumentException(name);
 			}
 		}
-		return getB();
+		return getSelf();
 	}
 
 	protected B addParams(String name, Object[] array) {
@@ -426,7 +426,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, T>, T> {
 				throw new NullArgumentException(name);
 			}
 		}
-		return getB();
+		return getSelf();
 	}
 
 	@Override

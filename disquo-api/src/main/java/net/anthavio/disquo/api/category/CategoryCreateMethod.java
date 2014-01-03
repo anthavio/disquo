@@ -33,7 +33,7 @@ public class CategoryCreateMethod extends DisqusMethod<CategoryCreateMethod, Dis
 	}
 
 	@Override
-	protected CategoryCreateMethod getB() {
+	protected CategoryCreateMethod getSelf() {
 		return this;
 	}
 

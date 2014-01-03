@@ -24,7 +24,7 @@ public class ThreadSetMethod extends BaseMultiThreadMethod<ThreadSetMethod, Disq
 	}
 
 	@Override
-	protected ThreadSetMethod getB() {
+	protected ThreadSetMethod getSelf() {
 		return this;
 	}
 

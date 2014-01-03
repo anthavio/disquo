@@ -28,7 +28,7 @@ public class ForumListThreadsMethod extends DisqusCursorThreadsMethod<ForumListT
 	}
 
 	@Override
-	protected ForumListThreadsMethod getB() {
+	protected ForumListThreadsMethod getSelf() {
 		return this;
 	}
 

@@ -16,7 +16,7 @@ public class PostRemoveMethod extends BaseMultiPostMethod<PostRemoveMethod, Disq
 	}
 
 	@Override
-	protected PostRemoveMethod getB() {
+	protected PostRemoveMethod getSelf() {
 		return this;
 	}
 

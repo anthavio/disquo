@@ -17,7 +17,7 @@ public abstract class BaseForumMethod<B extends DisqusMethod<?, T>, T> extends D
 
 	public B setForum(String forum) {
 		addParam("forum", forum);
-		return getB();
+		return getSelf();
 	}
 
 }

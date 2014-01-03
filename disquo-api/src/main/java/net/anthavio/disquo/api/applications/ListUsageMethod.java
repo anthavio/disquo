@@ -32,7 +32,7 @@ public class ListUsageMethod extends DisqusMethod<ListUsageMethod, Object> {
 	}
 
 	@Override
-	protected ListUsageMethod getB() {
+	protected ListUsageMethod getSelf() {
 		return this;
 	}
 

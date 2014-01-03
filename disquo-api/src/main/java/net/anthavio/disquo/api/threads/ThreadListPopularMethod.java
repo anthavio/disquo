@@ -54,7 +54,7 @@ public class ThreadListPopularMethod extends
 	}
 
 	@Override
-	protected ThreadListPopularMethod getB() {
+	protected ThreadListPopularMethod getSelf() {
 		return this;
 	}
 

@@ -16,7 +16,7 @@ public class ExportForumMethod extends BaseForumMethod<ExportForumMethod, Object
 	}
 
 	@Override
-	protected ExportForumMethod getB() {
+	protected ExportForumMethod getSelf() {
 		return this;
 	}
 

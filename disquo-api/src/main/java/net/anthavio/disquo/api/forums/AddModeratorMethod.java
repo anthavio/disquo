@@ -28,7 +28,7 @@ public class AddModeratorMethod extends DisqusMethod<AddModeratorMethod, DisqusI
 	}
 
 	@Override
-	protected AddModeratorMethod getB() {
+	protected AddModeratorMethod getSelf() {
 		return this;
 	}
 

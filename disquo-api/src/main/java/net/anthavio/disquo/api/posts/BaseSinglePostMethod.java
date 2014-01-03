@@ -18,7 +18,7 @@ public abstract class BaseSinglePostMethod<B extends DisqusMethod<?, T>, T> exte
 
 	public B setPost(long post) {
 		addParam("post", post);
-		return getB();
+		return getSelf();
 	}
 
 }

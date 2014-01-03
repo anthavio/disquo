@@ -22,7 +22,7 @@ public class ForumListPostsMethod extends DisqusCursorPostsMethod<ForumListPosts
 	}
 
 	@Override
-	protected ForumListPostsMethod getB() {
+	protected ForumListPostsMethod getSelf() {
 		return this;
 	}
 

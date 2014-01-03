@@ -120,7 +120,7 @@ public class PostCreateMethod extends DisqusMethod<PostCreateMethod, DisqusPost>
 	}
 
 	@Override
-	protected PostCreateMethod getB() {
+	protected PostCreateMethod getSelf() {
 		return this;
 	}
 

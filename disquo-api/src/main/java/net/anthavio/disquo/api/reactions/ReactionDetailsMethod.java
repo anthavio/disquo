@@ -27,7 +27,7 @@ public class ReactionDetailsMethod extends DisqusMethod<ReactionDetailsMethod, D
 	}
 
 	@Override
-	protected ReactionDetailsMethod getB() {
+	protected ReactionDetailsMethod getSelf() {
 		return this;
 	}
 

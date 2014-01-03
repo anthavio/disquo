@@ -36,7 +36,7 @@ public class UserListActiveForumsMethod extends DisqusCursorMethod<UserListActiv
 	}
 
 	@Override
-	protected UserListActiveForumsMethod getB() {
+	protected UserListActiveForumsMethod getSelf() {
 		return this;
 	}
 

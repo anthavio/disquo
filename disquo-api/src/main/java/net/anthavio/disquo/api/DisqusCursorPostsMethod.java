@@ -20,22 +20,22 @@ public abstract class DisqusCursorPostsMethod<B extends DisqusMethod<?, List<T>>
 
 	public B setSince(Date since) {
 		addParam("since", since);
-		return getB();
+		return getSelf();
 	}
 
 	public B addRelated(Related... related) {
 		addParam("related", related);
-		return getB();
+		return getSelf();
 	}
 
 	public B setQuery(String query) {
 		addParam("query", query);
-		return getB();
+		return getSelf();
 	}
 
 	public B addInclude(PostState... include) {
 		addParam("include", include);
-		return getB();
+		return getSelf();
 	}
 
 }

@@ -22,7 +22,7 @@ public class ForumListMostActiveUsersMethod extends DisqusCursorMethod<ForumList
 	}
 
 	@Override
-	protected ForumListMostActiveUsersMethod getB() {
+	protected ForumListMostActiveUsersMethod getSelf() {
 		return this;
 	}
 

@@ -16,7 +16,7 @@ public class PostUnhighlightMethod extends BaseMultiPostMethod<PostUnhighlightMe
 	}
 
 	@Override
-	protected PostUnhighlightMethod getB() {
+	protected PostUnhighlightMethod getSelf() {
 		return this;
 	}
 

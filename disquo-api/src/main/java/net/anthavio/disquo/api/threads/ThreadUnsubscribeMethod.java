@@ -20,7 +20,7 @@ public class ThreadUnsubscribeMethod extends BaseSingleThreadMethod<ThreadUnsubs
 	}
 
 	@Override
-	protected ThreadUnsubscribeMethod getB() {
+	protected ThreadUnsubscribeMethod getSelf() {
 		return this;
 	}
 

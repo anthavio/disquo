@@ -27,7 +27,7 @@ public class ReactionRemoveMethod extends DisqusMethod<ReactionRemoveMethod, Dis
 	}
 
 	@Override
-	protected ReactionRemoveMethod getB() {
+	protected ReactionRemoveMethod getSelf() {
 		return this;
 	}
 

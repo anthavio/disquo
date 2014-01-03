@@ -20,7 +20,7 @@ public class ThreadSubscribeMethod extends BaseSingleThreadMethod<ThreadSubscrib
 	}
 
 	@Override
-	protected ThreadSubscribeMethod getB() {
+	protected ThreadSubscribeMethod getSelf() {
 		return this;
 	}
 

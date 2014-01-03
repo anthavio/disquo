@@ -16,7 +16,7 @@ public class PostSpamMethod extends BaseMultiPostMethod<PostSpamMethod, DisqusId
 	}
 
 	@Override
-	protected PostSpamMethod getB() {
+	protected PostSpamMethod getSelf() {
 		return this;
 	}
 

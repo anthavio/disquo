@@ -42,7 +42,7 @@ public class BlacklistList extends DisqusCursorMethod<BlacklistList, DisqusFilte
 	}
 
 	@Override
-	protected BlacklistList getB() {
+	protected BlacklistList getSelf() {
 		return this;
 	}
 

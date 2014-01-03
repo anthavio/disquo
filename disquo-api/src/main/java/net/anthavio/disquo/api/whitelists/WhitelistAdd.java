@@ -35,7 +35,7 @@ public class WhitelistAdd extends BaseForumMethod<WhitelistAdd, DisqusFilter> {
 	}
 
 	@Override
-	protected WhitelistAdd getB() {
+	protected WhitelistAdd getSelf() {
 		return this;
 	}
 

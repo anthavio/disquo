@@ -16,7 +16,7 @@ public class PostApproveMethod extends BaseMultiPostMethod<PostApproveMethod, Di
 	}
 
 	@Override
-	protected PostApproveMethod getB() {
+	protected PostApproveMethod getSelf() {
 		return this;
 	}
 

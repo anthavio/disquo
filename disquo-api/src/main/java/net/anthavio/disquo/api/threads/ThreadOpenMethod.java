@@ -16,7 +16,7 @@ public class ThreadOpenMethod extends BaseMultiThreadMethod<ThreadOpenMethod, Di
 	}
 
 	@Override
-	protected ThreadOpenMethod getB() {
+	protected ThreadOpenMethod getSelf() {
 		return this;
 	}
 

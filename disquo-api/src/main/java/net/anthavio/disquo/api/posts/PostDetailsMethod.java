@@ -22,7 +22,7 @@ public class PostDetailsMethod extends BaseSinglePostMethod<PostDetailsMethod, D
 	}
 
 	@Override
-	protected PostDetailsMethod getB() {
+	protected PostDetailsMethod getSelf() {
 		return this;
 	}
 

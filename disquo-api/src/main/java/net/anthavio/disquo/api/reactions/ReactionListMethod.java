@@ -28,7 +28,7 @@ public class ReactionListMethod extends DisqusCursorPostsMethod<ReactionListMeth
 	}
 
 	@Override
-	protected ReactionListMethod getB() {
+	protected ReactionListMethod getSelf() {
 		return this;
 	}
 

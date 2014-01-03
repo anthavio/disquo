@@ -20,17 +20,17 @@ public abstract class DisqusCursorThreadsMethod<B extends DisqusMethod<?, List<T
 
 	public B setSince(Date since) {
 		addParam("since", since);
-		return getB();
+		return getSelf();
 	}
 
 	public B addRelated(Related... related) {
 		addParam("related", related);
-		return getB();
+		return getSelf();
 	}
 
 	public B addInclude(ThreadState... include) {
 		addParam("include", include);
-		return getB();
+		return getSelf();
 	}
 
 }

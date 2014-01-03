@@ -37,7 +37,7 @@ public class CategoryListThreadsMethod extends DisqusCursorMethod<CategoryListTh
 	}
 
 	@Override
-	protected CategoryListThreadsMethod getB() {
+	protected CategoryListThreadsMethod getSelf() {
 		return this;
 	}
 

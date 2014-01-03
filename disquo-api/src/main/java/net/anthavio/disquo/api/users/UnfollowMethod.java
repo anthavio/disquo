@@ -30,7 +30,7 @@ public class UnfollowMethod extends DisqusMethod<UnfollowMethod, Object> {
 	}
 
 	@Override
-	protected UnfollowMethod getB() {
+	protected UnfollowMethod getSelf() {
 		return this;
 	}
 

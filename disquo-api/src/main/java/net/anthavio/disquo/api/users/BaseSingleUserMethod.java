@@ -26,7 +26,7 @@ public abstract class BaseSingleUserMethod<B extends DisqusMethod<?, T>, T> exte
 
 	public B setUser(QUser user) {
 		addParam("user", user);
-		return getB();
+		return getSelf();
 	}
 
 }

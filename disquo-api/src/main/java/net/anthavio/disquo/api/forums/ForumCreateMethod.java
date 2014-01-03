@@ -32,7 +32,7 @@ public class ForumCreateMethod extends DisqusMethod<ForumCreateMethod, DisqusFor
 	}
 
 	@Override
-	protected ForumCreateMethod getB() {
+	protected ForumCreateMethod getSelf() {
 		return this;
 	}
 

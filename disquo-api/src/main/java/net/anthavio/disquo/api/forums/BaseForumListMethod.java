@@ -21,7 +21,7 @@ public abstract class BaseForumListMethod<B extends DisqusMethod<?, List<T>>, T>
 
 	public B setForum(String forum) {
 		addParam("forum", forum);
-		return getB();
+		return getSelf();
 	}
 
 }

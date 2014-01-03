@@ -22,7 +22,7 @@ public class CategoryListPostsMethod extends DisqusCursorPostsMethod<CategoryLis
 	}
 
 	@Override
-	protected CategoryListPostsMethod getB() {
+	protected CategoryListPostsMethod getSelf() {
 		return this;
 	}
 

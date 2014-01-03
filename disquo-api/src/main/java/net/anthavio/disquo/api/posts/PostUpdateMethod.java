@@ -21,7 +21,7 @@ public class PostUpdateMethod extends BaseSinglePostMethod<PostUpdateMethod, Dis
 	}
 
 	@Override
-	protected PostUpdateMethod getB() {
+	protected PostUpdateMethod getSelf() {
 		return this;
 	}
 

@@ -27,7 +27,7 @@ public class ReactionRestoreMethod extends DisqusMethod<ReactionRestoreMethod, D
 	}
 
 	@Override
-	protected ReactionRestoreMethod getB() {
+	protected ReactionRestoreMethod getSelf() {
 		return this;
 	}
 

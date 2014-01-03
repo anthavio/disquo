@@ -55,7 +55,7 @@ public class BlacklistAdd extends BaseForumMethod<BlacklistAdd, DisqusFilter> {
 	}
 
 	@Override
-	protected BlacklistAdd getB() {
+	protected BlacklistAdd getSelf() {
 		return this;
 	}
 

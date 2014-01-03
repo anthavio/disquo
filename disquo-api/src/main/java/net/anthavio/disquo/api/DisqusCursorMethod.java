@@ -20,17 +20,17 @@ public abstract class DisqusCursorMethod<B extends DisqusMethod<?, List<T>>, T> 
 
 	public B setCursor(String cursor) {
 		addParam("cursor", cursor);
-		return getB();
+		return getSelf();
 	}
 
 	public B setLimit(int limit) {
 		addParam("limit", limit);
-		return getB();
+		return getSelf();
 	}
 
 	public B setOrder(Order order) {
 		addParam("order", order);
-		return getB();
+		return getSelf();
 	}
 
 }

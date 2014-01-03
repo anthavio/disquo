@@ -24,17 +24,17 @@ public abstract class BaseMultiThreadMethod<B extends DisqusMethod<?, List<T>>, 
 
 	public B setForum(String forum) {
 		addParam("forum", forum);
-		return getB();
+		return getSelf();
 	}
 
 	public B addThread(QThread... thread) {
 		addParam("thread", thread);
-		return getB();
+		return getSelf();
 	}
 
 	public B addThread(long... thread) {
 		addParam("thread", thread);
-		return getB();
+		return getSelf();
 	}
 
 }

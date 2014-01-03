@@ -22,7 +22,7 @@ public class CheckUsernameMethod extends DisqusMethod<CheckUsernameMethod, Strin
 	}
 
 	@Override
-	protected CheckUsernameMethod getB() {
+	protected CheckUsernameMethod getSelf() {
 		return this;
 	}
 

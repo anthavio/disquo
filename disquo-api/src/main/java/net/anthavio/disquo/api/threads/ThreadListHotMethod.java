@@ -34,7 +34,7 @@ public class ThreadListHotMethod extends DisqusCursorPostsMethod<ThreadListHotMe
 	}
 
 	@Override
-	protected ThreadListHotMethod getB() {
+	protected ThreadListHotMethod getSelf() {
 		return this;
 	}
 

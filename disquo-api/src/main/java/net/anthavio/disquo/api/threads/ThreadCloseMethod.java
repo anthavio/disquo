@@ -16,7 +16,7 @@ public class ThreadCloseMethod extends BaseMultiThreadMethod<ThreadCloseMethod, 
 	}
 
 	@Override
-	protected ThreadCloseMethod getB() {
+	protected ThreadCloseMethod getSelf() {
 		return this;
 	}
 

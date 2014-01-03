@@ -22,7 +22,7 @@ public class PostVoteMethod extends BaseSinglePostMethod<PostVoteMethod, DisqusV
 	}
 
 	@Override
-	protected PostVoteMethod getB() {
+	protected PostVoteMethod getSelf() {
 		return this;
 	}
 

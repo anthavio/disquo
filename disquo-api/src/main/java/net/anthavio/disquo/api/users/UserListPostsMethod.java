@@ -31,7 +31,7 @@ public class UserListPostsMethod extends DisqusCursorPostsMethod<UserListPostsMe
 	}
 
 	@Override
-	protected UserListPostsMethod getB() {
+	protected UserListPostsMethod getSelf() {
 		return this;
 	}
 

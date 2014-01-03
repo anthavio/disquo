@@ -27,7 +27,7 @@ public class ForumListCategoriesMethod extends DisqusCursorMethod<ForumListCateg
 	}
 
 	@Override
-	protected ForumListCategoriesMethod getB() {
+	protected ForumListCategoriesMethod getSelf() {
 		return this;
 	}
 

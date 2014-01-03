@@ -16,7 +16,7 @@ public class UserDetailsMethod extends BaseSingleUserMethod<UserDetailsMethod, D
 	}
 
 	@Override
-	protected UserDetailsMethod getB() {
+	protected UserDetailsMethod getSelf() {
 		return this;
 	}
 

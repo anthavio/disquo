@@ -22,7 +22,7 @@ public class ThreadVoteMethod extends BaseSingleThreadMethod<ThreadVoteMethod, D
 	}
 
 	@Override
-	protected ThreadVoteMethod getB() {
+	protected ThreadVoteMethod getSelf() {
 		return this;
 	}
 

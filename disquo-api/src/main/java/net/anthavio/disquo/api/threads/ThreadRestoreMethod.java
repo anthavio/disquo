@@ -16,7 +16,7 @@ public class ThreadRestoreMethod extends BaseMultiThreadMethod<ThreadRestoreMeth
 	}
 
 	@Override
-	protected ThreadRestoreMethod getB() {
+	protected ThreadRestoreMethod getSelf() {
 		return this;
 	}
 

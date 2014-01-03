@@ -56,7 +56,7 @@ public class ThreadUpdateMethod extends BaseSingleThreadMethod<ThreadUpdateMetho
 	}
 
 	@Override
-	protected ThreadUpdateMethod getB() {
+	protected ThreadUpdateMethod getSelf() {
 		return this;
 	}
 

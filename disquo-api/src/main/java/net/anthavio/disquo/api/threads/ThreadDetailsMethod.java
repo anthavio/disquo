@@ -22,7 +22,7 @@ public class ThreadDetailsMethod extends BaseSingleThreadMethod<ThreadDetailsMet
 	}
 
 	@Override
-	protected ThreadDetailsMethod getB() {
+	protected ThreadDetailsMethod getSelf() {
 		return this;
 	}
 

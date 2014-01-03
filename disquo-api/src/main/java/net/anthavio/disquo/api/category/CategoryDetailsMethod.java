@@ -22,7 +22,7 @@ public class CategoryDetailsMethod extends DisqusMethod<CategoryDetailsMethod, D
 	}
 
 	@Override
-	protected CategoryDetailsMethod getB() {
+	protected CategoryDetailsMethod getSelf() {
 		return this;
 	}
 

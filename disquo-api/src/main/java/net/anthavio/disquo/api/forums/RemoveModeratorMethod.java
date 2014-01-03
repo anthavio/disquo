@@ -22,7 +22,7 @@ public class RemoveModeratorMethod extends BaseForumMethod<RemoveModeratorMethod
 	}
 
 	@Override
-	protected RemoveModeratorMethod getB() {
+	protected RemoveModeratorMethod getSelf() {
 		return this;
 	}
 

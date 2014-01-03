@@ -16,7 +16,7 @@ public class ThreadRemoveMethod extends BaseMultiThreadMethod<ThreadRemoveMethod
 	}
 
 	@Override
-	protected ThreadRemoveMethod getB() {
+	protected ThreadRemoveMethod getSelf() {
 		return this;
 	}
 

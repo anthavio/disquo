@@ -28,7 +28,7 @@ public class CategoryListMethod extends DisqusCursorMethod<CategoryListMethod, D
 	}
 
 	@Override
-	protected CategoryListMethod getB() {
+	protected CategoryListMethod getSelf() {
 		return this;
 	}
 

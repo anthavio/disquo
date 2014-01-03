@@ -29,7 +29,7 @@ public class PostGetContextMethod extends BaseSingleMultiPostMethod<PostGetConte
 	}
 
 	@Override
-	protected PostGetContextMethod getB() {
+	protected PostGetContextMethod getSelf() {
 		return this;
 	}
 }

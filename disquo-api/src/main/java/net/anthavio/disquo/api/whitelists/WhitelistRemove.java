@@ -30,7 +30,7 @@ public class WhitelistRemove extends BaseForumMethod<WhitelistRemove, DisqusFilt
 	}
 
 	@Override
-	protected WhitelistRemove getB() {
+	protected WhitelistRemove getSelf() {
 		return this;
 	}
 }

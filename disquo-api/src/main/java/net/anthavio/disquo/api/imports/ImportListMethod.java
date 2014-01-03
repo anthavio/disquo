@@ -22,7 +22,7 @@ public class ImportListMethod extends BaseForumListMethod<ImportListMethod, Disq
 	}
 
 	@Override
-	protected ImportListMethod getB() {
+	protected ImportListMethod getSelf() {
 		return this;
 	}
 

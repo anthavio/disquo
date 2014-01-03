@@ -45,7 +45,7 @@ public class BlacklistRemove extends BaseForumListMethod<BlacklistRemove, Disqus
 	}
 
 	@Override
-	protected BlacklistRemove getB() {
+	protected BlacklistRemove getSelf() {
 		return this;
 	}
 }

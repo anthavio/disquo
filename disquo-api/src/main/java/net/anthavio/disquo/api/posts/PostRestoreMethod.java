@@ -16,7 +16,7 @@ public class PostRestoreMethod extends BaseMultiPostMethod<PostRestoreMethod, Di
 	}
 
 	@Override
-	protected PostRestoreMethod getB() {
+	protected PostRestoreMethod getSelf() {
 		return this;
 	}
 

@@ -18,7 +18,7 @@ public abstract class BaseSingleThreadMethod<B extends DisqusMethod<?, T>, T> ex
 
 	public B setThread(QThread thread) {
 		addParam("thread", thread);
-		return getB();
+		return getSelf();
 	}
 
 	public B setThread(long thread) {
@@ -27,7 +27,7 @@ public abstract class BaseSingleThreadMethod<B extends DisqusMethod<?, T>, T> ex
 
 	public B setForum(String forum) {
 		addParam("forum", forum);
-		return getB();
+		return getSelf();
 	}
 
 }
