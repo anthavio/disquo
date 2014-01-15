@@ -1,18 +1,14 @@
 package net.anthavio.disquo.api;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-
 import net.anthavio.disquo.TestInputData;
-import net.anthavio.disquo.api.Disqus;
-import net.anthavio.disquo.api.DisqusServerException;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
+import net.anthavio.httl.HttpSender;
+import net.anthavio.httl.util.FakeSender;
 
 import org.fest.assertions.api.Fail;
 import org.testng.annotations.Test;
-
-import net.anthavio.httl.HttpSender;
-import net.anthavio.httl.util.FakeSender;
 
 /**
  * 
@@ -54,7 +50,7 @@ public class InternalTest {
 
 	private Disqus getDisqus(int httpCode, String responseJson) {
 		HttpSender sender = new FakeSender(httpCode, "application/json; charset=utf-8", responseJson);
-		TestInputData tidata = TestInputData.load("disqus.properties");
+		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		Disqus disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl(), sender);
 		return disqus;
 	}

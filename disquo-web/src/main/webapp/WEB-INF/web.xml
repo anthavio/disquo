@@ -96,17 +96,6 @@
 		<url-pattern>/disqus/*</url-pattern>
 	</servlet-mapping>
 	
-	<servlet>
-		<servlet-name>IltschiRestServlet</servlet-name>
-		<servlet-class>net.anthavio.rest.IltschiRestServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>IltschiRestServlet</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
-
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
