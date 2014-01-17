@@ -11,29 +11,38 @@
 <section layout:fragment="content">
 	<h1>Disqus Browser</h1>
 	
-	<form action="#" th:action="@{/disqus/}" name="FindForm" id="FindForumForm" th:object="${INDEX_CRITERIA}" method="post">
-	<fieldset style="width: 30em;">
-		<dl th:class="${#fields.hasErrors('forumShort')}? 'control-group error'">
-			<dt><label class="control-label" for="forumShort">Forum</label></dt>
-			<dd>
-				<input type="text" th:field="*{forumShort}"/>
-				<span class="help-inline error" th:if="${#fields.hasErrors('forumShort')}" th:errors="*{forumShort}">Forum is invalid</span>
-			</dd>
-		</dl>
-		<dl th:class="${#fields.hasErrors('userName')}? 'control-group error'">
-			<dt><label class="control-label" for="forum">Username</label></dt>
-			<dd>
-				<input type="text" th:field="*{userName}"/>
-				<span class="help-inline error" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username is invalid</span>
-			</dd>
-		</dl>
-	</fieldset>
-	<div>
-		<button type="submit">Show</button>
-	</div>
+	<div class="container">
+	<div class="col-lg-4">
+	<div class="well">
+	<form action="#" class="form-horizontal" th:action="@{/disqus/}" name="FindForm" th:object="${INDEX_CRITERIA}" method="post">
+		<fieldset>
+			<legend>Find</legend>
+			<div class="form-group" th:class="${#fields.hasErrors('forumShort')}? 'form-group has-error'">
+				<label for="forumShort" class="col-lg-2 control-label">Forum</label>
+				<div class="col-lg-10">
+					<input type="text" th:field="*{forumShort}" class="form-control" id="forumShort"/>
+					<span class="help-inline error" th:if="${#fields.hasErrors('forumShort')}" th:errors="*{forumShort}">Forum is invalid</span>
+				</div>
+			</div>
+			
+			<div class="form-group" th:class="${#fields.hasErrors('userName')}? 'form-group has-error'">
+				<label for="userName" class="col-lg-2 control-label">User</label>
+				<div class="col-lg-10">
+					<input type="text" th:field="*{userName}" class="form-control" id="fuserName"/>
+					<span class="help-inline error" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">User name is invalid</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-10 col-lg-offset-2">
+					<button type="reset" class="btn btn-default">Cancel</button>
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</fieldset>
 	</form>
-	
-	
+	</div>
+	</div>
+	</div>
 </section>
 </body>
 </html>

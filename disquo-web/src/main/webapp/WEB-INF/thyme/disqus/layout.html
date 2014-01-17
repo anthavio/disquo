@@ -5,6 +5,7 @@
 	<meta http-equiv="Pragma" content="no-cache"/>
 	<meta http-equiv="Expires" content="-1"/>
 	<meta http-equiv="CACHE-CONTROL" content="NO-CACHE"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
@@ -14,28 +15,39 @@
 	
 	<script src="//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
 	<link href="//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" rel="stylesheet" />
-	
-	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/common.css}" />
+	<!-- http://bootswatch.com/spacelab/ -->
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootstrap.css}" media="screen" />
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootswatch.min.css}" />
 
 	<title>Layout Title</title>
 </head>
 <body>
-	<header layout:fragment="custom-header">
-	<span th:if="${beans.SessionData?.identity?.disqusUser == null}">
-		Anonymous : <a th:href="@{/disqus/identity}" >Select Identity</a>
-	</span>
-	<span th:if="${beans.SessionData?.identity?.disqusUser != null}">
-		User : <a th:href="@{'/disqus/user/' + ${beans.SessionData?.identity?.disqusUser.id}}" th:text="${beans.SessionData?.identity?.disqusUser.name}">User: Name and Id</a>
-		<a th:href="@{/disqus/identity}">Change</a>
-	</span>
-	<a th:href="@{/disqus/logout}">Logout</a>
-	<!--
-		<h1>Layout Title</h1>
-	-->
-	</header>
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+	<div class="navbar-collapse collapse">
+		<ul class="nav navbar-nav" th:if="${beans.SessionData?.identity?.disqusUser == null}">
+			<li><a th:href="@{/disqus/identity}">Select Identity</a></li>
+		</ul>
+		<ul class="nav navbar-nav"  th:if="${beans.SessionData?.identity?.disqusUser != null}">
+			<li>
+				<a th:href="@{'/disqus/user/' + ${beans.SessionData?.identity?.disqusUser.id}}" th:text="'User : '+ ${beans.SessionData?.identity?.disqusUser.name}">User: Name and Id</a>
+			</li>
+			<li><a th:href="@{/disqus/identity}">Change Identity</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a th:href="@{/disqus/logout}">Logout</a></li>
+		</ul>
+		</div>
+	</div>
+	</div>
+	
+	<div class="container">
 	<section layout:fragment="content">
 		<p>Layout Content</p>
 	</section>
+	</div>
+	
 	<footer>
 		<span th:if="${beans.SessionData?.identity?.disqusUser != null}">
 		<a th:href="@{/disqus/forums}" >Forums</a> 

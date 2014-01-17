@@ -23,7 +23,7 @@
 			<a href="" th:href="@{('/disqus/forums')(cursor=${forums.cursor.next})} ">Next</a>
 		</span>
 		
-		<h3>Forums belonging to user <span th:text="${USER_IDENTITY.disqusUser.name}"></span></h3>
+		<h3>Forums belonging to user <span th:text="${beans.SessionData.identity.disqusUser.name}"></span></h3>
 		
 		<table id="forumsTable" th:if="${not #lists.isEmpty(list)}" dt:table="true" dt:paginate="false">
 			<thead>
