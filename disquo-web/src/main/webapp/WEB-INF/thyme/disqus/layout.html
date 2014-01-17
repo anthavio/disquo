@@ -23,30 +23,30 @@
 </head>
 <body>
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
-	<div class="navbar-collapse collapse">
-		<ul class="nav navbar-nav" th:if="${beans.SessionData?.identity?.disqusUser == null}">
-			<li><a th:href="@{/disqus/identity}">Select Identity</a></li>
-		</ul>
-		<ul class="nav navbar-nav"  th:if="${beans.SessionData?.identity?.disqusUser != null}">
-			<li>
-				<a th:href="@{'/disqus/user/' + ${beans.SessionData?.identity?.disqusUser.id}}" th:text="'User : '+ ${beans.SessionData?.identity?.disqusUser.name}">User: Name and Id</a>
-			</li>
-			<li><a th:href="@{/disqus/identity}">Change Identity</a></li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right">
-			<li><a th:href="@{/disqus/logout}">Logout</a></li>
-		</ul>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav" th:if="${beans.SessionData?.identity?.disqusUser == null}">
+				<li><a th:href="@{/disqus/identity}">Select Identity</a></li>
+			</ul>
+			<ul class="nav navbar-nav"  th:if="${beans.SessionData?.identity?.disqusUser != null}">
+				<li>
+					<a th:href="@{'/disqus/user/' + ${beans.SessionData?.identity?.disqusUser.id}}" th:text="'User : '+ ${beans.SessionData?.identity?.disqusUser.name}">User: Name and Id</a>
+				</li>
+				<li><a th:href="@{/disqus/identity}">Change Identity</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a th:href="@{/disqus/logout}">Logout</a></li>
+			</ul>
 		</div>
 	</div>
-	</div>
+</div>
 	
-	<div class="container">
+<div class="container">
 	<section layout:fragment="content">
 		<p>Layout Content</p>
 	</section>
-	</div>
+</div>
 	
 	<footer>
 		<span th:if="${beans.SessionData?.identity?.disqusUser != null}">
