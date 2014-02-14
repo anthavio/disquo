@@ -1,6 +1,6 @@
 package net.anthavio.disquo.browser;
 
-import net.anthavio.jetty.Jetty6Wrapper;
+import net.anthavio.sewer.jetty.Jetty6Wrapper;
 
 /**
  * Main class in IDE

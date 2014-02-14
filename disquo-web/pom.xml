@@ -163,7 +163,7 @@
 		
 		<dependency>
 			<groupId>net.anthavio</groupId>
-			<artifactId>anthavio-jetty</artifactId>
+			<artifactId>anthavio-sewer</artifactId>
 		</dependency>
 		
 		<dependency>

@@ -157,7 +157,7 @@
 		
 		<dependency>
 			<groupId>net.anthavio</groupId>
-			<artifactId>anthavio-jetty</artifactId>
+			<artifactId>anthavio-sewer</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 				
