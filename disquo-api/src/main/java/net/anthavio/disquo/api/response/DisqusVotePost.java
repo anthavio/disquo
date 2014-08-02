@@ -11,7 +11,7 @@ public class DisqusVotePost implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private String id;
 
 	private Integer likesDelta;
 
@@ -55,11 +55,11 @@ public class DisqusVotePost implements Serializable {
 		return true;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

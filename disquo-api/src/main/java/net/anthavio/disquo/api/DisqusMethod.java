@@ -24,7 +24,7 @@ import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 
-import net.anthavio.httl.SenderResponse;
+import net.anthavio.httl.HttlResponse;
 import net.anthavio.httl.util.Cutils;
 import net.anthavio.httl.util.HttpHeaderUtil;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -167,7 +167,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, R>, R> {
 		}
 	}
 
-	public SenderResponse call() {
+	public HttlResponse call() {
 		validate();
 		return this.disqus.callApi(this);
 	}
@@ -187,7 +187,7 @@ public abstract class DisqusMethod<B extends DisqusMethod<?, R>, R> {
 	 * @return Map parsed reposnse
 	 */
 	public Map<String, Object> print(boolean pretty) {
-		SenderResponse response = call();
+		HttlResponse response = call();
 		try {
 			String string = HttpHeaderUtil.readAsString(response);
 			Map<String, Object> json = this.disqus.mapper.readValue(string, Map.class);

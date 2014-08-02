@@ -12,7 +12,6 @@ import net.anthavio.disquo.api.response.DisqusUser.Remote;
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.StringUtils;
 
-
 public class TestInputData {
 
 	private final Properties properties;
@@ -26,6 +25,8 @@ public class TestInputData {
 	private final String accessToken;
 
 	private final long longThreadId;
+
+	private final long threadId;
 
 	private final String forum;
 
@@ -62,6 +63,7 @@ public class TestInputData {
 		this.accessToken = pStr("access_token");
 
 		this.forum = pStr("forum_id");
+		this.threadId = pInt("thread_id");
 		this.longThreadId = pInt("long_thread_id");
 
 		this.admin = new DisqusUser();
@@ -130,6 +132,10 @@ public class TestInputData {
 
 	public long getLongThreadId() {
 		return this.longThreadId;
+	}
+
+	public long getThreadId() {
+		return threadId;
 	}
 
 	public DisqusUser getSsoUser1() {

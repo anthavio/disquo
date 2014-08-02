@@ -61,7 +61,7 @@ public class DisqusForumDeserializer extends JsonDeserializer<DisqusForum> {
 				bean.setAuthor(jp.readValueAs(DisqusUser.class));
 			} else {
 				//throw new DisqusException("Unexpected element '" + field + "'");
-				logger.warn("Unexpected element '" + field + "'");
+				logger.debug("Unexpected element '" + field + "'");
 			}
 		}
 		return bean;

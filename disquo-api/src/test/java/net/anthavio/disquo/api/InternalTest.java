@@ -4,8 +4,9 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import net.anthavio.disquo.TestInputData;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
-import net.anthavio.httl.HttpSender;
-import net.anthavio.httl.util.FakeSender;
+import net.anthavio.httl.HttlSender;
+import net.anthavio.httl.util.MockSenderConfig;
+import net.anthavio.httl.util.MockTransport;
 
 import org.fest.assertions.api.Fail;
 import org.testng.annotations.Test;
@@ -49,7 +50,8 @@ public class InternalTest {
 	}
 
 	private Disqus getDisqus(int httpCode, String responseJson) {
-		HttpSender sender = new FakeSender(httpCode, "application/json; charset=utf-8", responseJson);
+		MockTransport transport = new MockTransport(httpCode, "application/json; charset=utf-8", responseJson);
+		HttlSender sender = new MockSenderConfig(transport).build();
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		Disqus disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl(), sender);
 		return disqus;

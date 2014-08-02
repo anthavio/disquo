@@ -48,7 +48,7 @@ public class DisqusFilterDeserializer extends JsonDeserializer<DisqusFilter> {
 				bean.setCreatedAt(DeserializationUtils.getDate(jp));
 			} else {
 				//throw new DisqusException("Unexpected element '" + field + "'");
-				logger.warn("Unexpected element '" + field + "'");
+				logger.debug("Unexpected element '" + field + "'");
 			}
 		}
 		return bean;

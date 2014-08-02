@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.anthavio.disquo.api.Disqus;
 import net.anthavio.disquo.api.DisqusServerException;
 import net.anthavio.disquo.api.response.TokenResponse;
+import net.anthavio.httl.HttlSender.Parameters;
+import net.anthavio.httl.HttlRequest;
+import net.anthavio.httl.HttlResponse;
+import net.anthavio.httl.util.Cutils;
+import net.anthavio.httl.util.HttpHeaderUtil;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.NullArgumentException;
@@ -21,14 +24,6 @@ import org.apache.commons.lang.UnhandledException;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
-
-import net.anthavio.httl.GetRequest;
-import net.anthavio.httl.HttpSender.Multival;
-import net.anthavio.httl.PostRequest;
-import net.anthavio.httl.SenderResponse;
-import net.anthavio.httl.inout.ResponseBodyExtractor.ExtractedBodyResponse;
-import net.anthavio.httl.util.Cutils;
-import net.anthavio.httl.util.HttpHeaderUtil;
 
 /**
  * 
@@ -94,9 +89,9 @@ public class OauthAuthenticator {
 		params.put("redirect_uri", redirectUrl);
 		params.put("code", code);
 
-		SenderResponse response = null;
+		HttlResponse response = null;
 		try {
-			PostRequest request = this.disqus.getSender().POST(URL_ACCESS_TOKEN).parameters(params)
+			HttlRequest request = this.disqus.getSender().POST(URL_ACCESS_TOKEN).params(params)
 					.header("Content-Type", "application/json").build();
 			response = this.disqus.getSender().execute(request);
 			if (response.getHttpStatusCode() != 200) {
@@ -111,7 +106,7 @@ public class OauthAuthenticator {
 			Cutils.close(response);
 		}
 	}
-	
+
 	/**
 	 * Documentation http://disqus.com/api/docs/auth/
 	 * 
@@ -162,7 +157,6 @@ public class OauthAuthenticator {
 	}
 	*/
 
-
 	/**
 	 * http://disqus.com/api/docs/auth/
 	 * 
@@ -177,7 +171,7 @@ public class OauthAuthenticator {
 	 * "batman" "user_id": "947103743" }
 	 */
 	public TokenResponse getAccessTokenForUser(String username, String password) {
-		Multival params = new Multival();
+		Parameters params = new Parameters();
 		params.add("grant_type", "password");
 		params.add("client_id", this.publicKey);
 		params.add("client_secret", this.secretKey);
@@ -185,7 +179,7 @@ public class OauthAuthenticator {
 
 		String baseAuth = username + ":" + password;
 		String base64password = new String(Base64.encodeBase64(baseAuth.getBytes(Charset.forName("utf-8"))));
-		SenderResponse response = null;
+		HttlResponse response = null;
 		try {
 			response = this.disqus.getSender().POST(URL_ACCESS_TOKEN).header("Authorization", "Basic " + base64password)
 					.execute();
@@ -233,7 +227,7 @@ public class OauthAuthenticator {
 
 		InputStream stream = null;
 		try {
-			SenderResponse response = disqus.getSender().POST(URL_ACCESS_TOKEN).parameters(params).execute();
+			HttlResponse response = disqus.getSender().POST(URL_ACCESS_TOKEN).params(params).execute();
 			if (response.getHttpStatusCode() != 200) {
 				throw new DisqusServerException(response.getHttpStatusCode(), 0, "Some Oauth Error");
 			}

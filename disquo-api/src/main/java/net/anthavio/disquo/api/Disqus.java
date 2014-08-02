@@ -1,5 +1,6 @@
 package net.anthavio.disquo.api;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -37,21 +38,18 @@ import net.anthavio.disquo.api.threads.DisqusThreadsGroup;
 import net.anthavio.disquo.api.trends.DisqusTrendsGroup;
 import net.anthavio.disquo.api.users.DisqusUsersGroup;
 import net.anthavio.disquo.api.whitelists.DisqusWhitelistsGroup;
+import net.anthavio.httl.HttlRequestBuilders.SenderRequestBuilder;
+import net.anthavio.httl.HttlResponse;
+import net.anthavio.httl.HttlSender;
+import net.anthavio.httl.impl.HttpUrlConfig;
+import net.anthavio.httl.util.Cutils;
+import net.anthavio.httl.util.HttpHeaderUtil;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.anthavio.httl.GetRequest;
-import net.anthavio.httl.HttpClient4Sender;
-import net.anthavio.httl.HttpSender;
-import net.anthavio.httl.HttpSender.Multival;
-import net.anthavio.httl.util.Cutils;
-import net.anthavio.httl.util.HttpHeaderUtil;
-import net.anthavio.httl.PostRequest;
-import net.anthavio.httl.SenderRequest;
-import net.anthavio.httl.SenderResponse;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -63,17 +61,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-public class Disqus {
+public class Disqus implements Closeable {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
+	public static final String DEFAULT_API_URL = "https://disqus.com/api/3.0";
+
 	private final String apiPath;
 
 	private final DisqusApplicationKeys keys;
 
-	private final HttpSender sender;
+	private final HttlSender sender;
 
 	protected final ObjectMapper mapper;
 
@@ -93,11 +93,11 @@ public class Disqus {
 		this(keys, apiUrl, null);
 	}
 
-	public Disqus(DisqusApplicationKeys keys, HttpSender sender) {
-		this(keys, null, sender);
+	public Disqus(DisqusApplicationKeys keys, HttlSender sender) {
+		this(keys, DEFAULT_API_URL, sender);
 	}
 
-	public Disqus(DisqusApplicationKeys keys, String apiUrl, HttpSender sender) {
+	public Disqus(DisqusApplicationKeys keys, String apiUrl, HttlSender sender) {
 		if (keys == null) {
 			throw new NullArgumentException("keys");
 		}
@@ -105,9 +105,6 @@ public class Disqus {
 
 		URL url;
 		try {
-			if (apiUrl == null) {
-				apiUrl = "https://disqus.com/api/3.0";
-			}
 			url = new URL(apiUrl);
 			this.apiPath = url.getPath();
 
@@ -120,12 +117,12 @@ public class Disqus {
 			if (url.getPort() != -1) {
 				siteUrl += ":" + url.getPort();
 			}
-			this.sender = new HttpClient4Sender(siteUrl);
+			this.sender = new HttpUrlConfig(siteUrl).build();
 		} else {
 			this.sender = sender;
 		}
 
-		this.mapper = initJackson();
+		this.mapper = buildJacksonMapper();
 	}
 
 	public void close() {
@@ -136,7 +133,7 @@ public class Disqus {
 		}
 	}
 
-	public HttpSender getSender() {
+	public HttlSender getSender() {
 		return this.sender;
 	}
 
@@ -289,7 +286,7 @@ public class Disqus {
 	 * 
 	 * Caller is responsible for closing returned SenderResponse
 	 */
-	protected <B extends DisqusMethod<?, T>, T> SenderResponse callApi(DisqusMethod<B, T> resource) {
+	protected <B extends DisqusMethod<?, T>, T> HttlResponse callApi(DisqusMethod<B, T> resource) {
 		DisqusMethodConfig config = resource.getConfig();
 		boolean tokenSet = resource.isAuthenticated();
 
@@ -345,33 +342,31 @@ public class Disqus {
 	 * 
 	 * Caller is responsible for closing returned SenderResponse
 	 */
-	protected SenderResponse callApi(Http method, String urlFragment, List<Parameter> params) throws IOException {
+	protected HttlResponse callApi(Http method, String urlFragment, List<Parameter> params) throws IOException {
 		if (StringUtils.isBlank(urlFragment)) {
 			throw new IllegalArgumentException("Resource url is invalid: '" + urlFragment + "'");
 		}
+
+		String urlPath = this.apiPath + urlFragment;
 
 		if (params == null) {
 			params = new LinkedList<Parameter>();
 		}
 		params.add(new Parameter("api_key", this.keys.getApiKey()));
-		Multival parameters = new Multival();
-		for (Parameter parameter : params) {
-			parameters.add(parameter.getName(), parameter.getValue());
-		}
 
-		String urlPath = this.apiPath + urlFragment;
-
-		SenderRequest request;
+		SenderRequestBuilder<?> builder;
 		if (method == Http.GET) {
-			request = new GetRequest(urlPath).setParameters(parameters);
+			builder = this.sender.GET(urlPath);
 		} else {
-			request = new PostRequest(urlPath).setParameters(parameters);
+			builder = this.sender.POST(urlPath);
 		}
-
-		SenderResponse response = this.sender.execute(request);
+		for (Parameter parameter : params) {
+			builder.param(parameter.getName(), parameter.getValue());
+		}
+		HttlResponse response = builder.execute();
 
 		if (response.getHttpStatusCode() != 200) {
-			throwException(response);
+			throwException(response, this.mapper);
 		}
 
 		return response;
@@ -439,27 +434,27 @@ public class Disqus {
 	/**
 	 * Parse Disqus JSON response and throw DisqusException
 	 */
-	private void throwException(SenderResponse response) throws DisqusException {
-		String statusLine = response.getHttpStatusMessage() + " " + response.getHttpStatusMessage();
-		String contentHeader = response.getFirstHeader("Content-Type");
-		if (contentHeader == null || !contentHeader.startsWith("application/json")) {
+	public static void throwException(HttlResponse response, ObjectMapper mapper) throws DisqusException {
+		String statusLine = response.getHttpStatusCode() + " " + response.getHttpStatusMessage();
+		String mediaType = response.getMediaType();
+		if (mediaType == null || !mediaType.startsWith("application/json")) {
 			//Not a JSON response
 			try {
 				String errResponeTxt = HttpHeaderUtil.readAsString(response);
 				throw new DisqusException(statusLine + "\n" + errResponeTxt);
 			} catch (IOException iox) {
-				logger.warn("Failed to read error resonse", iox);
+				//logger.warn("Failed to read error resonse", iox);
+				throw new DisqusException(statusLine, iox);
 			} finally {
 				Cutils.close(response);
 			}
-			throw new DisqusException(statusLine);
 		}
 
 		InputStream stream = null;
 		try {
 			stream = response.getStream();
 			if (stream != null) {
-				Map<String, Object> jsonData = this.mapper.readValue(stream, Map.class);
+				Map<String, Object> jsonData = mapper.readValue(stream, Map.class);
 				Integer code = (Integer) jsonData.get("code");
 				String message = (String) jsonData.get("response");
 				throw new DisqusServerException(response.getHttpStatusCode(), code, message);
@@ -469,13 +464,14 @@ public class Disqus {
 		} finally {
 			Cutils.close(response);
 		}
+
 		throw new DisqusException(statusLine);
 	}
 
 	/**
 	 * Initialize Jackson ObjectMapper to conform it Disqus way
 	 */
-	protected ObjectMapper initJackson() {
+	public static ObjectMapper buildJacksonMapper() {
 		SimpleModule module = new SimpleModule("DisqusModule");
 		module.addDeserializer(DisqusForum.class, new DisqusForumDeserializer());
 		module.addDeserializer(DisqusThread.class, new DisqusThreadDeserializer());

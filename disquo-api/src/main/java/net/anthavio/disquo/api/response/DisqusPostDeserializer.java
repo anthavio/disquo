@@ -102,7 +102,7 @@ public class DisqusPostDeserializer extends JsonDeserializer<DisqusPost> {
 				bean.setApproxLoc(jp.readValueAs(DisqusCoordinates.class));
 			} else {
 				//throw new DisqusException("Unexpected element '" + field + "'");
-				this.logger.warn("Unexpected element '" + field + "'");
+				this.logger.debug("Unexpected element '" + field + "'");
 			}
 		}
 		return bean;

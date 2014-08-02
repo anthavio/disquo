@@ -29,6 +29,8 @@ public class DisqusThread implements Serializable {
 
 	private String title;
 
+	private String clean_title;
+
 	private Date createdAt;
 
 	private List<String> identifiers;
@@ -147,6 +149,14 @@ public class DisqusThread implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getCleanTitle() {
+		return clean_title;
+	}
+
+	public void setCleanTitle(String clean_title) {
+		this.clean_title = clean_title;
 	}
 
 	public Object getCategory() {
