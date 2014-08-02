@@ -1,14 +1,18 @@
 package net.anthavio.disquo;
 
+import java.util.List;
+
 import net.anthavio.disquo.api.DisqusApi;
 import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
+import net.anthavio.httl.impl.HttpClient4Config;
 
 public class DisqusApiTest {
 
 	public static void main(String[] args) {
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
-		DisqusApi disqus = new DisqusApi(tidata.getApplicationKeys(), tidata.getUrl());
+		HttpClient4Config config = new HttpClient4Config(tidata.getUrl());
+		DisqusApi disqus = new DisqusApi(tidata.getApplicationKeys(), config);
 		//disqus.getSender().
 		//DisqusResponse<DisqusThread> value = disqus.threads().details(100, null);
 		//System.out.println(value);
@@ -25,9 +29,14 @@ public class DisqusApiTest {
 		if (true)
 			return;
 		*/
+		//postid=1516808009
 		//tidata.getAccessToken()
-		DisqusResponse<DisqusPost> post = disqus.posts().update(tidata.getAccessToken(), 1516808009, "Different pokus");
-		System.out.println(post);
+
+		DisqusResponse<List<DisqusPost>> created = disqus.users().listPosts("anthavio", null);
+		System.out.println(created);
+
+		//disqus.users();
+		//System.out.println(forum2);
 
 		//System.out.println(response.getResponse());
 		disqus.close();

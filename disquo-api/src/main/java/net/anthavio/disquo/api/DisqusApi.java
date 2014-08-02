@@ -46,6 +46,14 @@ public class DisqusApi implements Closeable {
 
 	private final ApiPosts postsApi;
 
+	private final ApiForums forumsApi;
+
+	private final ApiUsers usersApi;
+
+	private final ApiExports exportApi;
+
+	private final ApiImports importApi;
+
 	public DisqusApi(DisqusApplicationKeys keys) {
 		this(keys, null, null);
 	}
@@ -124,6 +132,10 @@ public class DisqusApi implements Closeable {
 		this.whitelistsApi = HttlApiBuilder.build(ApiWhitelists.class, sender);
 		this.blacklistsApi = HttlApiBuilder.build(ApiBlacklists.class, sender);
 		this.postsApi = HttlApiBuilder.build(ApiPosts.class, sender);
+		this.forumsApi = HttlApiBuilder.build(ApiForums.class, sender);
+		this.usersApi = HttlApiBuilder.build(ApiUsers.class, sender);
+		this.exportApi = HttlApiBuilder.build(ApiExports.class, sender);
+		this.importApi = HttlApiBuilder.build(ApiImports.class, sender);
 	}
 
 	public void close() {
@@ -164,5 +176,21 @@ public class DisqusApi implements Closeable {
 
 	public ApiPosts posts() {
 		return postsApi;
+	}
+
+	public ApiForums forums() {
+		return forumsApi;
+	}
+
+	public ApiUsers users() {
+		return usersApi;
+	}
+
+	public ApiExports exports() {
+		return exportApi;
+	}
+
+	public ApiImports imports() {
+		return importApi;
 	}
 }

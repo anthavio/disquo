@@ -10,10 +10,12 @@ import net.anthavio.disquo.api.response.DisqusCategory;
 import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusThread;
+import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
 import net.anthavio.httl.api.HttlCallBuilder;
 import net.anthavio.httl.api.RestApi;
 import net.anthavio.httl.api.RestCall;
 import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.VarSetter;
 
 /**
  * 
@@ -26,8 +28,22 @@ import net.anthavio.httl.api.RestVar;
 public interface ApiCategories {
 
 	@RestCall("POST create.json")
-	public DisqusResponse<DisqusCategory> create(@RestVar(name = "forum", required = true) String forum,
-			@RestVar(name = "title", required = true) String title, @RestVar("default") Boolean isDefault);
+	public DisqusResponse<DisqusCategory> create(@RestVar(name = "access_token", required = true) String token,
+			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "title", required = true) String title,
+			@RestVar(name = "default", setter = BooleanTo1or0Setter.class) Boolean isDefault);
+
+	static class BooleanTo1or0Setter implements VarSetter<Boolean> {
+		@Override
+		public void set(Boolean value, String name, HttlRequestBuilder<?> builder) {
+			if (value != null) {
+				if (value.booleanValue()) {
+					builder.param(name, 1);
+				} else {
+					builder.param(name, 0);
+				}
+			}
+		}
+	}
 
 	@RestCall("GET details.json")
 	public DisqusResponse<DisqusCategory> details(@RestVar("category") long category);

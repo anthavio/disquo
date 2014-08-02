@@ -8,11 +8,13 @@ import net.anthavio.httl.api.RestVar;
 /**
  * Can be used as @RestCall method parameter 
  * 
+ * https://disqus.com/api/docs/cursors/
+ * 
  * @author martin.vanek
  *
  */
 @RestVar
-public class DisqusPage {
+public class DisqusPageable {
 
 	private Date since;
 
@@ -20,17 +22,12 @@ public class DisqusPage {
 
 	private Integer limit;
 
+	private String query;
+
 	private Order order;
 
-	public DisqusPage(String cursor) {
+	public DisqusPageable(String cursor) {
 		this.cursor = cursor;
-	}
-
-	public DisqusPage(Date since, String cursor, Integer limit, Order order) {
-		this.since = since;
-		this.cursor = cursor;
-		this.limit = limit;
-		this.order = order;
 	}
 
 	public Date getSince() {
@@ -55,6 +52,14 @@ public class DisqusPage {
 
 	public void setLimit(Integer limit) {
 		this.limit = limit;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
 	}
 
 	public Order getOrder() {

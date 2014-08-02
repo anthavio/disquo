@@ -3,6 +3,8 @@ package net.anthavio.disquo.api.response;
 import java.io.Serializable;
 import java.util.List;
 
+import net.anthavio.disquo.api.response.DisqusUser.Avatar;
+
 /**
  * 
  * @author martin.vanek
@@ -27,6 +29,8 @@ public class DisqusForum implements Serializable {
 	private List<String> url; // forums/detail returns array
 
 	private DisqusUser author; // related.author
+
+	private Avatar avatar;
 
 	@Override
 	public String toString() {
@@ -122,6 +126,14 @@ public class DisqusForum implements Serializable {
 
 	public void setAuthor(DisqusUser author) {
 		this.author = author;
+	}
+
+	public Avatar getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Avatar avatar) {
+		this.avatar = avatar;
 	}
 
 	public static class ForumSettings implements Serializable {

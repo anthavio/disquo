@@ -6,6 +6,7 @@ import java.util.List;
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
+import net.anthavio.disquo.api.auth.AnonymousData;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
 import net.anthavio.disquo.api.response.DisqusId;
@@ -32,7 +33,7 @@ public interface ApiPosts {
 	 * https://disqus.com/api/docs/posts/approve/
 	 */
 	@RestCall("POST approve.json")
-	public DisqusResponse<List<DisqusId>> approve(@RestVar(name = "access_token", required = true) String token,
+	public DisqusResponse<List<DisqusId>> approve(@RestVar(name = "access_token", required = true) String access_token,
 			@RestVar("post") long... post);
 
 	/**
@@ -43,17 +44,28 @@ public interface ApiPosts {
 	@RestCall("POST create.json")
 	public DisqusResponse<DisqusPost> create(
 			//
-			@RestVar(name = "access_token", required = true) String token,//
+			@RestVar(name = "access_token", required = true) String access_token,//
 			@RestVar("thread") long thread, @RestVar(name = "message", required = true) String message,
 			@RestVar("parent") Long parent);
 
-	// Anonymous
+	/**
+	 * You must allow anonymou commenting in Disqus admin
+	 * https://www.disqus.com/admin/settings/?p=general
+	 * Guest Commenting: Allow guests to comment
+	 * 
+	 * Anonymous comments are allowed under two conditions:
+	 * 
+	 * 1. You're using legacy auth, and your secret key
+	 * 2. You're using your public key, you've come from a verified referrer, you're unauthenticated,
+	 * and the forum you're attempting to create the post on is listed in the applications trusted forums.
+	 * 
+	 * 
+	 */
 	@RestCall("POST create.json")
+	//@RestHeaders("Referer: {http-referer}")
 	public DisqusResponse<DisqusPost> create(
-			//
-			@RestVar(name = "author_name", required = true) String author_name,//
-			@RestVar(name = "author_email", required = true) String author_email,//
-			@RestVar(name = "author_url", required = false) String author_url,//
+			@RestVar(required = true) AnonymousData anonymous,// 
+			//@RestVar(name = "http-referer", required = true) String referer,//
 			@RestVar("thread") long thread, @RestVar(name = "message", required = true) String message,
 			@RestVar("parent") Long parent);
 
@@ -61,8 +73,8 @@ public interface ApiPosts {
 	@RestCall("POST create.json")
 	public DisqusResponse<DisqusPost> create(
 			//
-			@RestVar(name = "api_secret", required = true) String api_secret,//
 			@RestVar(setter = SsoAuthDataSetter.class) SsoAuthData ssoAuth,//
+			@RestVar(name = "api_secret", required = true) String api_secret,//
 			@RestVar("thread") long thread, @RestVar(name = "message", required = true) String message,
 			@RestVar("parent") Long parent);
 
@@ -113,10 +125,10 @@ public interface ApiPosts {
 	 */
 
 	@RestCall("GET list.json")
-	public DisqusResponse<List<DisqusPost>> list(@RestVar DisqusPage page);
+	public DisqusResponse<List<DisqusPost>> list(@RestVar DisqusPageable page);
 
 	@RestCall("GET list.json")
-	public DisqusResponse<List<DisqusPost>> list(@RestVar("thread") long thread, @RestVar DisqusPage page);
+	public DisqusResponse<List<DisqusPost>> list(@RestVar("thread") long thread, @RestVar DisqusPageable page);
 
 	@RestCall("GET list.json")
 	public ListPostsBuilder list();
@@ -148,14 +160,14 @@ public interface ApiPosts {
 	 * https://disqus.com/api/docs/posts/remove/
 	 */
 	@RestCall("POST remove.json")
-	public DisqusResponse<List<DisqusId>> remove(@RestVar(name = "access_token", required = true) String token,
+	public DisqusResponse<List<DisqusId>> remove(@RestVar(name = "access_token", required = true) String access_token,
 			@RestVar(name = "post", required = true) long... post);
 
 	/**
 	 * https://disqus.com/api/docs/posts/restore/
 	 */
 	@RestCall("POST restore.json")
-	public DisqusResponse<List<DisqusId>> restore(@RestVar(name = "access_token", required = true) String token,
+	public DisqusResponse<List<DisqusId>> restore(@RestVar(name = "access_token", required = true) String access_token,
 			@RestVar(name = "post", required = true) long... post);
 
 	/**
@@ -168,7 +180,7 @@ public interface ApiPosts {
 	 * https://disqus.com/api/docs/posts/spam/
 	 */
 	@RestCall("POST spam.json")
-	public DisqusResponse<List<DisqusId>> spam(@RestVar(name = "access_token", required = true) String token,
+	public DisqusResponse<List<DisqusId>> spam(@RestVar(name = "access_token", required = true) String access_token,
 			@RestVar(name = "post", required = true) long... post);
 
 	/**
@@ -181,7 +193,7 @@ public interface ApiPosts {
 	 * https://disqus.com/api/docs/posts/update/
 	 */
 	@RestCall("POST update.json")
-	public DisqusResponse<DisqusPost> update(@RestVar(name = "access_token", required = true) String token,
+	public DisqusResponse<DisqusPost> update(@RestVar(name = "access_token", required = true) String access_token,
 			@RestVar("post") long post, @RestVar(name = "message", required = true) String message);
 
 	/**
