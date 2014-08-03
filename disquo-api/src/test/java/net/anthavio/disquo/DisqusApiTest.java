@@ -1,9 +1,9 @@
 package net.anthavio.disquo;
 
 import java.util.List;
+import java.util.Map;
 
 import net.anthavio.disquo.api.DisqusApi;
-import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.httl.impl.HttpClient4Config;
 
@@ -32,7 +32,7 @@ public class DisqusApiTest {
 		//postid=1516808009
 		//tidata.getAccessToken()
 
-		DisqusResponse<List<DisqusPost>> created = disqus.users().listPosts("anthavio", null);
+		DisqusResponse<List<Map>> created = disqus.imports().list(tidata.getAccessToken(), "dajc", null);
 		System.out.println(created);
 
 		//disqus.users();
