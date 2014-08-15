@@ -3,7 +3,7 @@ package net.anthavio.disquo.api;
 import java.util.Date;
 
 import net.anthavio.disquo.api.ArgumentConfig.Order;
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlVar;
 
 /**
  * Can be used as @RestCall method parameter 
@@ -13,7 +13,7 @@ import net.anthavio.httl.api.RestVar;
  * @author martin.vanek
  *
  */
-@RestVar
+@HttlVar
 public class DisqusPageable {
 
 	private Date since;

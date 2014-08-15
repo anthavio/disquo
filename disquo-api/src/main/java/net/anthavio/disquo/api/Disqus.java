@@ -41,7 +41,7 @@ import net.anthavio.disquo.api.whitelists.DisqusWhitelistsGroup;
 import net.anthavio.httl.HttlRequestBuilders.SenderRequestBuilder;
 import net.anthavio.httl.HttlResponse;
 import net.anthavio.httl.HttlSender;
-import net.anthavio.httl.impl.HttpUrlConfig;
+import net.anthavio.httl.transport.HttpUrlConfig;
 import net.anthavio.httl.util.Cutils;
 import net.anthavio.httl.util.HttpHeaderUtil;
 

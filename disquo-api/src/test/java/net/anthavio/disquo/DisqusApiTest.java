@@ -5,7 +5,7 @@ import java.util.Map;
 
 import net.anthavio.disquo.api.DisqusApi;
 import net.anthavio.disquo.api.response.DisqusResponse;
-import net.anthavio.httl.impl.HttpClient4Config;
+import net.anthavio.httl.transport.HttpClient4Config;
 
 public class DisqusApiTest {
 

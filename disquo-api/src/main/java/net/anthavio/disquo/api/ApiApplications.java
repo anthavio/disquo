@@ -3,8 +3,8 @@ package net.anthavio.disquo.api;
 import java.util.List;
 
 import net.anthavio.disquo.api.response.DisqusResponse;
-import net.anthavio.httl.api.RestCall;
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlVar;
 
 /**
  * 
@@ -13,7 +13,7 @@ import net.anthavio.httl.api.RestVar;
  */
 public interface ApiApplications {
 
-	@RestCall("GET /api/3.0/applications/listUsage.json")
-	public DisqusResponse<List<String[]>> listUsage(@RestVar(name = "access_token", required = true) String token,
-			@RestVar("application") Integer application, @RestVar("days") Integer days);
+	@HttlCall("GET /api/3.0/applications/listUsage.json")
+	public DisqusResponse<List<String[]>> listUsage(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar("application") Integer application, @HttlVar("days") Integer days);
 }

@@ -11,7 +11,6 @@ import java.util.Map;
 import net.anthavio.disquo.api.Disqus;
 import net.anthavio.disquo.api.DisqusServerException;
 import net.anthavio.disquo.api.response.TokenResponse;
-import net.anthavio.httl.HttlSender.Parameters;
 import net.anthavio.httl.HttlRequest;
 import net.anthavio.httl.HttlResponse;
 import net.anthavio.httl.util.Cutils;
@@ -91,7 +90,7 @@ public class OauthAuthenticator {
 
 		HttlResponse response = null;
 		try {
-			HttlRequest request = this.disqus.getSender().POST(URL_ACCESS_TOKEN).params(params)
+			HttlRequest request = this.disqus.getSender().POST(URL_ACCESS_TOKEN).param(params)
 					.header("Content-Type", "application/json").build();
 			response = this.disqus.getSender().execute(request);
 			if (response.getHttpStatusCode() != 200) {
@@ -171,11 +170,11 @@ public class OauthAuthenticator {
 	 * "batman" "user_id": "947103743" }
 	 */
 	public TokenResponse getAccessTokenForUser(String username, String password) {
-		Parameters params = new Parameters();
-		params.add("grant_type", "password");
-		params.add("client_id", this.publicKey);
-		params.add("client_secret", this.secretKey);
-		params.add("scope", "read,write");
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("grant_type", "password");
+		params.put("client_id", this.publicKey);
+		params.put("client_secret", this.secretKey);
+		params.put("scope", "read,write");
 
 		String baseAuth = username + ":" + password;
 		String base64password = new String(Base64.encodeBase64(baseAuth.getBytes(Charset.forName("utf-8"))));
@@ -227,7 +226,7 @@ public class OauthAuthenticator {
 
 		InputStream stream = null;
 		try {
-			HttlResponse response = disqus.getSender().POST(URL_ACCESS_TOKEN).params(params).execute();
+			HttlResponse response = disqus.getSender().POST(URL_ACCESS_TOKEN).param(params).execute();
 			if (response.getHttpStatusCode() != 200) {
 				throw new DisqusServerException(response.getHttpStatusCode(), 0, "Some Oauth Error");
 			}

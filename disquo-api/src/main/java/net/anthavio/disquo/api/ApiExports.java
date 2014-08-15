@@ -1,9 +1,9 @@
 package net.anthavio.disquo.api;
 
 import net.anthavio.disquo.api.response.DisqusResponse;
-import net.anthavio.httl.api.RestApi;
-import net.anthavio.httl.api.RestCall;
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlApi;
+import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlVar;
 
 /**
  * https://disqus.com/api/docs/exports/
@@ -11,7 +11,7 @@ import net.anthavio.httl.api.RestVar;
  * @author vanek
  *
  */
-@RestApi("/exports/")
+@HttlApi("/exports/")
 public interface ApiExports {
 
 	/**
@@ -19,7 +19,7 @@ public interface ApiExports {
 	 * 
 	 * https://help.disqus.com/customer/portal/articles/472149-comments-export
 	 */
-	@RestCall("POST exportForum.json")
-	public DisqusResponse<Void> exportForum(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("POST exportForum.json")
+	public DisqusResponse<Void> exportForum(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "forum", required = true) String forum);
 }

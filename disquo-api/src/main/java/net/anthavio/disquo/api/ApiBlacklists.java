@@ -9,9 +9,9 @@ import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.response.DisqusFilter;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.httl.api.HttlCallBuilder;
-import net.anthavio.httl.api.RestApi;
-import net.anthavio.httl.api.RestCall;
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlApi;
+import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlVar;
 
 /**
  * https://disqus.com/api/docs/blacklists/
@@ -19,16 +19,16 @@ import net.anthavio.httl.api.RestVar;
  * @author martin.vanek
  *
  */
-@RestApi("/blacklists/")
+@HttlApi("/blacklists/")
 public interface ApiBlacklists {
 
-	@RestCall("GET list.json")
-	public DisqusResponse<List<DisqusFilter>> list(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("GET list.json")
+	public DisqusResponse<List<DisqusFilter>> list(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
-	@RestCall("GET list.json")
-	public ListBlacklistBuilder listbuild(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("GET list.json")
+	public ListBlacklistBuilder listbuild(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface ListBlacklistBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusFilter>>> {
 
@@ -48,13 +48,13 @@ public interface ApiBlacklists {
 
 	}
 
-	@RestCall("POST add.json")
-	public DisqusResponse<Void[]> add(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "email", required = true) String email);
+	@HttlCall("POST add.json")
+	public DisqusResponse<Void[]> add(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "email", required = true) String email);
 
-	@RestCall("POST add.json")
-	public BlacklistAddBuilder add(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("POST add.json")
+	public BlacklistAddBuilder add(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface BlacklistAddBuilder extends HttlCallBuilder<DisqusResponse<Void[]>> {
 
@@ -70,16 +70,16 @@ public interface ApiBlacklists {
 
 		public BlacklistAddBuilder email(String... email);
 
-		public BlacklistAddBuilder user(@RestVar("user:username") String... username);
+		public BlacklistAddBuilder user(@HttlVar("user:username") String... username);
 	}
 
-	@RestCall("POST remove.json")
-	public DisqusResponse<Void[]> remove(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "email", required = true) String email);
+	@HttlCall("POST remove.json")
+	public DisqusResponse<Void[]> remove(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "email", required = true) String email);
 
-	@RestCall("POST remove.json")
-	public BlacklistRemoveBuilder remove(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("POST remove.json")
+	public BlacklistRemoveBuilder remove(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface BlacklistRemoveBuilder extends HttlCallBuilder<DisqusResponse<Void[]>> {
 
@@ -91,6 +91,6 @@ public interface ApiBlacklists {
 
 		public BlacklistRemoveBuilder email(String... email);
 
-		public BlacklistRemoveBuilder user(@RestVar("user:username") String... username);
+		public BlacklistRemoveBuilder user(@HttlVar("user:username") String... username);
 	}
 }

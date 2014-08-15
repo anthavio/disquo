@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import net.anthavio.httl.HttlBuilderInterceptor;
+import net.anthavio.httl.HttlBuilderVisitor;
 import net.anthavio.httl.HttlExecutionChain;
-import net.anthavio.httl.HttlExecutionInterceptor;
+import net.anthavio.httl.HttlExecutionFilter;
 import net.anthavio.httl.HttlParameterSetter.ConfigurableParamSetter;
 import net.anthavio.httl.HttlRequest;
 import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
@@ -15,8 +15,8 @@ import net.anthavio.httl.HttlResponse;
 import net.anthavio.httl.HttlSender;
 import net.anthavio.httl.SenderBuilder;
 import net.anthavio.httl.api.HttlApiBuilder;
-import net.anthavio.httl.impl.HttpUrlConfig;
-import net.anthavio.httl.inout.Jackson2Unmarshaller;
+import net.anthavio.httl.marshall.Jackson2Unmarshaller;
+import net.anthavio.httl.transport.HttpUrlConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -66,7 +66,7 @@ public class DisqusApi implements Closeable {
 		this(keys, null, config);
 	}
 
-	public DisqusApi(final DisqusApplicationKeys keys, String apiUrl, SenderBuilder config) {
+	private DisqusApi(final DisqusApplicationKeys keys, String apiUrl, SenderBuilder config) {
 		if (keys == null) {
 			throw new IllegalArgumentException("Null DisqusApplicationKeys");
 		}
@@ -99,19 +99,19 @@ public class DisqusApi implements Closeable {
 
 		config.setParamSetter(new ConfigurableParamSetter("yyyy-MM-dd HH:mm:ss.SSS")); //2010-06-01 12:21:47.000
 
-		config.addBuilderInterceptor(new HttlBuilderInterceptor() {
+		config.addBuilderVisitor(new HttlBuilderVisitor() {
 
 			@Override
-			public void onBuild(HttlRequestBuilder<?> builder) {
+			public void visit(HttlRequestBuilder<?> builder) {
 				builder.param("api_key", keys.getApiKey());
 				//builder.param("access_token", keys.getAccessToken()); //XXX Build AccessTokenLookup abstraction
 			}
 		});
 
-		config.addExecutionInterceptor(new HttlExecutionInterceptor() {
+		config.addExecutionFilter(new HttlExecutionFilter() {
 
 			@Override
-			public HttlResponse intercept(HttlRequest request, HttlExecutionChain chain) throws IOException {
+			public HttlResponse filter(HttlRequest request, HttlExecutionChain chain) throws IOException {
 
 				HttlResponse response = chain.next(request);
 
@@ -123,9 +123,10 @@ public class DisqusApi implements Closeable {
 		});
 
 		this.mapper = Disqus.buildJacksonMapper();
-		Jackson2Unmarshaller factory = new Jackson2Unmarshaller(mapper);
-		config.addResponseUnmarshaller(factory, "application/json");
+		Jackson2Unmarshaller jackson = new Jackson2Unmarshaller(mapper);
+		config.setUnmarshaller(jackson);
 		this.sender = config.build();
+
 		this.appsApi = HttlApiBuilder.build(ApiApplications.class, sender);
 		this.threadsApi = HttlApiBuilder.build(ApiThreads.class, sender);
 		this.categoryApi = HttlApiBuilder.build(ApiCategories.class, sender);

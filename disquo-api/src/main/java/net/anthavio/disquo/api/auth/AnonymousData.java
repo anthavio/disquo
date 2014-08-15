@@ -1,22 +1,22 @@
 package net.anthavio.disquo.api.auth;
 
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlVar;
 
 /**
  * 
  * @author vanek
  *
  */
-@RestVar
+@HttlVar
 public class AnonymousData {
 
-	@RestVar(name = "author_name", required = true)
+	@HttlVar(name = "author_name", required = true)
 	private String name;
 
-	@RestVar(name = "author_email", required = true)
+	@HttlVar(name = "author_email", required = true)
 	private String email;
 
-	@RestVar(name = "author_url")
+	@HttlVar(name = "author_url")
 	private String url;
 
 	AnonymousData() {

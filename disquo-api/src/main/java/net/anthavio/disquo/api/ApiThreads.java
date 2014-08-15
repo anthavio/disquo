@@ -13,9 +13,9 @@ import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusThread;
 import net.anthavio.disquo.api.response.DisqusVoteThread;
 import net.anthavio.httl.api.HttlCallBuilder;
-import net.anthavio.httl.api.RestApi;
-import net.anthavio.httl.api.RestCall;
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlApi;
+import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlVar;
 
 /**
  * https://disqus.com/api/docs/threads/
@@ -24,21 +24,21 @@ import net.anthavio.httl.api.RestVar;
  * 
  *
  */
-@RestApi("/threads/")
+@HttlApi("/threads/")
 public interface ApiThreads {
 
 	/*
 	 * https://disqus.com/api/docs/threads/close/
 	 */
 
-	@RestCall("POST close.json")
-	public DisqusResponse<DisqusId[]> close(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "thread", required = true) long... thread);
+	@HttlCall("POST close.json")
+	public DisqusResponse<DisqusId[]> close(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "thread", required = true) long... thread);
 
-	@RestCall("POST close.json")
-	public DisqusResponse<DisqusId[]> close(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "forum", required = true) String forum,
-			@RestVar(name = "thread:ident", required = true) String... threadIdent);
+	@HttlCall("POST close.json")
+	public DisqusResponse<DisqusId[]> close(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	/*
 	 * https://disqus.com/api/docs/threads/open/
@@ -46,38 +46,38 @@ public interface ApiThreads {
 	 * https://disqus.com/api/docs/threads/restore/
 	 */
 
-	@RestCall("POST open.json")
-	public DisqusResponse<DisqusId[]> open(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "thread", required = true) long... thread);
+	@HttlCall("POST open.json")
+	public DisqusResponse<DisqusId[]> open(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "thread", required = true) long... thread);
 
-	@RestCall("POST open.json")
-	public DisqusResponse<DisqusId[]> open(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "forum", required = true) String forum,
-			@RestVar(name = "thread:ident", required = true) String... threadIdent);
+	@HttlCall("POST open.json")
+	public DisqusResponse<DisqusId[]> open(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	/*
 	 * https://disqus.com/api/docs/threads/create/
 	 */
 
-	@RestCall("POST create.json")
-	public DisqusResponse<DisqusThread> create(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "title", required = true) String title);
+	@HttlCall("POST create.json")
+	public DisqusResponse<DisqusThread> create(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "title", required = true) String title);
 
-	@RestCall("POST create.json")
-	public CreateThreadBuilder createbuilder(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "title", required = true) String title);
+	@HttlCall("POST create.json")
+	public CreateThreadBuilder createbuilder(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "title", required = true) String title);
 
 	public static interface CreateThreadBuilder extends HttlCallBuilder<DisqusResponse<DisqusThread>> {
 
-		public CreateThreadBuilder category(@RestVar("category") long category);
+		public CreateThreadBuilder category(@HttlVar("category") long category);
 
-		public CreateThreadBuilder url(@RestVar("url") String url);
+		public CreateThreadBuilder url(@HttlVar("url") String url);
 
-		public CreateThreadBuilder date(@RestVar("date") Date date);
+		public CreateThreadBuilder date(@HttlVar("date") Date date);
 
-		public CreateThreadBuilder identifier(@RestVar("identifier") String identifier);
+		public CreateThreadBuilder identifier(@HttlVar("identifier") String identifier);
 
-		public CreateThreadBuilder slug(@RestVar("slug") String slug);
+		public CreateThreadBuilder slug(@HttlVar("slug") String slug);
 
 	}
 
@@ -85,12 +85,12 @@ public interface ApiThreads {
 	 * https://disqus.com/api/docs/threads/details/
 	 */
 
-	@RestCall("GET details.json")
-	public DisqusResponse<DisqusThread> details(@RestVar("thread") long thread, @RestVar("related") Related... related);
+	@HttlCall("GET details.json")
+	public DisqusResponse<DisqusThread> details(@HttlVar("thread") long thread, @HttlVar("related") Related... related);
 
-	@RestCall("GET details.json")
-	public DisqusResponse<DisqusThread> details(@RestVar(name = "thread:ident", required = true) String threadIdent,
-			@RestVar(name = "forum", required = true) String forum, @RestVar("related") Related... related);
+	@HttlCall("GET details.json")
+	public DisqusResponse<DisqusThread> details(@HttlVar(name = "thread:ident", required = true) String threadIdent,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar("related") Related... related);
 
 	/*
 	 * https://disqus.com/api/docs/threads/list/
@@ -99,34 +99,34 @@ public interface ApiThreads {
 	//@Operation("GET list.json")
 	//public DisqusResponse<List<DisqusThread>> list(@Param(value = "list", setter = DisqusThreadSetter.class) DisqusThread example);
 
-	@RestCall("GET list.json")
+	@HttlCall("GET list.json")
 	public ListThreadsBuilder list();
 
 	public static interface ListThreadsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusThread>>> {
 
-		public ListThreadsBuilder category(@RestVar("category") long... category);
+		public ListThreadsBuilder category(@HttlVar("category") long... category);
 
-		public ListThreadsBuilder forum(@RestVar("forum") String... forum);
+		public ListThreadsBuilder forum(@HttlVar("forum") String... forum);
 
-		public ListThreadsBuilder thread(@RestVar("thread") long... thread);
+		public ListThreadsBuilder thread(@HttlVar("thread") long... thread);
 
-		public ListThreadsBuilder thread(@RestVar("thread:ident") String... threadIdent);
+		public ListThreadsBuilder thread(@HttlVar("thread:ident") String... threadIdent);
 
-		public ListThreadsBuilder author(@RestVar("author") long... author);
+		public ListThreadsBuilder author(@HttlVar("author") long... author);
 
-		public ListThreadsBuilder author(@RestVar("author:username") String... username);
+		public ListThreadsBuilder author(@HttlVar("author:username") String... username);
 
-		public ListThreadsBuilder since(@RestVar("since") Date since);
+		public ListThreadsBuilder since(@HttlVar("since") Date since);
 
-		public ListThreadsBuilder related(@RestVar("related") Related... related);
+		public ListThreadsBuilder related(@HttlVar("related") Related... related);
 
-		public ListThreadsBuilder include(@RestVar("include") ThreadState... include);
+		public ListThreadsBuilder include(@HttlVar("include") ThreadState... include);
 
-		public ListThreadsBuilder cursor(@RestVar("cursor") String cursor);
+		public ListThreadsBuilder cursor(@HttlVar("cursor") String cursor);
 
-		public ListThreadsBuilder limit(@RestVar("limit") int limit);
+		public ListThreadsBuilder limit(@HttlVar("limit") int limit);
 
-		public ListThreadsBuilder order(@RestVar("order") Order order);
+		public ListThreadsBuilder order(@HttlVar("order") Order order);
 
 	}
 
@@ -134,25 +134,25 @@ public interface ApiThreads {
 	 * https://disqus.com/api/docs/threads/listPosts/
 	 */
 
-	@RestCall("GET listPosts.json")
-	public ListPostsBuilder listPosts(@RestVar("thread") long thread);
+	@HttlCall("GET listPosts.json")
+	public ListPostsBuilder listPosts(@HttlVar("thread") long thread);
 
-	@RestCall("GET listPosts.json")
-	public ListPostsBuilder listPosts(@RestVar("thread:ident") String threadIdent, @RestVar("forum") String forum);
+	@HttlCall("GET listPosts.json")
+	public ListPostsBuilder listPosts(@HttlVar("thread:ident") String threadIdent, @HttlVar("forum") String forum);
 
 	public static interface ListPostsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusPost>>> {
 
-		public ListPostsBuilder since(@RestVar("since") Date since);
+		public ListPostsBuilder since(@HttlVar("since") Date since);
 
-		public ListPostsBuilder related(@RestVar("related") Related... related);
+		public ListPostsBuilder related(@HttlVar("related") Related... related);
 
-		public ListPostsBuilder include(@RestVar("include") PostState... include);
+		public ListPostsBuilder include(@HttlVar("include") PostState... include);
 
-		public ListPostsBuilder cursor(@RestVar("cursor") String cursor);
+		public ListPostsBuilder cursor(@HttlVar("cursor") String cursor);
 
-		public ListPostsBuilder limit(@RestVar("limit") int limit);
+		public ListPostsBuilder limit(@HttlVar("limit") int limit);
 
-		public ListPostsBuilder order(@RestVar("order") Order order);
+		public ListPostsBuilder order(@HttlVar("order") Order order);
 
 	}
 
@@ -160,77 +160,77 @@ public interface ApiThreads {
 	 * https://disqus.com/api/docs/threads/remove/
 	 */
 
-	@RestCall("POST remove.json")
-	public DisqusResponse<DisqusId[]> remove(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar("thread") long... thread);
+	@HttlCall("POST remove.json")
+	public DisqusResponse<DisqusId[]> remove(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar("thread") long... thread);
 
-	@RestCall("POST remove.json")
-	public DisqusResponse<DisqusId[]> remove(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar(name = "forum", required = true) String forum,
-			@RestVar(name = "thread:ident", required = true) String... threadIdent);
+	@HttlCall("POST remove.json")
+	public DisqusResponse<DisqusId[]> remove(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	/*
 	 * https://disqus.com/api/docs/threads/update/
 	 */
 
-	@RestCall("POST update.json")
-	public ThreadUpdateBuilder update(@RestVar(name = "access_token", required = true) String access_token,
-			@RestVar("thread") long thread);
+	@HttlCall("POST update.json")
+	public ThreadUpdateBuilder update(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar("thread") long thread);
 
 	public static interface ThreadUpdateBuilder extends HttlCallBuilder<DisqusResponse<DisqusThread>> {
 
-		public ThreadUpdateBuilder category(@RestVar("category") long category);
+		public ThreadUpdateBuilder category(@HttlVar("category") long category);
 
-		public ThreadUpdateBuilder forum(@RestVar("forum") String forum);
+		public ThreadUpdateBuilder forum(@HttlVar("forum") String forum);
 
-		public ThreadUpdateBuilder title(@RestVar("title") String title);
+		public ThreadUpdateBuilder title(@HttlVar("title") String title);
 
-		public ThreadUpdateBuilder url(@RestVar("url") String url);
+		public ThreadUpdateBuilder url(@HttlVar("url") String url);
 
-		public ThreadUpdateBuilder author(@RestVar("author:username") String author);
+		public ThreadUpdateBuilder author(@HttlVar("author:username") String author);
 
-		public ThreadUpdateBuilder author(@RestVar("author") long author);
+		public ThreadUpdateBuilder author(@HttlVar("author") long author);
 
-		public ThreadUpdateBuilder message(@RestVar("message") String message);
+		public ThreadUpdateBuilder message(@HttlVar("message") String message);
 
-		public ThreadUpdateBuilder identifier(@RestVar("identifier") String identifier);
+		public ThreadUpdateBuilder identifier(@HttlVar("identifier") String identifier);
 
-		public ThreadUpdateBuilder slug(@RestVar("slug") String slug);
+		public ThreadUpdateBuilder slug(@HttlVar("slug") String slug);
 
 	}
 
 	/**
 	 * https://disqus.com/api/docs/threads/set/
 	 */
-	@RestCall("GET set.json")
-	public DisqusResponse<List<DisqusThread>> set(@RestVar("thread") long... thread);
+	@HttlCall("GET set.json")
+	public DisqusResponse<List<DisqusThread>> set(@HttlVar("thread") long... thread);
 
-	@RestCall("GET set.json")
-	public DisqusResponse<List<DisqusThread>> set(@RestVar(name = "forum", required = true) String forum,
-			@RestVar(name = "thread:ident", required = true) String... threadIdent);
+	@HttlCall("GET set.json")
+	public DisqusResponse<List<DisqusThread>> set(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	/**
 	 * https://disqus.com/api/docs/threads/vote/
 	 */
 
-	@RestCall("POST vote.json")
-	public DisqusResponse<DisqusVoteThread> vote(@RestVar("vote") int vote, @RestVar("thread") long thread);
+	@HttlCall("POST vote.json")
+	public DisqusResponse<DisqusVoteThread> vote(@HttlVar("vote") int vote, @HttlVar("thread") long thread);
 
-	@RestCall("POST vote.json")
-	public DisqusResponse<DisqusVoteThread> vote(@RestVar("vote") int vote, @RestVar("threadLident") String threadIdent,
-			@RestVar("forum") String forum);
+	@HttlCall("POST vote.json")
+	public DisqusResponse<DisqusVoteThread> vote(@HttlVar("vote") int vote, @HttlVar("threadLident") String threadIdent,
+			@HttlVar("forum") String forum);
 
 	/**
 	 * https://disqus.com/api/docs/threads/subscribe/
 	 */
 
-	@RestCall("POST subscribe.json")
-	public void subscribe(@RestVar("thread") long thread, @RestVar("email") String email);
+	@HttlCall("POST subscribe.json")
+	public void subscribe(@HttlVar("thread") long thread, @HttlVar("email") String email);
 
 	/**
 	 * https://disqus.com/api/docs/threads/unsubscribe/
 	 */
 
-	@RestCall("POST unsubscribe.json")
-	public void unsubscribe(@RestVar("thread") long thread, @RestVar("email") String email);
+	@HttlCall("POST unsubscribe.json")
+	public void unsubscribe(@HttlVar("thread") long thread, @HttlVar("email") String email);
 }

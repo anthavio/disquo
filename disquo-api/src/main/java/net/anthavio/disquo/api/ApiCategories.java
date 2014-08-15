@@ -12,9 +12,9 @@ import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusThread;
 import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
 import net.anthavio.httl.api.HttlCallBuilder;
-import net.anthavio.httl.api.RestApi;
-import net.anthavio.httl.api.RestCall;
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlApi;
+import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlVar;
 import net.anthavio.httl.api.VarSetter;
 
 /**
@@ -24,13 +24,13 @@ import net.anthavio.httl.api.VarSetter;
  * @author martin.vanek
  *
  */
-@RestApi("/categories/")
+@HttlApi("/categories/")
 public interface ApiCategories {
 
-	@RestCall("POST create.json")
-	public DisqusResponse<DisqusCategory> create(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "title", required = true) String title,
-			@RestVar(name = "default", setter = BooleanTo1or0Setter.class) Boolean isDefault);
+	@HttlCall("POST create.json")
+	public DisqusResponse<DisqusCategory> create(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "title", required = true) String title,
+			@HttlVar(name = "default", setter = BooleanTo1or0Setter.class) Boolean isDefault);
 
 	static class BooleanTo1or0Setter implements VarSetter<Boolean> {
 		@Override
@@ -45,18 +45,18 @@ public interface ApiCategories {
 		}
 	}
 
-	@RestCall("GET details.json")
-	public DisqusResponse<DisqusCategory> details(@RestVar("category") long category);
+	@HttlCall("GET details.json")
+	public DisqusResponse<DisqusCategory> details(@HttlVar("category") long category);
 
-	@RestCall("GET list.json")
-	public DisqusResponse<List<DisqusCategory>> list(@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("GET list.json")
+	public DisqusResponse<List<DisqusCategory>> list(@HttlVar(name = "forum", required = true) String forum);
 
-	@RestCall("GET list.json")
-	public DisqusResponse<List<DisqusCategory>> list(@RestVar(name = "forum", required = true) String forum,
-			@RestVar("cursor") String cursor, @RestVar("limit") Integer limit, @RestVar("order") Order order);
+	@HttlCall("GET list.json")
+	public DisqusResponse<List<DisqusCategory>> list(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar("cursor") String cursor, @HttlVar("limit") Integer limit, @HttlVar("order") Order order);
 
-	@RestCall("GET listPosts.json")
-	public ListPostsBuilder listPosts(@RestVar("category") long category);
+	@HttlCall("GET listPosts.json")
+	public ListPostsBuilder listPosts(@HttlVar("category") long category);
 
 	public static interface ListPostsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusPost>>> {
 
@@ -76,8 +76,8 @@ public interface ApiCategories {
 
 	}
 
-	@RestCall("GET listThreads.json")
-	public ListThreadsBuilder listThreads(@RestVar("category") long category);
+	@HttlCall("GET listThreads.json")
+	public ListThreadsBuilder listThreads(@HttlVar("category") long category);
 
 	public static interface ListThreadsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusThread>>> {
 

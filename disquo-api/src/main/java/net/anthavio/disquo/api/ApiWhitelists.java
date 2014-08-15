@@ -9,9 +9,9 @@ import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.response.DisqusFilter;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.httl.api.HttlCallBuilder;
-import net.anthavio.httl.api.RestApi;
-import net.anthavio.httl.api.RestCall;
-import net.anthavio.httl.api.RestVar;
+import net.anthavio.httl.api.HttlApi;
+import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlVar;
 
 /**
  * https://disqus.com/api/docs/whitelists/
@@ -19,16 +19,16 @@ import net.anthavio.httl.api.RestVar;
  * @author martin.vanek
  *
  */
-@RestApi("/whitelists/")
+@HttlApi("/whitelists/")
 public interface ApiWhitelists {
 
-	@RestCall("GET list.json")
-	public DisqusResponse<List<DisqusFilter>> list(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("GET list.json")
+	public DisqusResponse<List<DisqusFilter>> list(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
-	@RestCall("GET list.json")
-	public ListWhitelistBuilder listbuild(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("GET list.json")
+	public ListWhitelistBuilder listbuild(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface ListWhitelistBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusFilter>>> {
 
@@ -48,13 +48,13 @@ public interface ApiWhitelists {
 
 	}
 
-	@RestCall("POST add.json")
-	public DisqusResponse<Void[]> add(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "email", required = true) String email);
+	@HttlCall("POST add.json")
+	public DisqusResponse<Void[]> add(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "email", required = true) String email);
 
-	@RestCall("POST add.json")
-	public WhitelistAddBuilder add(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("POST add.json")
+	public WhitelistAddBuilder add(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface WhitelistAddBuilder extends HttlCallBuilder<DisqusResponse<Void[]>> {
 
@@ -62,21 +62,21 @@ public interface ApiWhitelists {
 
 		public WhitelistAddBuilder email(String... email);
 
-		public WhitelistAddBuilder user(@RestVar("user:username") String... username);
+		public WhitelistAddBuilder user(@HttlVar("user:username") String... username);
 	}
 
-	@RestCall("POST remove.json")
-	public DisqusResponse<Void[]> remove(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum, @RestVar(name = "email", required = true) String email);
+	@HttlCall("POST remove.json")
+	public DisqusResponse<Void[]> remove(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "email", required = true) String email);
 
-	@RestCall("POST remove.json")
-	public WhitelistRemoveBuilder remove(@RestVar(name = "access_token", required = true) String token,
-			@RestVar(name = "forum", required = true) String forum);
+	@HttlCall("POST remove.json")
+	public WhitelistRemoveBuilder remove(@HttlVar(name = "access_token", required = true) String token,
+			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface WhitelistRemoveBuilder extends HttlCallBuilder<DisqusResponse<Void[]>> {
 
 		public WhitelistRemoveBuilder email(String... email);
 
-		public WhitelistRemoveBuilder user(@RestVar("user:username") String... username);
+		public WhitelistRemoveBuilder user(@HttlVar("user:username") String... username);
 	}
 }
