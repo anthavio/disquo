@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import net.anthavio.httl.HttlBuilder;
 import net.anthavio.httl.HttlBuilderVisitor;
 import net.anthavio.httl.HttlExecutionChain;
 import net.anthavio.httl.HttlExecutionFilter;
@@ -13,10 +14,9 @@ import net.anthavio.httl.HttlRequest;
 import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
 import net.anthavio.httl.HttlResponse;
 import net.anthavio.httl.HttlSender;
-import net.anthavio.httl.SenderBuilder;
+import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.httl.api.HttlApiBuilder;
 import net.anthavio.httl.marshall.Jackson2Unmarshaller;
-import net.anthavio.httl.transport.HttpUrlConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,11 +62,11 @@ public class DisqusApi implements Closeable {
 		this(keys, apiUrl, null);
 	}
 
-	public DisqusApi(DisqusApplicationKeys keys, SenderBuilder config) {
+	public DisqusApi(DisqusApplicationKeys keys, SenderConfigurer config) {
 		this(keys, null, config);
 	}
 
-	private DisqusApi(final DisqusApplicationKeys keys, String apiUrl, SenderBuilder config) {
+	private DisqusApi(final DisqusApplicationKeys keys, String apiUrl, SenderConfigurer config) {
 		if (keys == null) {
 			throw new IllegalArgumentException("Null DisqusApplicationKeys");
 		}
@@ -89,7 +89,7 @@ public class DisqusApi implements Closeable {
 				siteUrl += ":" + url.getPort();
 			}
 			siteUrl += url.getPath();
-			config = new HttpUrlConfig(siteUrl);
+			config = HttlBuilder.httpUrl(siteUrl).sender();
 		}
 
 		//config.setHeader("Content-Type", "application/json; charset=utf-8");

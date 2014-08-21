@@ -12,7 +12,7 @@ public class DisqusApiTest {
 	public static void main(String[] args) {
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		HttpClient4Config config = new HttpClient4Config(tidata.getUrl());
-		DisqusApi disqus = new DisqusApi(tidata.getApplicationKeys(), config);
+		DisqusApi disqus = new DisqusApi(tidata.getApplicationKeys(), config.sender());
 		//disqus.getSender().
 		//DisqusResponse<DisqusThread> value = disqus.threads().details(100, null);
 		//System.out.println(value);

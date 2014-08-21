@@ -41,7 +41,6 @@ import net.anthavio.disquo.api.whitelists.DisqusWhitelistsGroup;
 import net.anthavio.httl.HttlRequestBuilders.SenderRequestBuilder;
 import net.anthavio.httl.HttlResponse;
 import net.anthavio.httl.HttlSender;
-import net.anthavio.httl.transport.HttpUrlConfig;
 import net.anthavio.httl.util.Cutils;
 import net.anthavio.httl.util.HttpHeaderUtil;
 
@@ -117,7 +116,7 @@ public class Disqus implements Closeable {
 			if (url.getPort() != -1) {
 				siteUrl += ":" + url.getPort();
 			}
-			this.sender = new HttpUrlConfig(siteUrl).build();
+			this.sender = HttlSender.with(siteUrl).build();
 		} else {
 			this.sender = sender;
 		}

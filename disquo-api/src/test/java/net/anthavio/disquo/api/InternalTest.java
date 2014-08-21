@@ -5,7 +5,7 @@ import net.anthavio.disquo.TestInputData;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
 import net.anthavio.httl.HttlSender;
-import net.anthavio.httl.util.MockSenderConfig;
+import net.anthavio.httl.util.MockTransConfig;
 import net.anthavio.httl.util.MockTransport;
 
 import org.fest.assertions.api.Fail;
@@ -51,7 +51,7 @@ public class InternalTest {
 
 	private Disqus getDisqus(int httpCode, String responseJson) {
 		MockTransport transport = new MockTransport(httpCode, "application/json; charset=utf-8", responseJson);
-		HttlSender sender = new MockSenderConfig(transport).build();
+		HttlSender sender = new MockTransConfig(transport).sender().build();
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		Disqus disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl(), sender);
 		return disqus;
