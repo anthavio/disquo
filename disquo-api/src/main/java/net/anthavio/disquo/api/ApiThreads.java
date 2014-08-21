@@ -3,18 +3,21 @@ package net.anthavio.disquo.api;
 import java.util.Date;
 import java.util.List;
 
+import net.anthavio.disquo.api.ApiPosts.VoteSetter;
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.ArgumentConfig.ThreadState;
+import net.anthavio.disquo.api.ArgumentConfig.Vote;
 import net.anthavio.disquo.api.response.DisqusId;
 import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusThread;
 import net.anthavio.disquo.api.response.DisqusVoteThread;
-import net.anthavio.httl.api.HttlCallBuilder;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlCallBuilder;
+import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 
 /**
@@ -32,8 +35,17 @@ public interface ApiThreads {
 	 */
 
 	@HttlCall("POST close.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> close(@HttlVar(name = "thread", required = true) long... thread);
+
+	@HttlCall("POST close.json")
 	public DisqusResponse<DisqusId[]> close(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "thread", required = true) long... thread);
+
+	@HttlCall("POST close.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> close(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	@HttlCall("POST close.json")
 	public DisqusResponse<DisqusId[]> close(@HttlVar(name = "access_token", required = true) String access_token,
@@ -43,12 +55,20 @@ public interface ApiThreads {
 	/*
 	 * https://disqus.com/api/docs/threads/open/
 	 * 
-	 * https://disqus.com/api/docs/threads/restore/
 	 */
+
+	@HttlCall("POST open.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> open(@HttlVar(name = "thread", required = true) long... thread);
 
 	@HttlCall("POST open.json")
 	public DisqusResponse<DisqusId[]> open(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "thread", required = true) long... thread);
+
+	@HttlCall("POST open.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> open(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	@HttlCall("POST open.json")
 	public DisqusResponse<DisqusId[]> open(@HttlVar(name = "access_token", required = true) String access_token,
@@ -60,11 +80,21 @@ public interface ApiThreads {
 	 */
 
 	@HttlCall("POST create.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusThread> create(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "title", required = true) String title);
+
+	@HttlCall("POST create.json")
 	public DisqusResponse<DisqusThread> create(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "title", required = true) String title);
 
 	@HttlCall("POST create.json")
-	public CreateThreadBuilder createbuilder(@HttlVar(name = "access_token", required = true) String access_token,
+	@HttlHeaders("X!-AUTH: true")
+	public CreateThreadBuilder createBuilder(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "title", required = true) String title);
+
+	@HttlCall("POST create.json")
+	public CreateThreadBuilder createBuilder(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "title", required = true) String title);
 
 	public static interface CreateThreadBuilder extends HttlCallBuilder<DisqusResponse<DisqusThread>> {
@@ -74,6 +104,8 @@ public interface ApiThreads {
 		public CreateThreadBuilder url(@HttlVar("url") String url);
 
 		public CreateThreadBuilder date(@HttlVar("date") Date date);
+
+		public CreateThreadBuilder message(@HttlVar("message") String message);
 
 		public CreateThreadBuilder identifier(@HttlVar("identifier") String identifier);
 
@@ -161,8 +193,17 @@ public interface ApiThreads {
 	 */
 
 	@HttlCall("POST remove.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> remove(@HttlVar("thread") long... thread);
+
+	@HttlCall("POST remove.json")
 	public DisqusResponse<DisqusId[]> remove(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar("thread") long... thread);
+
+	@HttlCall("POST remove.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> remove(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	@HttlCall("POST remove.json")
 	public DisqusResponse<DisqusId[]> remove(@HttlVar(name = "access_token", required = true) String access_token,
@@ -170,8 +211,34 @@ public interface ApiThreads {
 			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
 
 	/*
+	 * https://disqus.com/api/docs/threads/restore/
+	 */
+
+	@HttlCall("POST restore.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> restore(@HttlVar(name = "thread", required = true) long... thread);
+
+	@HttlCall("POST restore.json")
+	public DisqusResponse<DisqusId[]> restore(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "thread", required = true) long... thread);
+
+	@HttlCall("POST restore.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId[]> restore(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
+
+	@HttlCall("POST restore.json")
+	public DisqusResponse<DisqusId[]> restore(@HttlVar(name = "access_token", required = true) String access_token,
+			@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "thread:ident", required = true) String... threadIdent);
+
+	/*
 	 * https://disqus.com/api/docs/threads/update/
 	 */
+
+	@HttlCall("POST update.json")
+	@HttlHeaders("X!-AUTH: true")
+	public ThreadUpdateBuilder update(@HttlVar("thread") long thread);
 
 	@HttlCall("POST update.json")
 	public ThreadUpdateBuilder update(@HttlVar(name = "access_token", required = true) String access_token,
@@ -214,11 +281,13 @@ public interface ApiThreads {
 	 */
 
 	@HttlCall("POST vote.json")
-	public DisqusResponse<DisqusVoteThread> vote(@HttlVar("vote") int vote, @HttlVar("thread") long thread);
+	public DisqusResponse<DisqusVoteThread> vote(
+			@HttlVar(name = "vote", required = true, setter = VoteSetter.class) Vote vote, @HttlVar("thread") long thread);
 
 	@HttlCall("POST vote.json")
-	public DisqusResponse<DisqusVoteThread> vote(@HttlVar("vote") int vote, @HttlVar("threadLident") String threadIdent,
-			@HttlVar("forum") String forum);
+	public DisqusResponse<DisqusVoteThread> vote(
+			@HttlVar(name = "vote", required = true, setter = VoteSetter.class) Vote vote,
+			@HttlVar("threadLident") String threadIdent, @HttlVar("forum") String forum);
 
 	/**
 	 * https://disqus.com/api/docs/threads/subscribe/

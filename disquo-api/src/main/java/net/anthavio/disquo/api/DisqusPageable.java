@@ -16,13 +16,15 @@ import net.anthavio.httl.api.HttlVar;
 @HttlVar
 public class DisqusPageable {
 
-	private Date since;
+	private Date since; //when items are ordered by date - XOR with since_id
+
+	private Long since_id; //when items are ordered by id - XOR with since
 
 	private String cursor;
 
 	private Integer limit;
 
-	private String query;
+	private String query; //not for every operation
 
 	private Order order;
 
@@ -36,6 +38,14 @@ public class DisqusPageable {
 
 	public void setSince(Date since) {
 		this.since = since;
+	}
+
+	public Long getSince_id() {
+		return since_id;
+	}
+
+	public void setSince_id(Long since_id) {
+		this.since_id = since_id;
 	}
 
 	public String getCursor() {

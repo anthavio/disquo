@@ -15,9 +15,10 @@ import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusThread;
 import net.anthavio.disquo.api.response.DisqusUser;
-import net.anthavio.httl.api.HttlCallBuilder;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlCallBuilder;
+import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 
 /**
@@ -34,9 +35,19 @@ public interface ApiForums {
 	 */
 
 	@HttlCall("POST addModerator.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "user:username", required = true) String username);
+
+	@HttlCall("POST addModerator.json")
 	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "forum", required = true) String forum,
 			@HttlVar(name = "user:username", required = true) String username);
+
+	@HttlCall("POST addModerator.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "user", required = true) long user);
 
 	@HttlCall("POST addModerator.json")
 	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "access_token", required = true) String access_token,
@@ -50,6 +61,10 @@ public interface ApiForums {
 	public DisqusResponse<DisqusId> removeModerator(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "moderator", required = true) long moderator);
 
+	@HttlCall("POST removeModerator.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusId> removeModerator(@HttlVar(name = "moderator", required = true) long moderator);
+
 	/*
 	 * https://disqus.com/api/docs/forums/create/
 	 */
@@ -57,6 +72,12 @@ public interface ApiForums {
 	@HttlCall("POST create.json")
 	public DisqusResponse<DisqusForum> create(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "name", required = true) String name,
+			@HttlVar(name = "short_name", required = true) String short_name,
+			@HttlVar(name = "website", required = true) String website);
+
+	@HttlCall("POST create.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusForum> create(@HttlVar(name = "name", required = true) String name,
 			@HttlVar(name = "short_name", required = true) String short_name,
 			@HttlVar(name = "website", required = true) String website);
 
@@ -71,6 +92,13 @@ public interface ApiForums {
 	@HttlCall("GET listCategories.json")
 	public DisqusResponse<List<DisqusCategory>> listCategories(
 			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPageable page);
+
+	//list...
+
+	@HttlCall("GET listModerators.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusModerator>> listModerators(
+			@HttlVar(name = "forum", required = true) String short_name);
 
 	@HttlCall("GET listModerators.json")
 	public DisqusResponse<List<DisqusModerator>> listModerators(

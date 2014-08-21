@@ -11,9 +11,10 @@ import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusThread;
 import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
-import net.anthavio.httl.api.HttlCallBuilder;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlCallBuilder;
+import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 import net.anthavio.httl.api.VarSetter;
 
@@ -26,6 +27,12 @@ import net.anthavio.httl.api.VarSetter;
  */
 @HttlApi("/categories/")
 public interface ApiCategories {
+
+	@HttlCall("POST create.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusCategory> create(@HttlVar(name = "forum", required = true) String forum,
+			@HttlVar(name = "title", required = true) String title,
+			@HttlVar(name = "default", setter = BooleanTo1or0Setter.class) Boolean isDefault);
 
 	@HttlCall("POST create.json")
 	public DisqusResponse<DisqusCategory> create(@HttlVar(name = "access_token", required = true) String token,

@@ -3,6 +3,7 @@ package net.anthavio.disquo.api;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 
 /**
@@ -13,6 +14,10 @@ import net.anthavio.httl.api.HttlVar;
  */
 @HttlApi("/exports/")
 public interface ApiExports {
+
+	@HttlCall("POST exportForum.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<Void> exportForum(@HttlVar(name = "forum", required = true) String forum);
 
 	/**
 	 * https://www.disqus.com/admin/discussions/export/

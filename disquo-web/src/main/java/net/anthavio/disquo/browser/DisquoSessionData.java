@@ -8,7 +8,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import net.anthavio.disquo.api.Disqus;
+import net.anthavio.disquo.api.DisqusApi;
 import net.anthavio.disquo.api.DisqusApplicationKeys;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
@@ -20,7 +20,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-
 
 /**
  * In cloud, all session values must be strictly Sereializable because cloud server instances 
@@ -39,7 +38,7 @@ public class DisquoSessionData implements Serializable {
 
 	private DisqusApplicationKeys applicationKeys;
 
-	private transient Disqus driver; //cannot be Serializable
+	private transient DisqusApi driver; //cannot be Serializable
 
 	private UserIdentityForm identity;
 
@@ -70,7 +69,7 @@ public class DisquoSessionData implements Serializable {
 				properties.load(stream);
 				applicationKeys = DisqusApplicationKeys.init(properties, "disqus_api_key", "disqus_api_secret",
 						"disqus_access_token");
-				driver = new Disqus(applicationKeys);
+				driver = new DisqusApi(applicationKeys);
 			} catch (Exception x) {
 				logger.warn("Oh crap!", x);
 			} finally {
@@ -83,7 +82,7 @@ public class DisquoSessionData implements Serializable {
 		}
 	}
 
-	public Disqus getDriver() {
+	public DisqusApi getDriver() {
 		return driver;
 	}
 
@@ -118,7 +117,7 @@ public class DisquoSessionData implements Serializable {
 			if (this.driver != null) {
 				driver.close();
 			}
-			driver = new Disqus(applicationKeys);
+			driver = new DisqusApi(applicationKeys);
 		}
 	}
 
@@ -134,7 +133,7 @@ public class DisquoSessionData implements Serializable {
 		stream.defaultReadObject();
 		//init transient Disqus
 		if (applicationKeys != null) {
-			driver = new Disqus(applicationKeys);
+			driver = new DisqusApi(applicationKeys);
 		}
 	}
 

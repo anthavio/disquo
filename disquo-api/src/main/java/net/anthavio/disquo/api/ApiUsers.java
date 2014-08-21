@@ -9,6 +9,7 @@ import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusUser;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 
 /**
@@ -24,6 +25,11 @@ public interface ApiUsers {
 	 * For taken or illegal usernames it returns http 400 and response
 	 * "{"code":2,"response":"Invalid argument, 'username': Username already exists."}"
 	 */
+	@HttlCall("POST checkUsername.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<String> checkUsername(@HttlVar(name = "username", required = true) String username)
+			throws DisqusServerException;
+
 	@HttlCall("POST checkUsername.json")
 	public DisqusResponse<String> checkUsername(@HttlVar(name = "access_token", required = true) String access_token,
 			@HttlVar(name = "username", required = true) String username) throws DisqusServerException;

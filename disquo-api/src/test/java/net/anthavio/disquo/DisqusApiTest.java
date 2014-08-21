@@ -1,9 +1,9 @@
 package net.anthavio.disquo;
 
 import java.util.List;
-import java.util.Map;
 
 import net.anthavio.disquo.api.DisqusApi;
+import net.anthavio.disquo.api.response.DisqusImportDetails;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.httl.transport.HttpClient4Config;
 
@@ -13,6 +13,10 @@ public class DisqusApiTest {
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		HttpClient4Config config = new HttpClient4Config(tidata.getUrl());
 		DisqusApi disqus = new DisqusApi(tidata.getApplicationKeys(), config.sender());
+
+		DisqusResponse<List<String[]>> listUsage = disqus.applications().listUsage();
+		System.out.println(listUsage);
+
 		//disqus.getSender().
 		//DisqusResponse<DisqusThread> value = disqus.threads().details(100, null);
 		//System.out.println(value);
@@ -32,7 +36,7 @@ public class DisqusApiTest {
 		//postid=1516808009
 		//tidata.getAccessToken()
 
-		DisqusResponse<List<Map>> created = disqus.imports().list(tidata.getAccessToken(), "dajc", null);
+		DisqusResponse<List<DisqusImportDetails>> created = disqus.imports().list(tidata.getAccessToken(), "dajc", null);
 		System.out.println(created);
 
 		//disqus.users();
