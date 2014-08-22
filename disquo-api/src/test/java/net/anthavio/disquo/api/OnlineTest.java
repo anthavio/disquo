@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.anthavio.disquo.TestInputData;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
+import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.response.DisqusCategory;
 import net.anthavio.disquo.api.response.DisqusFilter;
 import net.anthavio.disquo.api.response.DisqusForum;
@@ -46,7 +47,7 @@ public class OnlineTest {
 
 	@Test
 	public void online_applications() {
-		DisqusResponse<List<String[]>> listUsage = this.disqus.applications().listUsage(token);
+		DisqusResponse<List<String[]>> listUsage = this.disqus.applications().listUsage(Identity.access(token));
 		assertThat(listUsage.getCode()).isEqualTo(0);
 		assertThat(listUsage.getResponse()).isNotNull();
 	}
@@ -105,13 +106,13 @@ public class OnlineTest {
 
 	@Test
 	public void online_blacklist() {
-		DisqusResponse<List<DisqusFilter>> list = this.disqus.blacklists().list(token, this.forum);
+		DisqusResponse<List<DisqusFilter>> list = this.disqus.blacklists().list(this.forum);
 		assertThat(list.getCode()).isEqualTo(0);
 	}
 
 	@Test
 	public void online_whitelist() {
-		DisqusResponse<List<DisqusFilter>> list = this.disqus.whitelists().list(token, this.forum);
+		DisqusResponse<List<DisqusFilter>> list = this.disqus.whitelists().list(this.forum);
 		assertThat(list.getCode()).isEqualTo(0);
 	}
 }

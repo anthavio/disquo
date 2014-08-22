@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.anthavio.disquo.api.ArgumentConfig.Related;
+import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.response.DisqusForum;
 import net.anthavio.disquo.api.response.DisqusPost;
@@ -63,7 +64,7 @@ public class Examples {
 		DisqusApi disqus = new DisqusApi(keys);
 		String cursor = null;
 		do {
-			DisqusPageable page = new DisqusPageable(cursor);
+			DisqusPage page = new DisqusPage(cursor);
 			DisqusResponse<List<DisqusPost>> response = disqus.posts().list(threadId, page);
 			List<DisqusPost> posts = response.getResponse();
 			for (DisqusPost post : posts) {
@@ -115,7 +116,7 @@ public class Examples {
 
 		//Server-Side OAuth
 
-		String disqusOauthUrl = oauth.getAuthUrl("read,write", "some-random-to-check");
+		String disqusOauthUrl = oauth.getAuthorizationUrl("read,write", "some-random-to-check");
 		//Use HttpServletResponse to redirect user to Disqus Login page - servletResponse.sendRedirect(disqusOauthUrl);
 
 		//If the user Logs in successfully on Disqus site, he will redirected back to the yourCallbackUrl with code http parameter
@@ -125,7 +126,7 @@ public class Examples {
 		//Use access_token to authenticate calls as user 
 		String userAccessToken = tokenResponse.getAccess_token();
 		//User identity is used to create post
-		disqus.posts().create(userAccessToken, threadId, "Hello world " + new Date(), null);
+		disqus.posts().create(Identity.access(userAccessToken), threadId, "Hello world " + new Date(), null);
 
 		//Single Sign-On Authentication
 

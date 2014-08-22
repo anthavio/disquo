@@ -7,6 +7,8 @@ import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.ArgumentConfig.ThreadState;
+import net.anthavio.disquo.api.DisqusApi.Identity;
+import net.anthavio.disquo.api.DisqusApi.IdentitySetter;
 import net.anthavio.disquo.api.response.DisqusCategory;
 import net.anthavio.disquo.api.response.DisqusForum;
 import net.anthavio.disquo.api.response.DisqusId;
@@ -27,7 +29,7 @@ import net.anthavio.httl.api.HttlVar;
  * @author martin.vanek
  *
  */
-@HttlApi("/forums/")
+@HttlApi(uri = "/api/3.0/forums/", setters = IdentitySetter.class)
 public interface ApiForums {
 
 	/*
@@ -40,7 +42,7 @@ public interface ApiForums {
 			@HttlVar(name = "user:username", required = true) String username);
 
 	@HttlCall("POST addModerator.json")
-	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<DisqusId> addModerator(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum,
 			@HttlVar(name = "user:username", required = true) String username);
 
@@ -50,7 +52,7 @@ public interface ApiForums {
 			@HttlVar(name = "user", required = true) long user);
 
 	@HttlCall("POST addModerator.json")
-	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<DisqusId> addModerator(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "user", required = true) long user);
 
 	/*
@@ -58,7 +60,7 @@ public interface ApiForums {
 	 */
 	//use listModerators to get moderator id
 	@HttlCall("POST removeModerator.json")
-	public DisqusResponse<DisqusId> removeModerator(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<DisqusId> removeModerator(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "moderator", required = true) long moderator);
 
 	@HttlCall("POST removeModerator.json")
@@ -70,7 +72,7 @@ public interface ApiForums {
 	 */
 
 	@HttlCall("POST create.json")
-	public DisqusResponse<DisqusForum> create(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<DisqusForum> create(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "name", required = true) String name,
 			@HttlVar(name = "short_name", required = true) String short_name,
 			@HttlVar(name = "website", required = true) String website);
@@ -91,7 +93,7 @@ public interface ApiForums {
 
 	@HttlCall("GET listCategories.json")
 	public DisqusResponse<List<DisqusCategory>> listCategories(
-			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPageable page);
+			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPage page);
 
 	//list...
 
@@ -101,17 +103,16 @@ public interface ApiForums {
 			@HttlVar(name = "forum", required = true) String short_name);
 
 	@HttlCall("GET listModerators.json")
-	public DisqusResponse<List<DisqusModerator>> listModerators(
-			@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<List<DisqusModerator>> listModerators(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String short_name);
 
 	@HttlCall("GET listMostActiveUsers.json")
 	public DisqusResponse<List<DisqusUser>> listMostActiveUsers(
-			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPageable page);
+			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPage page);
 
 	@HttlCall("GET listMostLikedUsers.json")
 	public DisqusResponse<List<DisqusUser>> listMostLikedUsers(
-			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPageable page);
+			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPage page);
 
 	/*
 	 * https://disqus.com/api/docs/forums/listPosts/
@@ -119,7 +120,7 @@ public interface ApiForums {
 
 	@HttlCall("GET listPosts.json")
 	public DisqusResponse<List<DisqusPost>> listPosts(@HttlVar(name = "forum", required = true) String short_name,
-			@HttlVar DisqusPageable page);
+			@HttlVar DisqusPage page);
 
 	@HttlCall("GET listPosts.json")
 	public ListPostsBuilder listPosts(@HttlVar(name = "forum", required = true) String short_name);
@@ -148,7 +149,7 @@ public interface ApiForums {
 
 	@HttlCall("GET listThreads.json")
 	public DisqusResponse<List<DisqusThread>> listThreads(@HttlVar(name = "forum", required = true) String short_name,
-			@HttlVar DisqusPageable page);
+			@HttlVar DisqusPage page);
 
 	@HttlCall("GET listThreads.json")
 	public ListThreadsBuilder listThreads(@HttlVar(name = "forum", required = true) String short_name);
@@ -176,6 +177,6 @@ public interface ApiForums {
 
 	@HttlCall("GET listUsers.json")
 	public DisqusResponse<List<DisqusUser>> listUsers(@HttlVar(name = "forum", required = true) String short_name,
-			@HttlVar DisqusPageable page);
+			@HttlVar DisqusPage page);
 
 }

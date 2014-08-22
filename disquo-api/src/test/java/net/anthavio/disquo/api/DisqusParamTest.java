@@ -1,6 +1,7 @@
 package net.anthavio.disquo.api;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.httl.HttlBuilder;
 import net.anthavio.httl.HttlRequest;
 import net.anthavio.httl.SenderConfigurer;
@@ -24,7 +25,7 @@ public class DisqusParamTest {
 	}
 
 	public void correct_params() {
-		this.disqus.applications().listUsage("zxzxzx", 12345, 666);
+		this.disqus.applications().listUsage(Identity.access("zxzxzx"), 12345, 666);
 
 		HttlRequest request = mock.getLastRequest();
 		assertThat(request.getParameters().size()).isEqualTo(3 + 1);

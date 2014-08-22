@@ -1,6 +1,6 @@
 package net.anthavio.disquo.browser;
 
-import net.anthavio.sewer.jetty.Jetty6Wrapper;
+import net.anthavio.sewer.jetty.JettyWrapper;
 
 /**
  * Main class in IDE
@@ -15,6 +15,6 @@ import net.anthavio.sewer.jetty.Jetty6Wrapper;
 public class DisqusBrowserIdeMain {
 
 	public static void main(String[] args) {
-		new Jetty6Wrapper("src/main/jetty", 5959).start();
+		new JettyWrapper("src/main/jetty", 5959).start();
 	}
 }

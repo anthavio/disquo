@@ -6,6 +6,8 @@ import java.util.List;
 import net.anthavio.disquo.api.ArgumentConfig.FilterType;
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
+import net.anthavio.disquo.api.DisqusApi.Identity;
+import net.anthavio.disquo.api.DisqusApi.IdentitySetter;
 import net.anthavio.disquo.api.response.DisqusFilter;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.httl.api.HttlApi;
@@ -20,19 +22,23 @@ import net.anthavio.httl.api.HttlVar;
  * @author martin.vanek
  *
  */
-@HttlApi("/blacklists/")
+@HttlApi(uri = "/api/3.0/blacklists/", setters = IdentitySetter.class)
 public interface ApiBlacklists {
+
+	@HttlCall("GET list.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusFilter>> list(@HttlVar(name = "forum", required = true) String forum);
 
 	@HttlCall("GET list.json")
 	@HttlHeaders("X!-AUTH: true")
 	public ListBlacklistBuilder listBuilder(@HttlVar(name = "forum", required = true) String forum);
 
 	@HttlCall("GET list.json")
-	public DisqusResponse<List<DisqusFilter>> list(@HttlVar(name = "access_token", required = true) String token,
+	public DisqusResponse<List<DisqusFilter>> list(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum);
 
 	@HttlCall("GET list.json")
-	public ListBlacklistBuilder listBuilder(@HttlVar(name = "access_token", required = true) String token,
+	public ListBlacklistBuilder listBuilder(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface ListBlacklistBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusFilter>>> {
@@ -58,11 +64,11 @@ public interface ApiBlacklists {
 	public BlacklistAddBuilder addBuilder(@HttlVar(name = "forum", required = true) String forum);
 
 	@HttlCall("POST add.json")
-	public DisqusResponse<Void[]> add(@HttlVar(name = "access_token", required = true) String token,
+	public DisqusResponse<Void[]> add(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "email", required = true) String email);
 
 	@HttlCall("POST add.json")
-	public BlacklistAddBuilder addBuilder(@HttlVar(name = "access_token", required = true) String token,
+	public BlacklistAddBuilder addBuilder(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface BlacklistAddBuilder extends HttlCallBuilder<DisqusResponse<Void[]>> {
@@ -83,15 +89,15 @@ public interface ApiBlacklists {
 	}
 
 	@HttlCall("POST remove.json")
+	public DisqusResponse<Void[]> remove(@HttlVar(required = true) Identity token,
+			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "email", required = true) String email);
+
+	@HttlCall("POST remove.json")
 	@HttlHeaders("X!-AUTH: true")
 	public BlacklistRemoveBuilder removeBuilder(@HttlVar(name = "forum", required = true) String forum);
 
 	@HttlCall("POST remove.json")
-	public DisqusResponse<Void[]> remove(@HttlVar(name = "access_token", required = true) String token,
-			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "email", required = true) String email);
-
-	@HttlCall("POST remove.json")
-	public BlacklistRemoveBuilder removeBuilder(@HttlVar(name = "access_token", required = true) String token,
+	public BlacklistRemoveBuilder removeBuilder(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum);
 
 	public static interface BlacklistRemoveBuilder extends HttlCallBuilder<DisqusResponse<Void[]>> {

@@ -1,6 +1,6 @@
 package net.anthavio.disquo.browser;
 
-import net.anthavio.sewer.jetty.Jetty6Wrapper;
+import net.anthavio.sewer.jetty.JettyWrapper;
 
 /**
  * Main class in standalone assembly. Don't work in IDE due to invalid path to jetty root directory
@@ -12,7 +12,7 @@ public class DisqusBrowserJettyMain {
 
 	public static void main(String[] args) {
 		try {
-			new Jetty6Wrapper().start();
+			new JettyWrapper().start();
 		} catch (Exception x) {
 			x.printStackTrace();
 		}

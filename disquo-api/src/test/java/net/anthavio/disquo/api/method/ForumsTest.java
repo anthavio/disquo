@@ -11,7 +11,7 @@ import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.ArgumentConfig.ThreadState;
 import net.anthavio.disquo.api.DisqusMethodTest;
-import net.anthavio.disquo.api.DisqusPageable;
+import net.anthavio.disquo.api.DisqusPage;
 
 import org.testng.annotations.Test;
 
@@ -46,7 +46,7 @@ public class ForumsTest extends DisqusMethodTest {
 
 	@Test
 	public void listCategories() {
-		DisqusPageable page = new DisqusPageable("0:0:0");
+		DisqusPage page = new DisqusPage("0:0:0");
 		page.setSince_id(333l);
 		page.setLimit(99);
 		page.setOrder(Order.desc);
@@ -86,7 +86,7 @@ public class ForumsTest extends DisqusMethodTest {
 
 	@Test
 	public void listUsers() {
-		DisqusPageable page = new DisqusPageable("0:0:0");
+		DisqusPage page = new DisqusPage("0:0:0");
 		page.setSince_id(333l);
 		page.setLimit(99);
 		page.setOrder(Order.desc);
@@ -103,7 +103,7 @@ public class ForumsTest extends DisqusMethodTest {
 
 	@Test
 	public void listMostActiveUsers() {
-		DisqusPageable page = new DisqusPageable("0:0:0");
+		DisqusPage page = new DisqusPage("0:0:0");
 		page.setLimit(99);
 		page.setOrder(Order.desc);
 		disqus.forums().listMostActiveUsers(FORUM, page);
@@ -113,7 +113,7 @@ public class ForumsTest extends DisqusMethodTest {
 
 	@Test
 	public void listMostLikedUsers() {
-		DisqusPageable page = new DisqusPageable("0:0:0");
+		DisqusPage page = new DisqusPage("0:0:0");
 		page.setLimit(99);
 		page.setOrder(Order.desc);
 		disqus.forums().listMostLikedUsers(FORUM, page);

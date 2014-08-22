@@ -6,8 +6,9 @@ import java.util.Date;
 
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
+import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.DisqusMethodTest;
-import net.anthavio.disquo.api.DisqusPageable;
+import net.anthavio.disquo.api.DisqusPage;
 
 import org.testng.annotations.Test;
 
@@ -15,7 +16,7 @@ public class UsersTest extends DisqusMethodTest {
 
 	@Test
 	public void checkUsername() {
-		disqus.users().checkUsername("token", "username");
+		disqus.users().checkUsername(Identity.access("zxzxzx"), "username");
 
 		assertThat(getParameters().size()).isEqualTo(2 + 1);
 	}
@@ -29,21 +30,21 @@ public class UsersTest extends DisqusMethodTest {
 
 	@Test
 	public void follow() {
-		disqus.users().follow("token", 333);
+		disqus.users().follow(Identity.access("zxzxzx"), 333);
 
 		assertThat(getParameters().size()).isEqualTo(2 + 1);
 	}
 
 	@Test
 	public void unfollow() {
-		disqus.users().unfollow("token", 333);
+		disqus.users().unfollow(Identity.access("zxzxzx"), 333);
 
 		assertThat(getParameters().size()).isEqualTo(2 + 1);
 	}
 
 	@Test
 	public void listActiveForums() {
-		DisqusPageable page = new DisqusPageable("cursor");
+		DisqusPage page = new DisqusPage("cursor");
 		page.setLimit(99);
 		page.setSince(new Date());
 		page.setOrder(Order.desc);
@@ -54,7 +55,7 @@ public class UsersTest extends DisqusMethodTest {
 
 	@Test
 	public void listForums() {
-		DisqusPageable page = new DisqusPageable("cursor");
+		DisqusPage page = new DisqusPage("cursor");
 		page.setLimit(99);
 		page.setSince(new Date());
 		page.setOrder(Order.desc);
@@ -65,7 +66,7 @@ public class UsersTest extends DisqusMethodTest {
 
 	@Test
 	public void listPosts() {
-		DisqusPageable page = new DisqusPageable("cursor");
+		DisqusPage page = new DisqusPage("cursor");
 		page.setLimit(99);
 		page.setSince(new Date());
 		page.setOrder(Order.desc);

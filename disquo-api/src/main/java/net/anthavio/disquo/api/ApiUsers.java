@@ -3,12 +3,16 @@ package net.anthavio.disquo.api;
 import java.util.List;
 
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
+import net.anthavio.disquo.api.ArgumentConfig.Related;
+import net.anthavio.disquo.api.DisqusApi.Identity;
+import net.anthavio.disquo.api.DisqusApi.IdentitySetter;
 import net.anthavio.disquo.api.response.DisqusForum;
 import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusUser;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
+import net.anthavio.httl.api.HttlCallBuilder;
 import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 
@@ -18,7 +22,7 @@ import net.anthavio.httl.api.HttlVar;
  * @author vanek
  *
  */
-@HttlApi("/users/")
+@HttlApi(uri = "/api/3.0/users/", setters = IdentitySetter.class)
 public interface ApiUsers {
 
 	/**
@@ -31,7 +35,7 @@ public interface ApiUsers {
 			throws DisqusServerException;
 
 	@HttlCall("POST checkUsername.json")
-	public DisqusResponse<String> checkUsername(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<String> checkUsername(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "username", required = true) String username) throws DisqusServerException;
 
 	/*
@@ -45,18 +49,21 @@ public interface ApiUsers {
 	public DisqusResponse<DisqusUser> details(@HttlVar(name = "user:username", required = true) String username);
 
 	@HttlCall("GET details.json")
-	public DisqusResponse<DisqusUser> detailsOfMe(@HttlVar(name = "access_token", required = true) String access_token);
+	public DisqusResponse<DisqusUser> details(@HttlVar(required = true) Identity token);
+
+	@HttlCall("GET details.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusUser> details();
 
 	/*
 	 * https://disqus.com/api/docs/users/follow/
 	 */
 
 	@HttlCall("POST follow.json")
-	public DisqusResponse<Void[]> follow(@HttlVar(name = "access_token", required = true) String access_token,
-			@HttlVar("target") long user);
+	public DisqusResponse<Void[]> follow(@HttlVar(required = true) Identity token, @HttlVar("target") long user);
 
 	@HttlCall("POST follow.json")
-	public DisqusResponse<Void[]> follow(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<Void[]> follow(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "target:username", required = true) String username);
 
 	/*
@@ -64,11 +71,10 @@ public interface ApiUsers {
 	 */
 
 	@HttlCall("POST unfollow.json")
-	public DisqusResponse<Void[]> unfollow(@HttlVar(name = "access_token", required = true) String access_token,
-			@HttlVar("target") long user);
+	public DisqusResponse<Void[]> unfollow(@HttlVar(required = true) Identity token, @HttlVar("target") long user);
 
 	@HttlCall("POST unfollow.json")
-	public DisqusResponse<Void[]> unfollow(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<Void[]> unfollow(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "target:username", required = true) String username);
 
 	/*
@@ -78,15 +84,15 @@ public interface ApiUsers {
 	 */
 
 	@HttlCall("GET listActiveForums.json")
-	public DisqusResponse<List<DisqusForum>> listActiveForums(@HttlVar("user") long user, @HttlVar DisqusPageable page);
+	public DisqusResponse<List<DisqusForum>> listActiveForums(@HttlVar("user") long user, @HttlVar DisqusPage page);
 
 	@HttlCall("GET listActiveForums.json")
 	public DisqusResponse<List<DisqusForum>> listActiveForums(
-			@HttlVar(name = "user:username", required = true) String username, @HttlVar DisqusPageable page);
+			@HttlVar(name = "user:username", required = true) String username, @HttlVar DisqusPage page);
 
 	@HttlCall("GET listActiveForums.json")
-	public DisqusResponse<List<DisqusForum>> listActiveForumsOfMe(
-			@HttlVar(name = "access_token", required = true) String access_token, @HttlVar DisqusPageable page);
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusForum>> listActiveForums(@HttlVar DisqusPage page);
 
 	/*
 	 * Returns a list of forums a user owns.
@@ -94,15 +100,15 @@ public interface ApiUsers {
 	 * https://disqus.com/api/docs/users/listForums/
 	 */
 	@HttlCall("GET listForums.json")
-	public DisqusResponse<List<DisqusForum>> listForums(@HttlVar("user") long user, @HttlVar DisqusPageable page);
+	public DisqusResponse<List<DisqusForum>> listForums(@HttlVar("user") long user, @HttlVar DisqusPage page);
 
 	@HttlCall("GET listForums.json")
 	public DisqusResponse<List<DisqusForum>> listForums(
-			@HttlVar(name = "user:username", required = true) String username, @HttlVar DisqusPageable page);
+			@HttlVar(name = "user:username", required = true) String username, @HttlVar DisqusPage page);
 
 	@HttlCall("GET listForums.json")
-	public DisqusResponse<List<DisqusForum>> listForumsOfMe(
-			@HttlVar(name = "access_token", required = true) String access_token, @HttlVar DisqusPageable page);
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusForum>> listForums(@HttlVar DisqusPage page);
 
 	/*
 	 * Returns a list of posts made by the user.
@@ -111,17 +117,30 @@ public interface ApiUsers {
 	 */
 
 	@HttlCall("GET listPosts.json")
-	public DisqusResponse<List<DisqusPost>> listPosts(@HttlVar("user") long user, @HttlVar DisqusPageable page,
-			@HttlVar("include ") PostState... include);
+	public DisqusResponse<List<DisqusPost>> listPosts(@HttlVar("user") long user, @HttlVar DisqusPage page,
+			@HttlVar("include") PostState... include);
 
 	@HttlCall("GET listPosts.json")
 	public DisqusResponse<List<DisqusPost>> listPosts(@HttlVar(name = "user:username", required = true) String username,
-			@HttlVar DisqusPageable page, @HttlVar("include ") PostState... include);
+			@HttlVar DisqusPage page, @HttlVar("include ") PostState... include);
 
 	@HttlCall("GET listPosts.json")
-	public DisqusResponse<List<DisqusPost>> listPostsOfMe(
-			@HttlVar(name = "access_token", required = true) String access_token, @HttlVar DisqusPageable page,
-			@HttlVar("include ") PostState... include);
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusPost>> listPosts(@HttlVar DisqusPage page, @HttlVar("include") PostState... include);
+
+	@HttlCall("GET listPosts.json")
+	public ListPostsBuilder listPosts(DisqusPage page);
+
+	public interface ListPostsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusPost>>> {
+
+		public ListPostsBuilder user(@HttlVar("user") long user);
+
+		public ListPostsBuilder username(@HttlVar(name = "user:username") String username);
+
+		public ListPostsBuilder include(PostState... include);
+
+		public ListPostsBuilder related(Related... related);
+	}
 
 	/*
 	 * https://disqus.com/api/docs/users/updateProfile/
@@ -131,8 +150,12 @@ public interface ApiUsers {
 	 */
 
 	@HttlCall("POST updateProfile.json")
-	public DisqusResponse<Void[]> updateProfile(@HttlVar(name = "access_token", required = true) String access_token,
-			@HttlVar("about") String about, @HttlVar("name") String name, @HttlVar("url") String url,
-			@HttlVar("location") String location);
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<Void[]> updateProfile(@HttlVar("about") String about, @HttlVar("name") String name,
+			@HttlVar("url") String url, @HttlVar("location") String location);
+
+	@HttlCall("POST updateProfile.json")
+	public DisqusResponse<Void[]> updateProfile(@HttlVar(required = true) Identity token, @HttlVar("about") String about,
+			@HttlVar("name") String name, @HttlVar("url") String url, @HttlVar("location") String location);
 
 }

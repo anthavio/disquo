@@ -29,6 +29,7 @@ import net.anthavio.httl.HttlSender;
 import net.anthavio.httl.HttlSender.Multival;
 import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.httl.api.HttlApiBuilder;
+import net.anthavio.httl.api.VarSetter;
 import net.anthavio.httl.marshall.Jackson2Unmarshaller;
 import net.anthavio.httl.util.Cutils;
 import net.anthavio.httl.util.HttpHeaderUtil;
@@ -51,7 +52,7 @@ public class DisqusApi implements Closeable {
 
 	public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
-	public static final String DEFAULT_API_URL = "https://disqus.com/api/3.0";
+	public static final String DEFAULT_API_URL = "https://disqus.com";
 
 	private final DisqusApplicationKeys keys;
 
@@ -79,6 +80,8 @@ public class DisqusApi implements Closeable {
 
 	private final ApiImports importApi;
 
+	private Identity identity;
+
 	public DisqusApi(DisqusApplicationKeys keys) {
 		this(keys, null, null);
 	}
@@ -100,7 +103,7 @@ public class DisqusApi implements Closeable {
 		URL url;
 		try {
 			if (apiUrl == null) {
-				apiUrl = "https://disqus.com/api/3.0";
+				apiUrl = DEFAULT_API_URL;
 			}
 			url = new URL(apiUrl);
 
@@ -124,6 +127,10 @@ public class DisqusApi implements Closeable {
 
 		config.setParamSetter(new ConfigurableParamSetter("yyyy-MM-dd HH:mm:ss.SSS")); //2010-06-01 12:21:47.000
 
+		if (keys.getAccessToken() != null) {
+			this.identity = Identity.access(keys.getAccessToken());
+		}
+
 		config.addBuilderVisitor(new HttlBuilderVisitor() {
 
 			@Override
@@ -131,11 +138,15 @@ public class DisqusApi implements Closeable {
 				builder.param("api_key", keys.getApiKey());
 
 				//Quite hackish way to pass custom variables
-				if (builder.getHeaders().get("X!-AUTH") != null && builder.getParameters().get("access_token") == null) {
-					if (keys.getAccessToken() != null) {
-						builder.param("access_token", keys.getAccessToken()); //XXX Build AccessTokenLookup abstraction	
-					} else {
-						throw new DisqusException("Method requires Authentication but access_token is not available");
+				if (builder.getHeaders().get("X!-AUTH") != null) {
+					boolean noToken = builder.getParameters().get("access_token") == null
+							&& builder.getParameters().get("remote_auth_s3") == null;
+					if (noToken) {
+						if (identity != null) {
+							builder.param(identity.tokenName, identity.tokenValue); //XXX Build AccessTokenLookup abstraction	
+						} else {
+							throw new DisqusException("Method requires Authentication but access_token is not available");
+						}
 					}
 				}
 				//Remove custom variables
@@ -185,6 +196,18 @@ public class DisqusApi implements Closeable {
 		} catch (Exception x) {
 			//ignore
 		}
+	}
+
+	public Identity getIdentity() {
+		return identity;
+	}
+
+	/**
+	 * For requests that has to be authenticated but authentication token 
+	 * is not set via API parameter, this identity will be used.
+	 */
+	public void setIdentity(Identity identity) {
+		this.identity = identity;
 	}
 
 	public HttlSender getSender() {
@@ -296,5 +319,53 @@ public class DisqusApi implements Closeable {
 		mapper.setDateFormat(dateFormat);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		return mapper;
+	}
+
+	public static class Identity {
+
+		/**
+		 * Identity based on OAuth or Application access_token
+		 */
+		public static Identity access(String access_token) {
+			return new Identity("access_token", access_token);
+		}
+
+		/**
+		 * Identity based on SSO remote_token
+		 */
+		public static Identity remote(String remote_token) {
+			return new Identity("remote_auth_s3", remote_token);
+		}
+
+		private final String tokenName;
+
+		private final String tokenValue;
+
+		private Identity(String tokenName, String tokenValue) {
+			this.tokenName = tokenName;
+
+			if (tokenValue == null || tokenValue.isEmpty()) {
+				throw new IllegalArgumentException("Invalid " + tokenName + " value: " + tokenValue);
+			}
+			this.tokenValue = tokenValue;
+		}
+
+		public String getTokenName() {
+			return tokenName;
+		}
+
+		public String getTokenValue() {
+			return tokenValue;
+		}
+
+	}
+
+	public static class IdentitySetter implements VarSetter<Identity> {
+
+		@Override
+		public void set(Identity value, String name, HttlRequestBuilder<?> builder) {
+			builder.param(value.getTokenName(), value.getTokenValue());
+		}
+
 	}
 }

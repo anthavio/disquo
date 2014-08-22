@@ -6,6 +6,8 @@ import java.util.List;
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
+import net.anthavio.disquo.api.DisqusApi.Identity;
+import net.anthavio.disquo.api.DisqusApi.IdentitySetter;
 import net.anthavio.disquo.api.response.DisqusCategory;
 import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
@@ -25,7 +27,7 @@ import net.anthavio.httl.api.VarSetter;
  * @author martin.vanek
  *
  */
-@HttlApi("/categories/")
+@HttlApi(uri = "/api/3.0/categories/", setters = IdentitySetter.class)
 public interface ApiCategories {
 
 	@HttlCall("POST create.json")
@@ -35,7 +37,7 @@ public interface ApiCategories {
 			@HttlVar(name = "default", setter = BooleanTo1or0Setter.class) Boolean isDefault);
 
 	@HttlCall("POST create.json")
-	public DisqusResponse<DisqusCategory> create(@HttlVar(name = "access_token", required = true) String token,
+	public DisqusResponse<DisqusCategory> create(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "title", required = true) String title,
 			@HttlVar(name = "default", setter = BooleanTo1or0Setter.class) Boolean isDefault);
 

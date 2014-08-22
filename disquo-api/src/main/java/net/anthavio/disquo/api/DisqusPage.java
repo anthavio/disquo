@@ -14,7 +14,7 @@ import net.anthavio.httl.api.HttlVar;
  *
  */
 @HttlVar
-public class DisqusPageable {
+public class DisqusPage {
 
 	private Date since; //when items are ordered by date - XOR with since_id
 
@@ -28,7 +28,7 @@ public class DisqusPageable {
 
 	private Order order;
 
-	public DisqusPageable(String cursor) {
+	public DisqusPage(String cursor) {
 		this.cursor = cursor;
 	}
 

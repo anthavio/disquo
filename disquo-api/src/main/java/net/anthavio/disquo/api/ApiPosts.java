@@ -7,6 +7,8 @@ import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.ArgumentConfig.Vote;
+import net.anthavio.disquo.api.DisqusApi.Identity;
+import net.anthavio.disquo.api.DisqusApi.IdentitySetter;
 import net.anthavio.disquo.api.auth.AnonymousData;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
@@ -28,7 +30,7 @@ import net.anthavio.httl.api.VarSetter;
  * @author martin.vanek
  *
  */
-@HttlApi("/posts/")
+@HttlApi(uri = "/api/3.0/posts/", setters = IdentitySetter.class)
 public interface ApiPosts {
 
 	/**
@@ -40,8 +42,7 @@ public interface ApiPosts {
 	public DisqusResponse<List<DisqusId>> approve(@HttlVar("post") long... post);
 
 	@HttlCall("POST approve.json")
-	public DisqusResponse<List<DisqusId>> approve(@HttlVar(name = "access_token", required = true) String access_token,
-			@HttlVar("post") long... post);
+	public DisqusResponse<List<DisqusId>> approve(@HttlVar(required = true) Identity token, @HttlVar("post") long... post);
 
 	/**
 	 * https://disqus.com/api/docs/posts/create/
@@ -49,11 +50,8 @@ public interface ApiPosts {
 
 	// OAuth access_token
 	@HttlCall("POST create.json")
-	public DisqusResponse<DisqusPost> create(
-			//
-			@HttlVar(name = "access_token", required = true) String access_token,//
-			@HttlVar("thread") long thread, @HttlVar(name = "message", required = true) String message,
-			@HttlVar("parent") Long parent);
+	public DisqusResponse<DisqusPost> create(@HttlVar(required = true) Identity token, @HttlVar("thread") long thread,
+			@HttlVar(name = "message", required = true) String message, @HttlVar("parent") Long parent);
 
 	/**
 	 * You must allow anonymou commenting in Disqus admin
@@ -100,9 +98,11 @@ public interface ApiPosts {
 
 		public CreatePostBuilder ip_address(String ip_address);
 
-		// oauth
+		// token
 
 		public CreatePostBuilder access_token(String access_token);
+
+		public CreatePostBuilder remote_token(String remote_token);
 
 		// anonymous
 
@@ -132,10 +132,10 @@ public interface ApiPosts {
 	 */
 
 	@HttlCall("GET list.json")
-	public DisqusResponse<List<DisqusPost>> list(@HttlVar DisqusPageable page);
+	public DisqusResponse<List<DisqusPost>> list(@HttlVar DisqusPage page);
 
 	@HttlCall("GET list.json")
-	public DisqusResponse<List<DisqusPost>> list(@HttlVar("thread") long thread, @HttlVar DisqusPageable page);
+	public DisqusResponse<List<DisqusPost>> list(@HttlVar("thread") long thread, @HttlVar DisqusPage page);
 
 	@HttlCall("GET list.json")
 	public ListPostsBuilder list();
@@ -168,24 +168,24 @@ public interface ApiPosts {
 	 */
 
 	@HttlCall("POST remove.json")
-	@HttlHeaders("X!-AUTH: true")
-	public DisqusResponse<List<DisqusId>> remove(@HttlVar(name = "post", required = true) long... post);
+	public DisqusResponse<List<DisqusId>> remove(@HttlVar(required = true) Identity token,
+			@HttlVar(name = "post", required = true) long... post);
 
 	@HttlCall("POST remove.json")
-	public DisqusResponse<List<DisqusId>> remove(@HttlVar(name = "access_token", required = true) String access_token,
-			@HttlVar(name = "post", required = true) long... post);
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusId>> remove(@HttlVar(name = "post", required = true) long... post);
 
 	/**
 	 * https://disqus.com/api/docs/posts/restore/
 	 */
 
 	@HttlCall("POST restore.json")
-	@HttlHeaders("X!-AUTH: true")
-	public DisqusResponse<List<DisqusId>> restore(@HttlVar(name = "post", required = true) long... post);
+	public DisqusResponse<List<DisqusId>> restore(@HttlVar(required = true) Identity token,
+			@HttlVar(name = "post", required = true) long... post);
 
 	@HttlCall("POST restore.json")
-	public DisqusResponse<List<DisqusId>> restore(@HttlVar(name = "access_token", required = true) String access_token,
-			@HttlVar(name = "post", required = true) long... post);
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusId>> restore(@HttlVar(name = "post", required = true) long... post);
 
 	/**
 	 * https://disqus.com/api/docs/posts/report/
@@ -197,8 +197,12 @@ public interface ApiPosts {
 	 * https://disqus.com/api/docs/posts/spam/
 	 */
 	@HttlCall("POST spam.json")
-	public DisqusResponse<List<DisqusId>> spam(@HttlVar(name = "access_token", required = true) String access_token,
+	public DisqusResponse<List<DisqusId>> spam(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "post", required = true) long... post);
+
+	@HttlCall("POST spam.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<List<DisqusId>> spam(@HttlVar(name = "post", required = true) long... post);
 
 	/**
 	 * https://disqus.com/api/docs/posts/vote/
@@ -213,12 +217,17 @@ public interface ApiPosts {
 	public DisqusResponse<DisqusVotePost> vote(@HttlVar("post") long post,
 			@HttlVar(name = "vote", required = true, setter = VoteSetter.class) Vote vote);
 
+	@HttlCall("POST update.json")
+	@HttlHeaders("X!-AUTH: true")
+	public DisqusResponse<DisqusPost> update(@HttlVar("post") long post,
+			@HttlVar(name = "message", required = true) String message);
+
 	/**
 	 * https://disqus.com/api/docs/posts/update/
 	 */
 	@HttlCall("POST update.json")
-	public DisqusResponse<DisqusPost> update(@HttlVar(name = "access_token", required = true) String access_token,
-			@HttlVar("post") long post, @HttlVar(name = "message", required = true) String message);
+	public DisqusResponse<DisqusPost> update(@HttlVar(required = true) Identity token, @HttlVar("post") long post,
+			@HttlVar(name = "message", required = true) String message);
 
 	/**
 	 * Setter for SsoAuthData -> remote_auth
@@ -236,7 +245,7 @@ public interface ApiPosts {
 				throw new DisqusException("api_secret parameter not found");
 			}
 			String remote_auth = SsoAuthenticator.remote_auth_s3(value, api_secret);
-			builder.param("remote_auth", remote_auth);
+			builder.param("remote_auth_s3", remote_auth);
 		}
 	}
 

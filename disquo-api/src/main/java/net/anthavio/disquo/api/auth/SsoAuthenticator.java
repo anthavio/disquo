@@ -22,6 +22,7 @@ import org.apache.commons.lang.UnhandledException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
+ * https://help.disqus.com/customer/portal/articles/236206-integrating-single-sign-on
  * 
  * @author martin.vanek
  *

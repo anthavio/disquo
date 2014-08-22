@@ -10,6 +10,7 @@ import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.ArgumentConfig.Vote;
+import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.DisqusMethodTest;
 
 import org.testng.annotations.Test;
@@ -47,7 +48,7 @@ public class PostsTest extends DisqusMethodTest {
 
 	@Test
 	public void update() {
-		disqus.posts().update("token", 123, "message");
+		disqus.posts().update(Identity.access("zxzxzx"), 123, "message");
 		assertThat(getParameters().size()).isEqualTo(3 + 1);
 	}
 
@@ -95,7 +96,7 @@ public class PostsTest extends DisqusMethodTest {
 
 	@Test
 	public void spam() {
-		disqus.posts().spam("token", 1, 2, 3, 4);
+		disqus.posts().spam(Identity.access("zxzxzx"), 1, 2, 3, 4);
 		assertThat(getParameters().size()).isEqualTo(2 + 1);
 	}
 
