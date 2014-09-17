@@ -141,9 +141,9 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		-->
 		<property name="viewResolvers">
 			<list>
-				<ref local="ThymeleafViewResolver"/>
+				<ref bean="ThymeleafViewResolver"/>
 				<!--<ref local="ThymeleafTilesViewResolver"/>-->
-				<ref local="JstlViewResolver"/>
+				<ref bean="JstlViewResolver"/>
 			</list>
 		</property>
 	</bean>
