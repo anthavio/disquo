@@ -157,7 +157,7 @@ public class SettingsController extends ControllerBase {
 		if (StringUtils.isNotBlank(code)) {
 			String callbackUrl = getCallbackURL(request).toString();
 			DisqusOAuth2 oAuth2 = new DisqusOAuth2(session.getDriver(), callbackUrl);
-			TokenResponse tokenResponse = oAuth2.getOAuth2().getAccessToken(code, TokenResponse.class);
+			TokenResponse tokenResponse = oAuth2.getOAuth2().access(code).get(TokenResponse.class);
 			session.getIdentity().setOauth(tokenResponse);
 		}
 		return "redirect:/disqus/identity";

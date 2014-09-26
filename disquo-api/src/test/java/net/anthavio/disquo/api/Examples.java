@@ -110,9 +110,9 @@ public class Examples {
 		String yourCallbackUrl = "http://www.changeme.com/disqus_will_redirect_user_here_after_login";
 
 		//You can use OauthAuthenticator to construct correct calls 
-		OAuth2 oauth = new OAuth2Builder(disqus.getSender()).setAuthUrl("/api/oauth/2.0/authorize/")
-				.setTokenUrl("/api/oauth/2.0/access_token/").setClientId(keys.getApiKey()).setClientSecret(keys.getApiSecret())
-				.setRedirectUri(yourCallbackUrl).build();
+		OAuth2 oauth = new OAuth2Builder().setAuthorizationUrl("/api/oauth/2.0/authorize/")
+				.setTokenEndpoint(disqus.getSender(), "/api/oauth/2.0/access_token/").setClientId(keys.getApiKey())
+				.setClientSecret(keys.getApiSecret()).setRedirectUri(yourCallbackUrl).build();
 
 		//Server-Side OAuth
 
@@ -122,7 +122,7 @@ public class Examples {
 		//If the user Logs in successfully on Disqus site, he will redirected back to the yourCallbackUrl with code http parameter
 		String code = "Get me from the HttpServletRequest..."; //servletRequest.getParameter("code")
 		//Call Disqus to convert "code" into "token" and possibly store returned TokenResponse in HttpSession 
-		TokenResponse tokenResponse = oauth.getAccessToken(code, TokenResponse.class);
+		TokenResponse tokenResponse = oauth.access(code).get(TokenResponse.class);
 		//Use access_token to authenticate calls as user 
 		String userAccessToken = tokenResponse.getAccess_token();
 		//User identity is used to create post

@@ -17,9 +17,10 @@ public class DisqusOAuth2 {
 
 	public DisqusOAuth2(DisqusApi api, String callbackUrl) {
 		DisqusApplicationKeys keys = api.getApplicationKeys();
-		oauth2 = new OAuth2Builder(api.getSender()).setAuthUrl("https://disqus.com/api/oauth/2.0/authorize/")
-				.setTokenUrl("https://disqus.com/api/oauth/2.0/access_token/").setTokenHttpMethod(Method.POST)
-				.setClientId(keys.getApiKey()).setClientSecret(keys.getApiSecret()).setRedirectUri(callbackUrl).build();
+		oauth2 = new OAuth2Builder().setAuthorizationUrl("https://disqus.com/api/oauth/2.0/authorize/")
+				.setTokenEndpoint(api.getSender(), "https://disqus.com/api/oauth/2.0/access_token/")
+				.setTokenHttpMethod(Method.POST).setClientId(keys.getApiKey()).setClientSecret(keys.getApiSecret())
+				.setRedirectUri(callbackUrl).build();
 	}
 
 	public OAuth2 getOAuth2() {
