@@ -32,7 +32,7 @@ import net.anthavio.httl.api.HttlApiBuilder;
 import net.anthavio.httl.api.VarSetter;
 import net.anthavio.httl.marshall.Jackson2Unmarshaller;
 import net.anthavio.httl.util.Cutils;
-import net.anthavio.httl.util.HttpHeaderUtil;
+import net.anthavio.httl.util.HttlUtil;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -119,11 +119,6 @@ public class DisqusApi implements Closeable {
 			siteUrl += url.getPath();
 			config = HttlBuilder.httpUrl(siteUrl).sender();
 		}
-
-		//config.setHeader("Content-Type", "application/json; charset=utf-8");
-		//config.setHeader("Accept", "application/json");
-		//Accept-Charset: utf-8
-		//User-Agent: Hatatitla
 
 		config.setParamSetter(new ConfigurableParamSetter("yyyy-MM-dd HH:mm:ss.SSS")); //2010-06-01 12:21:47.000
 
@@ -267,7 +262,7 @@ public class DisqusApi implements Closeable {
 		if (mediaType == null || !mediaType.startsWith("application/json")) {
 			//Not a JSON response
 			try {
-				String errResponeTxt = HttpHeaderUtil.readAsString(response);
+				String errResponeTxt = HttlUtil.readAsString(response);
 				throw new DisqusException(statusLine + "\n" + errResponeTxt);
 			} catch (IOException iox) {
 				//logger.warn("Failed to read error resonse", iox);
