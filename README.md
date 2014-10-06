@@ -1,5 +1,6 @@
 Disquo
 ======
+[![Build Status](https://vanek.ci.cloudbees.com/buildStatus/icon?job=disquo-snapshot)](https://vanek.ci.cloudbees.com/job/disquo-snapshot/)
 
 Disqus Rest Api Java Client Library - see http://disqus.com/api/docs/
 
