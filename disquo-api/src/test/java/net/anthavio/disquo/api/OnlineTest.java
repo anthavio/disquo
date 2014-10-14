@@ -1,6 +1,6 @@
 package net.anthavio.disquo.api;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusThread;
 import net.anthavio.disquo.api.response.DisqusUser;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Disqus REST API is being called in theese test to verify that JSON response deserializers works
@@ -26,23 +26,23 @@ import org.testng.annotations.Test;
  */
 public class OnlineTest {
 
-	private DisqusApi disqus;
+	private static DisqusApi disqus;
 
-	private String forum;
+	private static String forum;
 
-	private String token;
+	private static String token;
 
-	private long long_thread_id;
+	private static long long_thread_id;
 
 	@BeforeClass
-	public void setup() {
+	public static void setup() {
 
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
-		this.disqus = new DisqusApi(tidata.getApplicationKeys(), tidata.getUrl());
+		disqus = new DisqusApi(tidata.getApplicationKeys(), tidata.getUrl());
 
-		this.forum = tidata.getForum();
-		this.long_thread_id = tidata.getLongThreadId();
-		this.token = disqus.getApplicationKeys().getAccessToken();
+		forum = tidata.getForum();
+		long_thread_id = tidata.getLongThreadId();
+		token = disqus.getApplicationKeys().getAccessToken();
 	}
 
 	@Test

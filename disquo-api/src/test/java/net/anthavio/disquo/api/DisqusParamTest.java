@@ -1,22 +1,21 @@
 package net.anthavio.disquo.api;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.httl.HttlBuilder;
 import net.anthavio.httl.HttlRequest;
 import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.httl.util.MockTransport;
 
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-@Test
 public class DisqusParamTest {
 
 	DisqusApi disqus;
 	MockTransport mock;
 
-	@BeforeTest
+	@Before
 	public void setup() {
 		mock = HttlBuilder.transport("x.y.z").mock().build();
 		mock.setStaticResponse(200, "application/json", "{\"code\" : 0, \"response\" : null }");
@@ -24,6 +23,7 @@ public class DisqusParamTest {
 		disqus = new DisqusApi(new DisqusApplicationKeys("publicKey", "secretKey", "accessToken"), config);
 	}
 
+	@Test
 	public void correct_params() {
 		this.disqus.applications().listUsage(Identity.access("zxzxzx"), 12345, 666);
 

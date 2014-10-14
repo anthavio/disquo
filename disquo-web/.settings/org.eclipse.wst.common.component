@@ -7,9 +7,6 @@
         <dependent-module archiveName="disquo-api-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/disquo-api/disquo-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="hatatitla-2.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/hatatitla/hatatitla">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="anthavio-spring-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/anthavio-spring/anthavio-spring">
             <dependency-type>uses</dependency-type>
         </dependent-module>

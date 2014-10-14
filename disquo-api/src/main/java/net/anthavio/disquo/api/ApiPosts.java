@@ -16,7 +16,7 @@ import net.anthavio.disquo.api.response.DisqusId;
 import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusVotePost;
-import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
+import net.anthavio.httl.HttlRequestBuilder;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
 import net.anthavio.httl.api.HttlCallBuilder;

@@ -23,7 +23,7 @@ import net.anthavio.httl.HttlExecutionChain;
 import net.anthavio.httl.HttlExecutionFilter;
 import net.anthavio.httl.HttlParameterSetter.ConfigurableParamSetter;
 import net.anthavio.httl.HttlRequest;
-import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
+import net.anthavio.httl.HttlRequestBuilder;
 import net.anthavio.httl.HttlResponse;
 import net.anthavio.httl.HttlSender;
 import net.anthavio.httl.HttlSender.Multival;

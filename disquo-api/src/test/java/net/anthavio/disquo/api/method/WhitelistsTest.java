@@ -1,6 +1,6 @@
 package net.anthavio.disquo.api.method;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.DisqusMethodTest;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class WhitelistsTest extends DisqusMethodTest {
 

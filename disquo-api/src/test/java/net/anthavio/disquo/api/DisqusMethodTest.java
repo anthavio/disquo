@@ -6,7 +6,7 @@ import net.anthavio.httl.HttlSender.Multival;
 import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.httl.util.MockTransport;
 
-import org.testng.annotations.BeforeClass;
+import org.junit.BeforeClass;
 
 /**
  * 
@@ -15,12 +15,12 @@ import org.testng.annotations.BeforeClass;
  */
 public class DisqusMethodTest {
 
-	protected MockTransport mock;
+	protected static MockTransport mock;
 
-	protected DisqusApi disqus;
+	protected static DisqusApi disqus;
 
 	@BeforeClass
-	public void setup() {
+	public static void setup() {
 		mock = HttlBuilder.transport("x.y.z").mock().build();
 		mock.setStaticResponse(200, "application/json", "{\"code\" : 0, \"response\" : null }");
 		SenderConfigurer config = HttlBuilder.sender(mock);
