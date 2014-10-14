@@ -7,14 +7,14 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.DisqusApplicationKeys;
-import net.anthavio.disquo.api.auth.OauthAuthenticator;
+import net.anthavio.disquo.api.auth.DisqusOAuth2;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
 import net.anthavio.disquo.api.response.DisqusResponse;
 import net.anthavio.disquo.api.response.DisqusUser;
 import net.anthavio.disquo.api.response.TokenResponse;
-import net.anthavio.disquo.api.users.UserDetailsMethod;
 import net.anthavio.disquo.browser.UserIdentityForm.Type;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 
 /**
  * 
@@ -97,7 +96,7 @@ public class SettingsController extends ControllerBase {
 	}
 
 	@RequestMapping(value = "identity", method = RequestMethod.POST)
-	public ModelAndView postIdentity(@ModelAttribute("identity") UserIdentityForm identity, BindingResult binding) {
+	public ModelAndView postIdentity(@ModelAttribute("identity") UserIdentityForm identityForm, BindingResult binding) {
 
 		ModelAndView modelAndView = new ModelAndView("redirect:/disqus/identity");
 		if (binding.hasErrors()) {
@@ -105,36 +104,31 @@ public class SettingsController extends ControllerBase {
 			return null;
 		}
 
-		if (identity.getType() == null) {
-			session.getDriver().setEnforceDefaultToken(false);
-			session.getDriver().setDefaultToken(null);
+		Identity identity;
+		if (identityForm.getType() == null) {
+			session.getDriver().setIdentity(null);
 			session.setIdentity(null);
 		} else {
 			//try new identity on this method only
-			UserDetailsMethod dmethod = session.getDriver().users().details();
-			session.getDriver().setEnforceDefaultToken(false);
-			String token;
-			if (identity.getType() == Type.sso) {
-				token = SsoAuthenticator.remote_auth_s3(identity.getSso(), session.getDriver().getApplicationKeys()
-						.getApiSecret());
-				dmethod.setRemoteAuth(token);
-			} else if (identity.getType() == Type.oauth) {
-				token = identity.getOauth().getAccess_token();
-				dmethod.setAccessToken(token);
-			} else if (identity.getType() == Type.application) {
-				token = identity.getApplicationToken();
-				dmethod.setAccessToken(token);
+			if (identityForm.getType() == Type.sso) {
+				String remote_token = SsoAuthenticator.remote_auth_s3(identityForm.getSso(), session.getDriver()
+						.getApplicationKeys().getApiSecret());
+				identity = Identity.remote(remote_token);
+			} else if (identityForm.getType() == Type.oauth) {
+				String access_token = identityForm.getOauth().getAccess_token();
+				identity = Identity.access(access_token);
+			} else if (identityForm.getType() == Type.application) {
+				identity = Identity.access(identityForm.getApplicationToken());
 			} else {
-				throw new IllegalArgumentException("Unsupported type " + identity.getType());
+				throw new IllegalArgumentException("Unsupported type " + identityForm.getType());
 			}
+			//check identity with call
+			DisqusResponse<DisqusUser> response = session.getDriver().users().details(identity);
 
-			DisqusResponse<DisqusUser> response = dmethod.execute();
-			//identity.setDisqusUser(response.getResponse());
-			session.setIdentity(identity);
-			session.getIdentity().setDisqusUser(response.getResponse());
 			//if disqus call succeded, make this identity default
-			session.getDriver().setDefaultToken(token);
-			session.getDriver().setEnforceDefaultToken(true);
+			session.setIdentity(identityForm);
+			session.getIdentity().setDisqusUser(response.getResponse());
+			session.getDriver().setIdentity(identity);
 		}
 		return modelAndView;
 	}
@@ -143,8 +137,8 @@ public class SettingsController extends ControllerBase {
 	public void oauthRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		String callbackUrl = getCallbackURL(request).toString();
-		OauthAuthenticator oauth = new OauthAuthenticator(session.getDriver());
-		String oauthUrl = oauth.getOauthRequestUrl(callbackUrl);
+		DisqusOAuth2 oAuth2 = new DisqusOAuth2(session.getDriver(), callbackUrl);
+		String oauthUrl = oAuth2.getOAuth2().getAuthorizationUrl("read,write", "whtever");
 		//redirect user to Disqus authorization/login page
 		response.sendRedirect(oauthUrl);
 	}
@@ -161,9 +155,9 @@ public class SettingsController extends ControllerBase {
 			//error=access_denied;
 		}
 		if (StringUtils.isNotBlank(code)) {
-			URL callbackUrl = getCallbackURL(request);
-			OauthAuthenticator oauth = new OauthAuthenticator(session.getDriver());
-			TokenResponse tokenResponse = oauth.getAccessTokenForCode(callbackUrl.toString(), code);
+			String callbackUrl = getCallbackURL(request).toString();
+			DisqusOAuth2 oAuth2 = new DisqusOAuth2(session.getDriver(), callbackUrl);
+			TokenResponse tokenResponse = oAuth2.getOAuth2().access(code).get(TokenResponse.class);
 			session.getIdentity().setOauth(tokenResponse);
 		}
 		return "redirect:/disqus/identity";

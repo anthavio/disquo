@@ -20,9 +20,8 @@
 	
 	<properties>
 		<sjf4j.version>1.7.5</sjf4j.version>
-		<logback.version>1.0.13</logback.version>
-		<spring.version>3.2.5.RELEASE</spring.version>
-		<jetty.version>6.1.26</jetty.version>
+		<logback.version>1.1.1</logback.version>
+		<spring.version>4.1.0.RELEASE</spring.version>
 	</properties>
 
 	<developers>
@@ -164,22 +163,22 @@
 		<dependency>
 			<groupId>net.anthavio.maven</groupId>
 			<artifactId>jetty-essentials</artifactId>
-			<version>${jetty.version}</version>
+			<version>8.1.15</version>
 			<type>pom</type>
 		</dependency>
 		
 		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>6.8.5</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-assert-core</artifactId>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>1.6.1</version>
 			<scope>test</scope>
-			<version>2.0M10</version>
 		</dependency>
 
 		<dependency>

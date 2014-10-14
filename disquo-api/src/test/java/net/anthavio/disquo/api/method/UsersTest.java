@@ -1,89 +1,80 @@
 package net.anthavio.disquo.api.method;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
 
-import net.anthavio.disquo.api.DisqusMethodTest;
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
-import net.anthavio.disquo.api.ArgumentConfig.Related;
-import net.anthavio.disquo.api.users.CheckUsernameMethod;
-import net.anthavio.disquo.api.users.FollowMethod;
-import net.anthavio.disquo.api.users.UnfollowMethod;
-import net.anthavio.disquo.api.users.UserDetailsMethod;
-import net.anthavio.disquo.api.users.UserListActiveForumsMethod;
-import net.anthavio.disquo.api.users.UserListForumsMethod;
-import net.anthavio.disquo.api.users.UserListPostsMethod;
+import net.anthavio.disquo.api.DisqusApi.Identity;
+import net.anthavio.disquo.api.DisqusMethodTest;
+import net.anthavio.disquo.api.DisqusPage;
 
-import org.testng.annotations.Test;
-
+import org.junit.Test;
 
 public class UsersTest extends DisqusMethodTest {
 
 	@Test
 	public void checkUsername() {
-		CheckUsernameMethod method = disqus.users().checkUsername("username");
+		disqus.users().checkUsername(Identity.access("zxzxzx"), "username");
 
-		assertThat(getParameters(method).size()).isEqualTo(1);
+		assertThat(getParameters().size()).isEqualTo(2 + 1);
 	}
 
 	@Test
 	public void details() {
-		UserDetailsMethod method = disqus.users().details();
-		method.setUser(1);
+		disqus.users().details(333);
 
-		assertThat(getParameters(method).size()).isEqualTo(1);
+		assertThat(getParameters().size()).isEqualTo(1 + 1);
 	}
 
 	@Test
 	public void follow() {
-		FollowMethod method = disqus.users().follow(1);
+		disqus.users().follow(Identity.access("zxzxzx"), 333);
 
-		assertThat(getParameters(method).size()).isEqualTo(1);
+		assertThat(getParameters().size()).isEqualTo(2 + 1);
 	}
 
 	@Test
 	public void unfollow() {
-		UnfollowMethod method = disqus.users().unfollow(1);
+		disqus.users().unfollow(Identity.access("zxzxzx"), 333);
 
-		assertThat(getParameters(method).size()).isEqualTo(1);
+		assertThat(getParameters().size()).isEqualTo(2 + 1);
 	}
 
 	@Test
 	public void listActiveForums() {
-		UserListActiveForumsMethod method = disqus.users().listActiveForums();
-		method.setUser(1);
-		method.setSinceId(321);
-		method.setCursor("cursor");
-		method.setLimit(99);
-		method.setOrder(Order.desc);
-		assertThat(getParameters(method).size()).isEqualTo(5);
+		DisqusPage page = new DisqusPage("cursor");
+		page.setLimit(99);
+		page.setSince(new Date());
+		page.setOrder(Order.desc);
+		disqus.users().listActiveForums(333, page);
+
+		assertThat(getParameters().size()).isEqualTo(5 + 1);
 	}
 
 	@Test
 	public void listForums() {
-		UserListForumsMethod method = disqus.users().listForums();
-		method.setUser(1);
-		method.setSinceId(321);
-		method.setCursor("cursor");
-		method.setLimit(99);
-		method.setOrder(Order.desc);
-		assertThat(getParameters(method).size()).isEqualTo(5);
+		DisqusPage page = new DisqusPage("cursor");
+		page.setLimit(99);
+		page.setSince(new Date());
+		page.setOrder(Order.desc);
+		disqus.users().listForums(333, page);
+
+		assertThat(getParameters().size()).isEqualTo(5 + 1);
 	}
 
 	@Test
 	public void listPosts() {
-		UserListPostsMethod method = disqus.users().listPosts();
-		method.setUser(1);
-		method.addRelated(Related.forum, Related.thread);
-		method.addInclude(PostState.unapproved, PostState.approved, PostState.spam, PostState.deleted, PostState.flagged,
-				PostState.highlighted);
-		method.setSince(new Date());
-		method.setCursor("cursor");
-		method.setLimit(99);
-		method.setOrder(Order.desc);
-		assertThat(getParameters(method).size()).isEqualTo(13);
+		DisqusPage page = new DisqusPage("cursor");
+		page.setLimit(99);
+		page.setSince(new Date());
+		page.setOrder(Order.desc);
+
+		disqus.users().listPosts(333, page, PostState.unapproved, PostState.approved, PostState.spam, PostState.deleted,
+				PostState.flagged, PostState.highlighted);
+
+		assertThat(getParameters().size()).isEqualTo(6 + 1);
 	}
 
 }

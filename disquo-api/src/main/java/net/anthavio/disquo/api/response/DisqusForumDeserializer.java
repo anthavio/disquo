@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.anthavio.disquo.api.response.DisqusForum.ForumSettings;
+import net.anthavio.disquo.api.response.DisqusUser.Avatar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,9 +60,11 @@ public class DisqusForumDeserializer extends JsonDeserializer<DisqusForum> {
 				bean.setLanguage(jp.getValueAsString());
 			} else if ("author".equals(field)) {
 				bean.setAuthor(jp.readValueAs(DisqusUser.class));
+			} else if ("avatar".equals(field)) {
+				bean.setAvatar(jp.readValueAs(Avatar.class));
 			} else {
 				//throw new DisqusException("Unexpected element '" + field + "'");
-				logger.warn("Unexpected element '" + field + "'");
+				logger.debug("Unexpected element '" + field + "'");
 			}
 		}
 		return bean;

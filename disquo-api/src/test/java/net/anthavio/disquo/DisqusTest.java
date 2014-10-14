@@ -5,13 +5,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.anthavio.disquo.api.Disqus;
-import net.anthavio.disquo.api.posts.PostGetContextMethod;
-import net.anthavio.disquo.api.response.DisqusImportDetails;
+import net.anthavio.disquo.api.DisqusApi;
 import net.anthavio.disquo.api.response.DisqusPost;
 import net.anthavio.disquo.api.response.DisqusResponse;
-import net.anthavio.disquo.api.response.DisqusThread;
-import net.anthavio.disquo.api.threads.ThreadCreateMethod;
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,40 +18,29 @@ public class DisqusTest {
 	public static void main(String[] args) {
 
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
-		Disqus disqus = new Disqus(tidata.getApplicationKeys(), tidata.getUrl());
+		DisqusApi disqus = new DisqusApi(tidata.getApplicationKeys(), tidata.getUrl());
 		try {
-			disqus.setUseApplicationToken(true);
 			Calendar calendar = GregorianCalendar.getInstance();
 			calendar.set(Calendar.YEAR, 2010);
 			calendar.set(Calendar.MONTH, 5);
 			calendar.set(Calendar.DAY_OF_MONTH, 1);
 
 			//disqus.posts().create(1247667419, "Some post " + new Date()).setDate(calendar.getTime()).execute();
-
-			ThreadCreateMethod method = disqus.threads().create("dajc", "Article without comments")
-					.setIdentifier("id" + System.currentTimeMillis()).setDate(calendar.getTime());
-
-			DisqusResponse<DisqusThread> response = method.execute();
-			DisqusThread thread = response.getResponse();
-			System.out.println(thread);
-			if (true)
-				return;
-
-			DisqusResponse<List<DisqusImportDetails>> ilist = disqus.imports().list("testnaturefronthalf1").execute();
+			/*
+			DisqusResponse<List<DisqusImportDetails>> ilist = disqus.imports().list("testnaturefronthalf1", null);
 
 			DisqusImportDetails stats = ilist.getResponse().get(0);
 			System.out.println(stats);
 
-			DisqusResponse<DisqusImportDetails> idetails = disqus.imports().details("testnaturefronthalf1", stats.getId())
-					.execute();
+			DisqusResponse<DisqusImportDetails> idetails = disqus.imports().details("testnaturefronthalf1",
+					"" + stats.getId());
 
 			DisqusImportDetails details = idetails.getResponse();
 			System.out.println(details);
-			if (true)
-				return;
-			String forum = tidata.getForum();
-			PostGetContextMethod context = disqus.posts().getContext(768827349);
-			DisqusResponse<List<DisqusPost>> execute = context.execute();
+			*/
+
+			//String forum = tidata.getForum();
+			DisqusResponse<List<DisqusPost>> execute = disqus.posts().getContext(768827349, null);
 			for (DisqusPost post : execute.getResponse()) {
 				System.out.println(post);
 			}

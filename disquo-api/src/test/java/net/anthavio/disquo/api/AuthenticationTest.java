@@ -1,12 +1,10 @@
 package net.anthavio.disquo.api;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.auth.SsoAuthenticator;
 
-import org.testng.annotations.Test;
-
+import org.junit.Test;
 
 /**
  * 

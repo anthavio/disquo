@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import net.anthavio.disquo.api.Disqus;
+import net.anthavio.disquo.api.DisqusApi;
 
 import org.apache.commons.lang.UnhandledException;
 
@@ -28,7 +28,7 @@ public class DeserializationUtils {
 			return new Date(jp.getLongValue()); //Assuming that it is unix time
 		} else if (ctoken == JsonToken.VALUE_STRING) {
 			try {
-				return new SimpleDateFormat(Disqus.DATE_FORMAT).parse(jp.getText());
+				return new SimpleDateFormat(DisqusApi.DATE_FORMAT).parse(jp.getText());
 			} catch (ParseException px) {
 				throw new UnhandledException(px);
 			}

@@ -56,6 +56,8 @@ public class DisqusThreadDeserializer extends JsonDeserializer<DisqusThread> {
 				}
 			} else if ("title".equals(field)) {
 				bean.setTitle(jp.getValueAsString());
+			} else if ("clean_title".equals(field)) {
+				bean.setCleanTitle(jp.getValueAsString());
 			} else if ("ipAddress".equals(field)) {
 				bean.setIpAddress(jp.getValueAsString());
 			} else if ("createdAt".equals(field)) {
@@ -97,9 +99,11 @@ public class DisqusThreadDeserializer extends JsonDeserializer<DisqusThread> {
 				bean.setLink(jp.getValueAsString());
 			} else if ("message".equals(field)) {
 				bean.setMessage(jp.getValueAsString());
+			} else if ("highlightedPost".equals(field)) {
+				// ignore - old unused field
 			} else {
 				//throw new DisqusException("Unexpected element '" + field + "'");
-				logger.warn("Unexpected element '" + field + "'");
+				logger.debug("Unexpected element '" + field + "'");
 			}
 		}
 		return bean;

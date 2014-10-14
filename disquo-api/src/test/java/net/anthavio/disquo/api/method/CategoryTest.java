@@ -1,20 +1,16 @@
 package net.anthavio.disquo.api.method;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
 
-import net.anthavio.disquo.api.DisqusMethodTest;
+import net.anthavio.disquo.api.ApiCategories.ListPostsBuilder;
+import net.anthavio.disquo.api.ApiCategories.ListThreadsBuilder;
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
-import net.anthavio.disquo.api.category.CategoryCreateMethod;
-import net.anthavio.disquo.api.category.CategoryDetailsMethod;
-import net.anthavio.disquo.api.category.CategoryListMethod;
-import net.anthavio.disquo.api.category.CategoryListPostsMethod;
-import net.anthavio.disquo.api.category.CategoryListThreadsMethod;
+import net.anthavio.disquo.api.DisqusMethodTest;
 
-import org.testng.annotations.Test;
-
+import org.junit.Test;
 
 /**
  * 
@@ -25,43 +21,41 @@ public class CategoryTest extends DisqusMethodTest {
 
 	@Test
 	public void category() {
-		CategoryCreateMethod create = disqus.category().create("forum", "title");
-		create.setDefault(false);
-		assertThat(getParameters(create).size()).isEqualTo(3);
+		disqus.categories().create("forum", "title", false);
+		assertThat(getParameters().size()).isEqualTo(3 + 1 + 1);
 
-		CategoryDetailsMethod details = disqus.category().details(666);
-		assertThat(getParameters(details).size()).isEqualTo(1);
+		disqus.categories().details(666);
+		assertThat(getParameters().size()).isEqualTo(1 + 1);
 	}
 
 	@Test
 	public void list() {
-		CategoryListMethod list = disqus.category().list("forum");
-		list.addForum("forum2", "forum3");
-		list.setSince_id("123");
-		list.setCursor("cursor");
-		list.setLimit(666);
-		list.setOrder(Order.desc);
-		assertThat(getParameters(list).size()).isEqualTo(7);
+		disqus.categories().list("forum", "0:0:0", 5, Order.desc);
+		assertThat(getParameters().size()).isEqualTo(4 + 1);
 	}
 
 	@Test
 	public void listPosts() {
-		CategoryListPostsMethod listPosts = disqus.category().listPosts(0);
-		listPosts.setSince(new Date());
-		listPosts.setCursor("c");
-		listPosts.setLimit(666);
-		listPosts.setOrder(Order.desc);
-		assertThat(getParameters(listPosts).size()).isEqualTo(5);
+		ListPostsBuilder builder = disqus.categories().listPosts(123456);
+		builder.since(new Date(1));
+		builder.cursor("0:0:0");
+		builder.limit(666);
+		builder.order(Order.desc);
+		builder.execute();
+
+		assertThat(getParameters().size()).isEqualTo(5 + 1);
 	}
 
 	@Test
 	public void listThreads() {
-		CategoryListThreadsMethod listThreads = disqus.category().listThreads(0);
-		listThreads.addRelated(Related.author, Related.forum);
-		listThreads.setSince(new Date());
-		listThreads.setCursor("c");
-		listThreads.setLimit(666);
-		listThreads.setOrder(Order.desc);
-		assertThat(getParameters(listThreads).size()).isEqualTo(7);
+		ListThreadsBuilder builder = disqus.categories().listThreads(123456);
+		builder.related(Related.author, Related.forum);
+		builder.since(new Date(1));
+		builder.cursor("0:0:0");
+		builder.limit(123);
+		builder.order(Order.desc);
+		builder.execute();
+
+		assertThat(getParameters().size()).isEqualTo(6 + 1);
 	}
 }

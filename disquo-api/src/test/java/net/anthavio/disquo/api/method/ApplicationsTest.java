@@ -1,36 +1,30 @@
 package net.anthavio.disquo.api.method;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.DisqusMethodTest;
-import net.anthavio.disquo.api.OutputFormat;
-import net.anthavio.disquo.api.applications.DisqusApplicationsGroup;
-import net.anthavio.disquo.api.applications.ListUsageMethod;
 
-import org.testng.annotations.Test;
-
+import org.junit.Test;
 
 public class ApplicationsTest extends DisqusMethodTest {
 
 	@Test
 	public void applications() {
-		DisqusApplicationsGroup xapplications = disqus.applications();
+		disqus.applications().listUsage();
+		assertThat(getParameters().size()).isEqualTo(1 + 1); //access_token and api_key
 
-		ListUsageMethod listUsage = xapplications.listUsage();
-		listUsage.setApplication(1);
-		listUsage.setDays(1);
-		assertThat(getParameters(listUsage).size()).isEqualTo(2);
+	}
 
-		//default is json
-		assertThat(listUsage.getOutputFormat()).isEqualTo(OutputFormat.json);
-		//change to rss
-		listUsage.setOutputFormat(OutputFormat.rss);
-		assertThat(listUsage.getOutputFormat()).isEqualTo(OutputFormat.rss);
+	@Test
+	public void imports() {
+		disqus.imports().details(Identity.access("zxzxzx"), "forum", "group");
+		assertThat(getParameters().size()).isEqualTo(3 + 1);
+	}
 
-		//default
-		assertThat(listUsage.isAuthenticated()).isFalse();
-		//change
-		listUsage.setRemoteAuth("uid", "uname", "email@email.ie");
-		assertThat(listUsage.isAuthenticated()).isTrue();
+	@Test
+	public void exports() {
+		disqus.exports().exportForum(Identity.access("zxzxzx"), "forum");
+		assertThat(getParameters().size()).isEqualTo(2 + 1);
+
 	}
 }

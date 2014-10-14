@@ -2,6 +2,12 @@ package net.anthavio.disquo.api.response;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author martin.vanek
+ *
+ * @param <T>
+ */
 public class DisqusResponse<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
