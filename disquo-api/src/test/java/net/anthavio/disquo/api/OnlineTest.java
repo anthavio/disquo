@@ -36,7 +36,6 @@ public class OnlineTest {
 
 	@BeforeClass
 	public static void setup() {
-
 		TestInputData tidata = TestInputData.load("disqus-test.properties");
 		disqus = new DisqusApi(tidata.getApplicationKeys(), tidata.getUrl());
 

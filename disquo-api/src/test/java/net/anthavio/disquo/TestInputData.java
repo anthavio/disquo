@@ -1,5 +1,7 @@
 package net.anthavio.disquo;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -37,18 +39,28 @@ public class TestInputData {
 	private final DisqusUser ssoUser2;
 
 	public static TestInputData load(String resource) {
-		ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-		InputStream stream = contextClassLoader.getResourceAsStream(resource);
-		if (stream == null) {
-			throw new IllegalArgumentException("Resource not found " + resource);
-		}
-		Properties props = new Properties();
+		//Try to lookup system property with same value as default
+		resource = System.getProperty(resource, resource);
 		try {
+			InputStream stream;
+			File file = new File(resource); //cloudbees jenkins - /private/...
+			if (file.exists()) {
+				stream = new FileInputStream(file); //dev machine - /src/test/resources
+			} else {
+				ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+				stream = contextClassLoader.getResourceAsStream(resource);
+			}
+			if (stream == null) {
+				throw new IllegalArgumentException("Properties not found " + resource);
+			}
+			Properties props = new Properties();
 			props.load(stream);
+			stream.close();
+			return new TestInputData(props);
 		} catch (IOException iox) {
-			throw new IllegalArgumentException("Failed to load resource " + resource, iox);
+			throw new IllegalArgumentException("Failed to load properties " + resource, iox);
 		}
-		return new TestInputData(props);
+
 	}
 
 	public TestInputData(Properties properties) {
