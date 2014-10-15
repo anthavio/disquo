@@ -8,9 +8,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
-import org.apache.commons.lang.NullArgumentException;
-import org.apache.commons.lang.StringUtils;
-
 import net.anthavio.httl.util.Cutils;
 
 /**
@@ -97,13 +94,13 @@ public class DisqusApplicationKeys implements Serializable {
 	}
 
 	public DisqusApplicationKeys(String apiKey, String secretKey, String accessToken) {
-		if (StringUtils.isBlank(apiKey)) {
-			throw new NullArgumentException(apiKey);
+		if (Cutils.isBlank(apiKey)) {
+			throw new IllegalArgumentException("Wrong apiKey: " + apiKey);
 		}
 		this.apiKey = apiKey;
 
-		if (StringUtils.isBlank(secretKey)) {
-			throw new NullArgumentException(secretKey);
+		if (Cutils.isBlank(secretKey)) {
+			throw new IllegalArgumentException("Wrong secretKey: " + secretKey);
 		}
 		this.apiSecret = secretKey;
 

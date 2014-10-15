@@ -3,29 +3,56 @@
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
-		<groupId>net.anthavio.disquo</groupId>
-		<artifactId>disquo</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-  </parent>
+		<groupId>net.anthavio.maven</groupId>
+		<artifactId>anthavio-super-pom</artifactId>
+		<version>3</version>
+		<relativePath/>
+	</parent>
   
-  <artifactId>disquo-web</artifactId>
+  <groupId>net.anthavio.disquo</groupId>
+	<artifactId>disquo-web</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
   <packaging>war</packaging>
+  
+  <properties>
+  	<project.build.java.target>1.6</project.build.java.target>
+		<spring.version>4.1.1.RELEASE</spring.version>
+		<maven.source.skip>true</maven.source.skip>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
+	</properties>
+  
+  <dependencyManagement>
+  <dependencies>
+  
+  	<dependency>
+			<groupId>net.anthavio.maven</groupId>
+			<artifactId>spring-framework-bom</artifactId>
+			<version>${spring.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		
+  </dependencies>
+  </dependencyManagement>
   
   <dependencies>
 		
 		<dependency>
 			<groupId>net.anthavio.disquo</groupId>
 			<artifactId>disquo-api</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
+			<version>1.7.7</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 	
 		<dependency>
@@ -164,11 +191,14 @@
 		<dependency>
 			<groupId>net.anthavio</groupId>
 			<artifactId>anthavio-sewer</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>net.anthavio.maven</groupId>
 			<artifactId>jetty-essentials</artifactId>
+			<version>8.1.15</version>
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>

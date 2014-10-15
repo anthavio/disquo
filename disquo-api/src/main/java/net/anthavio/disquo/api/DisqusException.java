@@ -1,8 +1,11 @@
 package net.anthavio.disquo.api;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
-public class DisqusException extends NestableRuntimeException {
+/**
+ * 
+ * @author martin.vanek
+ *
+ */
+public class DisqusException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

@@ -14,10 +14,10 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import net.anthavio.httl.util.Cutils;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.UnhandledException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,7 +34,7 @@ public class SsoAuthenticator {
 	private final String secretKey;
 
 	public SsoAuthenticator(String secretKey) {
-		if (StringUtils.isBlank(secretKey)) {
+		if (Cutils.isBlank(secretKey)) {
 			throw new IllegalArgumentException("secretKey is blank '" + secretKey + "'");
 		}
 		this.secretKey = secretKey;
@@ -75,10 +75,8 @@ public class SsoAuthenticator {
 			mac.init(secretKey);
 			byte[] rawHmac = mac.doFinal(textBytes);
 			return new String(Hex.encodeHex(rawHmac));
-			//byte[] base64 = Base64.encodeBase64(finalBytes);
-			//return new String(base64).trim();
 		} catch (GeneralSecurityException gsx) {
-			throw new UnhandledException(gsx);
+			throw new IllegalStateException(gsx);
 		}
 	}
 
@@ -90,21 +88,21 @@ public class SsoAuthenticator {
 			Map<String, String> map = mapper.readValue(reader, Map.class);
 			return new SsoAuthData(map.get("id"), map.get("username"), map.get("email"));
 		} catch (IOException iox) {
-			throw new UnhandledException(iox);
+			throw new IllegalStateException(iox);
 		}
 	}
 
 	private static String JsonBase64(SsoAuthData auth) {
 		String userId = auth.getUserId();
-		if (StringUtils.isBlank(userId)) {
+		if (Cutils.isBlank(userId)) {
 			throw new IllegalArgumentException("userId is blank '" + userId + "'");
 		}
 		String fullName = auth.getFullName();
-		if (StringUtils.isBlank(fullName)) {
+		if (Cutils.isBlank(fullName)) {
 			throw new IllegalArgumentException("fullName is blank '" + fullName + "'");
 		}
 		String email = auth.getEmail();
-		if (StringUtils.isBlank(email)) {
+		if (Cutils.isBlank(email)) {
 			throw new IllegalArgumentException("email is blank '" + email + "'");
 		}
 
@@ -117,7 +115,7 @@ public class SsoAuthenticator {
 		try {
 			mapper.writeValue(writer, data);
 		} catch (IOException iox) {
-			throw new UnhandledException(iox);
+			throw new IllegalStateException(iox);
 		}
 		return new String(Base64.encodeBase64(baos.toByteArray(), false));
 	}

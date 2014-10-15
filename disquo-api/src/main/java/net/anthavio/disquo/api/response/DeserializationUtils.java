@@ -7,8 +7,6 @@ import java.util.Date;
 
 import net.anthavio.disquo.api.DisqusApi;
 
-import org.apache.commons.lang.UnhandledException;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
@@ -30,7 +28,7 @@ public class DeserializationUtils {
 			try {
 				return new SimpleDateFormat(DisqusApi.DATE_FORMAT).parse(jp.getText());
 			} catch (ParseException px) {
-				throw new UnhandledException(px);
+				throw new IllegalStateException(px);
 			}
 		} else {
 			throw new IllegalStateException("Unknown token " + ctoken);

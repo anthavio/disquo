@@ -17,7 +17,7 @@ public class JsonStringBuilder {
 
 	private static final ObjectMapper jackson = new ObjectMapper();
 	static {
-		jackson.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"));
+		jackson.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"));
 	}
 
 	public static String toString(Object o) {
