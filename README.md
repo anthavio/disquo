@@ -15,7 +15,7 @@ Maven Repository & Coordinates
 
 ```xml
     <dependency>
-        <groupId>net.anthavio</groupId>
+        <groupId>net.anthavio.disquo</groupId>
         <artifactId>disquo-api</artifactId>
         <version>1.0.0</version>
     </dependency>
