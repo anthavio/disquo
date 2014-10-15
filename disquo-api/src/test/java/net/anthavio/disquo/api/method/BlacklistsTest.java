@@ -12,6 +12,8 @@ import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.DisqusMethodTest;
+import net.anthavio.httl.HttlParameterSetter.ConfigurableParamSetter;
+import net.anthavio.httl.util.HttlUtil;
 
 import org.junit.Test;
 
@@ -27,9 +29,11 @@ public class BlacklistsTest extends DisqusMethodTest {
 		method.limit(99);
 		method.order(Order.desc);
 		method.execute();
-
+		String dtExpected = HttlUtil.urlencode(((ConfigurableParamSetter) disqus.getSender().getConfig().getParamSetter())
+				.getDateFormat().format(new Date(1)));
 		assertThat(getParameters().size()).isEqualTo(8 + 1);
-		String data = "/api/3.0/blacklists/list.json?access_token=zxzxzx&api_key=publicKey&cursor=cursor&forum=forum&limit=99&order=desc&related=forum&since=1970-01-01+01%3A00%3A00.001&type=domain&type=word&type=ip&type=user&type=thread_slug&type=email";
+		String data = "/api/3.0/blacklists/list.json?access_token=zxzxzx&api_key=publicKey&cursor=cursor&forum=forum&limit=99&order=desc&related=forum&since="
+				+ dtExpected + "&type=domain&type=word&type=ip&type=user&type=thread_slug&type=email";
 		assertThat(getRequest().getPathAndQuery()).isEqualTo(data);
 	}
 
