@@ -3,6 +3,9 @@ package net.anthavio.disquo.api.response;
 import java.io.Serializable;
 
 /**
+ * Categories exist for grouping threads within a forum. These are currently only used in conjunction with the API.
+ * 
+ * https://help.disqus.com/customer/portal/articles/1131785
  * 
  * @author martin.vanek
  *
@@ -11,14 +14,29 @@ public class DisqusCategory implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Unique numerical ID of the category across the entire Disqus network
+	 */
 	private Long id;
 
+	/**
+	 * The chosen title of the category from the Disqus admin settings
+	 */
 	private String title;
 
+	/**
+	 * The Disqus shortname that the category belongs to
+	 */
 	private String forum;
 
+	/**
+	 * The order that the category is listed as
+	 */
 	private Integer order;
 
+	/**
+	 * Whether or not this is the default category for the website
+	 */
 	private Boolean isDefault;
 
 	@Override

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * User/Author
+ * 
+ * A user on Disqus, who can have several relationships to other data types such as other users (following), threads (authorship), forums (moderator), and posts (commenter).
+ * 
  * @author martin.vanek
  * 
  */
@@ -11,50 +15,112 @@ public class DisqusUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * The network-wide unique ID of the user. This never changes, even if the person changes their unique username.
+	 */
 	private Long id;
 
+	/**
+	 * The unique username associated with the account.
+	 */
 	private String username;
 
+	/**
+	 * The display name of the user as entered in their account settings.
+	 */
 	private String name;
 
+	/**
+	 * Calculated user reputation. Same as reputation
+	 */
 	private Float rep;
 
+	/**
+	 * The date/time that the user created the account.
+	 */
 	private Date joinedAt; // "2012-11-06T16:55:31"
 
+	/**
+	 * The user's bio.
+	 */
 	private String about;
 
+	/**
+	 * The user's website URL as entered in their account settings.
+	 */
 	private String url;
 
+	/**
+	 * The disqus.com permalink URL to their profile.
+	 */
 	private String profileUrl;
 
 	private String email;
 
+	/**
+	 * Hashed email address of the user
+	 */
 	private String emailHash;
 
+	/**
+	 * Location that user specified in their account settings.
+	 */
 	private String location;
 
+	/**
+	 * Whether or not the user has registered any forums under this account.
+	 */
 	private Boolean isPrimary;
 
+	/**
+	 * Whether or not the user has a registered account or not
+	 */
 	private Boolean isAnonymous;
 
 	private Boolean isVerified;
 
+	/**
+	 * Whether or not the person making the request is following the user. 
+	 * Will only return true if request is authenticated, and authenticated user has chosen to follow this user.
+	 */
 	private Boolean isFollowing;
 
+	/**
+	 * Whether or not the user follows the person making the request. 
+	 * Will only return true if request is authenticated, and the user has chosen to follow authenticated user.
+	 */
 	private Boolean isFollowedBy;
 
+	/**
+	 * The number of comments posted by the user.
+	 */
 	private Integer numPosts;
 
+	/**
+	 * The number of upvotes the user has received for their comments.
+	 */
 	private Integer numLikesReceived;
 
+	/**
+	 * The number of people this user follows.
+	 */
 	private Integer numFollowing;
 
+	/**
+	 * The number of people who follow this user.
+	 */
 	private Integer numFollowers;
 
+	/**
+	 * Permalink and cache image URLs of the user avatar in different sizes.
+	 */
 	private Avatar avatar;
 
 	private Remote remote; // SSO users
 
+	/**
+	 * Third party social connections made by the user (e.g. Twitter, Facebook, Google).
+	 */
 	private Object connections; // ???
 
 	@Override

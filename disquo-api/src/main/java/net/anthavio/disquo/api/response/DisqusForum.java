@@ -6,6 +6,9 @@ import java.util.List;
 import net.anthavio.disquo.api.response.DisqusUser.Avatar;
 
 /**
+ * A forum contains all of a website's comments, threads and settings. This is the highest level which data is grouped on the Disqus network.
+ * 
+ * https://help.disqus.com/customer/portal/articles/1131785
  * 
  * @author martin.vanek
  * 
@@ -14,18 +17,39 @@ public class DisqusForum implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * The Disqus shortname of the website
+	 */
 	private String id; // shortname
 
+	/**
+	 * The name entered in the Disqus admin settings
+	 */
 	private String name;
 
+	/**
+	 * Disqus ID number of the primary moderator of the site.
+	 */
 	private Long founder;
 
+	/**
+	 * The two-letter language code that the site has chosen as the default
+	 */
 	private String language;
 
+	/**
+	 * Settings booleans associated with the website
+	 */
 	private ForumSettings settings;
 
+	/**
+	 * The permalinked and cached URLs of the site's favicons
+	 */
 	private DisqusImage favicon;
 
+	/**
+	 * The given URL entered in the Disqus admin settings
+	 */
 	private List<String> url; // forums/detail returns array
 
 	private DisqusUser author; // related.author
