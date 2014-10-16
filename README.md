@@ -2,20 +2,19 @@ Disquo
 ======
 [![Build Status](https://vanek.ci.cloudbees.com/buildStatus/icon?job=disquo-snapshot)](https://vanek.ci.cloudbees.com/job/disquo-snapshot/)
 
-Disqus Rest Api Java Client Library - see http://disqus.com/api/docs/
+Disqus Rest Api Java Client Library - see https://help.disqus.com/customer/portal/articles/1104798-using-the-api
 
-* Fluent foolproof API
-* Covers All Rest Endpoints
+* Fluent API
+* Covers All Rest Endpoints - http://disqus.com/api/docs/
+* Authentication - OAuth2, Single sign-on, Anonymous - https://disqus.com/api/docs/auth/
 * Scalable and multithreaded
-* Authentication - OAuth2, SSO
-
 
 Maven Repository & Coordinates
 -------------
 
 ```xml
     <dependency>
-        <groupId>net.anthavio</groupId>
+        <groupId>net.anthavio.disquo</groupId>
         <artifactId>disquo-api</artifactId>
         <version>1.0.0</version>
     </dependency>
@@ -72,7 +71,7 @@ For details visit http://disqus.com/api/docs/cursors/
 		disqus.close();
 ```
 
-Joins
+Related
 --------------
 
 
@@ -84,7 +83,7 @@ Joins
 		//Field forum is just a String with Forum name
 		assertThat(slimResponse.getResponse().getForum()).isInstanceOf(String.class);
 
-		//Use addRelated(...) to tell API to join Forum details into returned Thread object 
+		//Use Related.forum to tell API to join Forum details into returned Thread object 
 		DisqusResponse<DisqusThread> joinedResponse = disqus.threads().details(threadId, Related.forum);
 		//Field forum is now Bean with many fields
 		assertThat(joinedResponse.getResponse().getForum()).isInstanceOf(DisqusForum.class);
@@ -131,7 +130,7 @@ For details visit http://disqus.com/api/docs/auth/
 
 		//Single Sign-On Authentication
 
-		//This is available only to premium accounts
+		//This is available only to VIP or premium accounts
 		SsoAuthData ssoauth = new SsoAuthData("custom-12345-id", "Firstname", "Surname");
 		//SSO User identity is used to create post
 		disqus.posts().create(ssoauth, keys.getApiSecret(), threadId, "Hello world " + new Date(), null);
