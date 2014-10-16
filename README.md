@@ -6,7 +6,7 @@ Disqus Rest Api Java Client Library - see https://help.disqus.com/customer/porta
 
 * Fluent API
 * Covers All Rest Endpoints - http://disqus.com/api/docs/
-* Authentication - OAuth2, SSO, Anonymous - https://disqus.com/api/docs/auth/
+* Authentication - OAuth2, Single sign-on, Anonymous - https://disqus.com/api/docs/auth/
 * Scalable and multithreaded
 
 Maven Repository & Coordinates
@@ -83,7 +83,7 @@ Related
 		//Field forum is just a String with Forum name
 		assertThat(slimResponse.getResponse().getForum()).isInstanceOf(String.class);
 
-		//Use addRelated(...) to tell API to join Forum details into returned Thread object 
+		//Use Related.forum to tell API to join Forum details into returned Thread object 
 		DisqusResponse<DisqusThread> joinedResponse = disqus.threads().details(threadId, Related.forum);
 		//Field forum is now Bean with many fields
 		assertThat(joinedResponse.getResponse().getForum()).isInstanceOf(DisqusForum.class);
@@ -130,7 +130,7 @@ For details visit http://disqus.com/api/docs/auth/
 
 		//Single Sign-On Authentication
 
-		//This is available only to premium accounts
+		//This is available only to VIP or premium accounts
 		SsoAuthData ssoauth = new SsoAuthData("custom-12345-id", "Firstname", "Surname");
 		//SSO User identity is used to create post
 		disqus.posts().create(ssoauth, keys.getApiSecret(), threadId, "Hello world " + new Date(), null);
