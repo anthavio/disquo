@@ -2,13 +2,12 @@ Disquo
 ======
 [![Build Status](https://vanek.ci.cloudbees.com/buildStatus/icon?job=disquo-snapshot)](https://vanek.ci.cloudbees.com/job/disquo-snapshot/)
 
-Disqus Rest Api Java Client Library - see http://disqus.com/api/docs/
+Disqus Rest Api Java Client Library - see https://help.disqus.com/customer/portal/articles/1104798-using-the-api
 
-* Fluent foolproof API
-* Covers All Rest Endpoints
+* Fluent API
+* Covers All Rest Endpoints - http://disqus.com/api/docs/
+* Authentication - OAuth2, SSO, Anonymous - https://disqus.com/api/docs/auth/
 * Scalable and multithreaded
-* Authentication - OAuth2, SSO
-
 
 Maven Repository & Coordinates
 -------------
@@ -72,7 +71,7 @@ For details visit http://disqus.com/api/docs/cursors/
 		disqus.close();
 ```
 
-Joins
+Related
 --------------
 
 
