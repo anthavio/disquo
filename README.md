@@ -1,6 +1,7 @@
 Disquo
 ======
 [![Build Status](https://vanek.ci.cloudbees.com/buildStatus/icon?job=disquo-snapshot)](https://vanek.ci.cloudbees.com/job/disquo-snapshot/)
+[![Coverage Status](https://img.shields.io/coveralls/anthavio/disquo.svg)](https://coveralls.io/r/anthavio/disquo?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.anthavio.disquo/disquo-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.anthavio.disquo/disquo-api)
 
 Disqus Rest Api Java Client Library - see https://help.disqus.com/customer/portal/articles/1104798-using-the-api
