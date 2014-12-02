@@ -6,6 +6,7 @@ import net.anthavio.disquo.api.DisqusApi;
 import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.response.DisqusImportDetails;
 import net.anthavio.disquo.api.response.DisqusResponse;
+import net.anthavio.disquo.api.response.DisqusThread;
 import net.anthavio.httl.transport.HttpClient4Config;
 
 public class DisqusApiTest {
@@ -15,9 +16,11 @@ public class DisqusApiTest {
 		HttpClient4Config config = new HttpClient4Config(tidata.getUrl());
 		DisqusApi disqus = new DisqusApi(tidata.getApplicationKeys(), config.sender());
 
-		DisqusResponse<List<String[]>> listUsage = disqus.applications()
-				.listUsage(Identity.access(tidata.getAccessToken()));
-		System.out.println(listUsage);
+		DisqusResponse<List<DisqusThread>> list = disqus.threads().list()
+				//.threadIdent("newident").forum("dajc").execute();
+				//.thread(1028737684).execute();
+				.threadLink("http://example.com/thread/828101508").execute();
+		System.out.println(list);
 
 		//disqus.getSender().
 		//DisqusResponse<DisqusThread> value = disqus.threads().details(100, null);
@@ -38,8 +41,8 @@ public class DisqusApiTest {
 		//postid=1516808009
 		//tidata.getAccessToken()
 
-		DisqusResponse<List<DisqusImportDetails>> created = disqus.imports().list("dajc", null);
-		System.out.println(created);
+		//DisqusResponse<List<DisqusImportDetails>> created = disqus.imports().list("dajc", null);
+		//System.out.println(created);
 
 		//disqus.users();
 		//System.out.println(forum2);

@@ -3,6 +3,7 @@ package net.anthavio.disquo.api;
 import java.util.Date;
 import java.util.List;
 
+import net.anthavio.disquo.api.ApiThreads.ListThreadsBuilder;
 import net.anthavio.disquo.api.ArgumentConfig.Order;
 import net.anthavio.disquo.api.ArgumentConfig.PostState;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
@@ -156,6 +157,12 @@ public interface ApiForums {
 
 	public static interface ListThreadsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusThread>>> {
 
+		public ListThreadsBuilder thread(@HttlVar("thread") long... thread);
+
+		public ListThreadsBuilder threadIdent(@HttlVar("thread:ident") String... threadIdent);
+		
+		public ListThreadsBuilder threadLink(@HttlVar("thread:link") String... threadLink);
+		
 		public ListThreadsBuilder since(Date since);
 
 		public ListThreadsBuilder related(Related... related);
