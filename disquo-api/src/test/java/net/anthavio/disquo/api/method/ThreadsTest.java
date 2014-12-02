@@ -52,7 +52,8 @@ public class ThreadsTest extends DisqusMethodTest {
 		method.category(1, 2);
 		method.forum("forum1", "forum2");
 		method.thread(123);
-		method.thread("tident");
+		method.threadIdent("tident");
+		method.threadLink("link");
 		method.author(123);
 		method.author("username");
 		method.related(Related.forum, Related.author, Related.category);
@@ -63,7 +64,7 @@ public class ThreadsTest extends DisqusMethodTest {
 		method.order(Order.desc);
 		method.execute();
 
-		assertThat(getParameters().size()).isEqualTo(12 + 1);
+		assertThat(getParameters().size()).isEqualTo(13 + 1);
 	}
 
 	@Test

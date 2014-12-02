@@ -144,7 +144,9 @@ public interface ApiThreads {
 
 		public ListThreadsBuilder thread(@HttlVar("thread") long... thread);
 
-		public ListThreadsBuilder thread(@HttlVar("thread:ident") String... threadIdent);
+		public ListThreadsBuilder threadIdent(@HttlVar("thread:ident") String... threadIdent);
+		
+		public ListThreadsBuilder threadLink(@HttlVar("thread:link") String... threadLink);
 
 		public ListThreadsBuilder author(@HttlVar("author") long... author);
 
