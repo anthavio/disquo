@@ -182,6 +182,8 @@ public interface ApiThreads {
 
 		public ListPostsBuilder since(@HttlVar("since") Date since);
 
+		public ListPostsBuilder since(@HttlVar("since") Long since);
+
 		public ListPostsBuilder related(@HttlVar("related") Related... related);
 
 		public ListPostsBuilder include(@HttlVar("include") PostState... include);
