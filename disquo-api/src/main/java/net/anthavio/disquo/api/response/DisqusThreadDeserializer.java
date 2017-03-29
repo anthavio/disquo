@@ -29,7 +29,7 @@ public class DisqusThreadDeserializer extends JsonDeserializer<DisqusThread> {
 		DisqusThread bean = new DisqusThread();
 		while (jp.nextToken() != JsonToken.END_OBJECT) {
 			String field = jp.getCurrentName();
-			jp.nextToken();
+			jp.nextValue();
 			if ("id".equals(field)) {
 				bean.setId(DeserializationUtils.getLong(jp));
 

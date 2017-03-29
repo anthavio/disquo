@@ -130,6 +130,8 @@ public interface ApiForums {
 
 		public ListPostsBuilder since(Date since);
 
+		public ListPostsBuilder since(Long since);
+
 		public ListPostsBuilder related(Related... related);
 
 		public ListPostsBuilder cursor(String cursor);
@@ -164,6 +166,8 @@ public interface ApiForums {
 		public ListThreadsBuilder threadLink(@HttlVar("thread:link") String... threadLink);
 		
 		public ListThreadsBuilder since(Date since);
+
+		public ListThreadsBuilder since(Long since);
 
 		public ListThreadsBuilder related(Related... related);
 
