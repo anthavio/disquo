@@ -6,13 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.commons.lang.NullArgumentException;
+import org.apache.commons.lang.StringUtils;
+
 import net.anthavio.disquo.api.DisqusApplicationKeys;
 import net.anthavio.disquo.api.auth.SsoAuthData;
 import net.anthavio.disquo.api.response.DisqusUser;
-import net.anthavio.disquo.api.response.DisqusUser.Remote;
-
-import org.apache.commons.lang.NullArgumentException;
-import org.apache.commons.lang.StringUtils;
 
 public class TestInputData {
 
@@ -77,7 +76,11 @@ public class TestInputData {
 		this.forum = pStr("forum_id");
 		this.threadId = pInt("thread_id");
 		this.longThreadId = pInt("long_thread_id");
-
+		
+		this.admin = null;
+		this.ssoUser1 = null;
+		this.ssoUser2 = null; 
+/*
 		this.admin = new DisqusUser();
 		this.admin.setId(pLong("admin_id"));
 		this.admin.setName(pStr("admin_username"));
@@ -98,6 +101,7 @@ public class TestInputData {
 		this.ssoUser2.setUsername(pStr("sso2_user_name")); //genarated by Disqus
 		this.ssoUser2.setEmail(pStr("sso2_user_email"));
 		this.ssoUser2.setRemote(new Remote(pStr("sso_domain"), pStr("sso2_user_remote_id")));
+*/
 	}
 
 	public String pStr(String name) {
