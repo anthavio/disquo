@@ -18,7 +18,7 @@ Maven Repository & Coordinates
     <dependency>
         <groupId>net.anthavio.disquo</groupId>
         <artifactId>disquo-api</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
     </dependency>
 ```
 
@@ -132,7 +132,8 @@ For details visit http://disqus.com/api/docs/auth/
 
 		//Single Sign-On Authentication
 
-		//This is available only to VIP or premium accounts
+		// Available only for Pro subscription customers - https://help.disqus.com/customer/en/portal/articles/1104796-single-sign-on
+		// If you do not have it, you'll get DisqusServerException: http: 400 code: 18 Invalid argument, 'remote_auth': SSO authentication is not configured for this application.
 		SsoAuthData ssoauth = new SsoAuthData("custom-12345-id", "Firstname", "Surname");
 		//SSO User identity is used to create post
 		disqus.posts().create(ssoauth, keys.getApiSecret(), threadId, "Hello world " + new Date(), null);
