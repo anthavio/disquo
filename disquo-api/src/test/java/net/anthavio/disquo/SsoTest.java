@@ -22,7 +22,7 @@ public class SsoTest {
 			//disqus.forums().listThreads(forum).pretty();
 
 			long thread_id = tidata.getLongThreadId();
-			DisqusResponse<DisqusPost> execute = disqus.posts().create(sso1, tidata.getSecretKey(), thread_id,
+			DisqusResponse<DisqusPost> execute = disqus.posts().create(tidata.getSecretKey(), sso1, thread_id,
 					"Test new post " + new Date(), null);
 			//createMethod.setParent(637986727);
 			//createMethod.pretty();

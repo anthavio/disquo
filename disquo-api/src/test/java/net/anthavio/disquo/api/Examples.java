@@ -130,10 +130,11 @@ public class Examples {
 
 		//Single Sign-On Authentication
 
-		//This is available only to premium accounts
+		// Available only for Pro subscription customers - https://help.disqus.com/customer/en/portal/articles/1104796-single-sign-on
+		// If you do not have it, you'll get DisqusServerException: http: 400 code: 18 Invalid argument, 'remote_auth': SSO authentication is not configured for this application.
 		SsoAuthData ssoauth = new SsoAuthData("custom-12345-id", "Firstname", "Surname");
 		//SSO User identity is used to create post
-		disqus.posts().create(ssoauth, keys.getApiSecret(), threadId, "Hello world " + new Date(), null);
+		disqus.posts().create( keys.getApiSecret(), ssoauth,threadId, "Hello world " + new Date(), null);
 
 		disqus.close();
 	}

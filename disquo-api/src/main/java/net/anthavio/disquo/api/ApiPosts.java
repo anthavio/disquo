@@ -78,8 +78,8 @@ public interface ApiPosts {
 	@HttlCall("POST create.json")
 	public DisqusResponse<DisqusPost> create(
 			//
-			@HttlVar(setter = SsoAuthDataSetter.class) SsoAuthData ssoAuth,//
 			@HttlVar(name = "api_secret", required = true) String api_secret,//
+			@HttlVar(setter = SsoAuthDataSetter.class) SsoAuthData ssoAuth,//
 			@HttlVar("thread") long thread, @HttlVar(name = "message", required = true) String message,
 			@HttlVar("parent") Long parent);
 
@@ -245,7 +245,7 @@ public interface ApiPosts {
 				throw new DisqusException("api_secret parameter not found");
 			}
 			String remote_auth = SsoAuthenticator.remote_auth_s3(value, api_secret);
-			builder.param("remote_auth_s3", remote_auth);
+			builder.param("remote_auth", remote_auth);
 		}
 	}
 

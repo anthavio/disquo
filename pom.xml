@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.anthavio.maven</groupId>
 		<artifactId>anthavio-super-pom</artifactId>
-		<version>4</version>
+		<version>5</version>
 		<relativePath/>
 	</parent>
 
@@ -14,9 +14,15 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<properties>
+		<project.build.java.target>1.7</project.build.java.target>
+	</properties>
+
 	<modules>
 		<module>disquo-api</module>
+		<!--
 		<module>disquo-web</module>
+		-->
 	</modules>
 	
 </project>

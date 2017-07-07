@@ -5,7 +5,7 @@
   <parent>
 		<groupId>net.anthavio.maven</groupId>
 		<artifactId>anthavio-super-pom</artifactId>
-		<version>4</version>
+		<version>5</version>
 		<relativePath/>
 	</parent>
   
@@ -15,7 +15,7 @@
   <packaging>war</packaging>
   
   <properties>
-  	<project.build.java.target>1.7</project.build.java.target>
+		<project.build.java.target>1.7</project.build.java.target>
 		<spring.version>4.1.3.RELEASE</spring.version>
 		<maven.source.skip>true</maven.source.skip>
 		<maven.javadoc.skip>true</maven.javadoc.skip>
@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>net.anthavio.disquo</groupId>
 			<artifactId>disquo-api</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
