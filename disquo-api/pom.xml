@@ -11,7 +11,7 @@
 	
 	<groupId>net.anthavio.disquo</groupId>
 	<artifactId>disquo-api</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 
 	<name>disquo-api</name>
 	<description>Java Disqus Rest Api Library</description>
@@ -23,7 +23,7 @@
 		<url>https://github.com/anthavio/disquo</url>
 		<connection>scm:git:git://github.com/anthavio/disquo.git</connection>
 		<developerConnection>scm:git:git@github.com:anthavio/disquo.git</developerConnection>
-    <tag>v1.0.2</tag>
+    <tag>HEAD</tag>
   </scm>
   
 	<properties>
