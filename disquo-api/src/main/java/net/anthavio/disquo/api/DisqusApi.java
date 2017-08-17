@@ -80,6 +80,8 @@ public class DisqusApi implements Closeable {
 
 	private final ApiImports importApi;
 
+	private final ApiForumCategories forumCategoriesApi;
+
 	private Identity identity;
 
 	public DisqusApi(DisqusApplicationKeys keys) {
@@ -183,6 +185,7 @@ public class DisqusApi implements Closeable {
 		this.usersApi = HttlApiBuilder.build(ApiUsers.class, sender);
 		this.exportApi = HttlApiBuilder.build(ApiExports.class, sender);
 		this.importApi = HttlApiBuilder.build(ApiImports.class, sender);
+		this.forumCategoriesApi = HttlApiBuilder.build(ApiForumCategories.class, sender);
 	}
 
 	public void close() {
@@ -251,6 +254,10 @@ public class DisqusApi implements Closeable {
 
 	public ApiImports imports() {
 		return importApi;
+	}
+
+	public ApiForumCategories forumCategories() {
+		return forumCategoriesApi;
 	}
 
 	/**
