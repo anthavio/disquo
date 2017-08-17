@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.anthavio.disquo.api.response.DisqusForum.ForumSettings;
 import net.anthavio.disquo.api.response.DisqusUser.Avatar;
 
 import org.slf4j.Logger;
@@ -41,9 +40,9 @@ public class DisqusForumDeserializer extends JsonDeserializer<DisqusForum> {
 			} else if ("founder".equals(field)) {
 				bean.setFounder(DeserializationUtils.getLong(jp));
 			} else if ("settings".equals(field)) {
-				bean.setSettings(jp.readValueAs(ForumSettings.class));
+				bean.setSettings(jp.readValueAs(DisqusForumSettings.class));
 			} else if ("url".equals(field)) {
-				//This is only reason of this class. On detail, array is returned. When joined as related, only single element cames in 
+				//This is only reason of this class. On detail, array is returned. When joined as related, only single element is sent
 				List<String> values = new ArrayList<String>();
 				if (jp.getCurrentToken() == JsonToken.START_ARRAY) {
 					while (jp.nextToken() != JsonToken.END_ARRAY) {
@@ -62,6 +61,26 @@ public class DisqusForumDeserializer extends JsonDeserializer<DisqusForum> {
 				bean.setAuthor(jp.readValueAs(DisqusUser.class));
 			} else if ("avatar".equals(field)) {
 				bean.setAvatar(jp.readValueAs(Avatar.class));
+			} else if("twitterName".equals(field)){
+				bean.setTwitterName(jp.getValueAsString());
+			} else if("commentsLinkOne".equals(field)){
+				bean.setCommentsLinkOne(jp.getValueAsString());
+			} else if("commentsLinkZero".equals(field)){
+				bean.setCommentsLinkZero(jp.getValueAsString());
+			} else if("commentPolicyText".equals(field)){
+				bean.setCommentPolicyText(jp.getValueAsString());
+			} else if("createdAt".equals(field)){
+				bean.setCreatedAt(ctxt.parseDate(jp.getValueAsString()));
+			} else if("sort".equals(field)) {
+				bean.setSort(jp.getIntValue());
+			} else if("guidelines".equals(field)){
+				bean.setGuidelines(jp.getValueAsString());
+			} else if("raw_guidelines".equals(field)){
+				bean.setRaw_guidelines(jp.getValueAsString());
+			} else if("description".equals(field)){
+				bean.setDescription(jp.getValueAsString());
+			} else if("raw_description".equals(field)){
+				bean.setRaw_description(jp.getValueAsString());
 			} else {
 				//throw new DisqusException("Unexpected element '" + field + "'");
 				logger.debug("Unexpected element '" + field + "'");

@@ -10,14 +10,7 @@ import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.ArgumentConfig.ThreadState;
 import net.anthavio.disquo.api.DisqusApi.Identity;
 import net.anthavio.disquo.api.DisqusApi.IdentitySetter;
-import net.anthavio.disquo.api.response.DisqusCategory;
-import net.anthavio.disquo.api.response.DisqusForum;
-import net.anthavio.disquo.api.response.DisqusId;
-import net.anthavio.disquo.api.response.DisqusModerator;
-import net.anthavio.disquo.api.response.DisqusPost;
-import net.anthavio.disquo.api.response.DisqusResponse;
-import net.anthavio.disquo.api.response.DisqusThread;
-import net.anthavio.disquo.api.response.DisqusUser;
+import net.anthavio.disquo.api.response.*;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
 import net.anthavio.httl.api.HttlCallBuilder;
@@ -39,21 +32,21 @@ public interface ApiForums {
 
 	@HttlCall("POST addModerator.json")
 	@HttlHeaders("X!-AUTH: true")
-	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "forum", required = true) String forum,
+	DisqusResponse<DisqusId> addModerator(@HttlVar(name = "forum", required = true) String forum,
 			@HttlVar(name = "user:username", required = true) String username);
 
 	@HttlCall("POST addModerator.json")
-	public DisqusResponse<DisqusId> addModerator(@HttlVar(required = true) Identity token,
+	DisqusResponse<DisqusId> addModerator(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum,
 			@HttlVar(name = "user:username", required = true) String username);
 
 	@HttlCall("POST addModerator.json")
 	@HttlHeaders("X!-AUTH: true")
-	public DisqusResponse<DisqusId> addModerator(@HttlVar(name = "forum", required = true) String forum,
+	DisqusResponse<DisqusId> addModerator(@HttlVar(name = "forum", required = true) String forum,
 			@HttlVar(name = "user", required = true) long user);
 
 	@HttlCall("POST addModerator.json")
-	public DisqusResponse<DisqusId> addModerator(@HttlVar(required = true) Identity token,
+	DisqusResponse<DisqusId> addModerator(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "user", required = true) long user);
 
 	/*
@@ -61,26 +54,26 @@ public interface ApiForums {
 	 */
 	//use listModerators to get moderator id
 	@HttlCall("POST removeModerator.json")
-	public DisqusResponse<DisqusId> removeModerator(@HttlVar(required = true) Identity token,
+	DisqusResponse<DisqusId> removeModerator(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "moderator", required = true) long moderator);
 
 	@HttlCall("POST removeModerator.json")
 	@HttlHeaders("X!-AUTH: true")
-	public DisqusResponse<DisqusId> removeModerator(@HttlVar(name = "moderator", required = true) long moderator);
+	DisqusResponse<DisqusId> removeModerator(@HttlVar(name = "moderator", required = true) long moderator);
 
 	/*
 	 * https://disqus.com/api/docs/forums/create/
 	 */
 
 	@HttlCall("POST create.json")
-	public DisqusResponse<DisqusForum> create(@HttlVar(required = true) Identity token,
+	DisqusResponse<DisqusForum> create(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "name", required = true) String name,
 			@HttlVar(name = "short_name", required = true) String short_name,
 			@HttlVar(name = "website", required = true) String website);
 
 	@HttlCall("POST create.json")
 	@HttlHeaders("X!-AUTH: true")
-	public DisqusResponse<DisqusForum> create(@HttlVar(name = "name", required = true) String name,
+	DisqusResponse<DisqusForum> create(@HttlVar(name = "name", required = true) String name,
 			@HttlVar(name = "short_name", required = true) String short_name,
 			@HttlVar(name = "website", required = true) String website);
 
@@ -89,30 +82,30 @@ public interface ApiForums {
 	 */
 
 	@HttlCall("GET details.json")
-	public DisqusResponse<DisqusForum> details(@HttlVar(name = "forum", required = true) String short_name,
-			@HttlVar("related") Related... related);
+	DisqusResponse<DisqusForum> details(@HttlVar(name = "forum", required = true) String short_name,
+											  @HttlVar("related") Related... related);
 
 	@HttlCall("GET listCategories.json")
-	public DisqusResponse<List<DisqusCategory>> listCategories(
+	DisqusResponse<List<DisqusCategory>> listCategories(
 			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPage page);
 
 	//list...
 
 	@HttlCall("GET listModerators.json")
 	@HttlHeaders("X!-AUTH: true")
-	public DisqusResponse<List<DisqusModerator>> listModerators(
+	DisqusResponse<List<DisqusModerator>> listModerators(
 			@HttlVar(name = "forum", required = true) String short_name);
 
 	@HttlCall("GET listModerators.json")
-	public DisqusResponse<List<DisqusModerator>> listModerators(@HttlVar(required = true) Identity token,
+	DisqusResponse<List<DisqusModerator>> listModerators(@HttlVar(required = true) Identity token,
 			@HttlVar(name = "forum", required = true) String short_name);
 
 	@HttlCall("GET listMostActiveUsers.json")
-	public DisqusResponse<List<DisqusUser>> listMostActiveUsers(
+	DisqusResponse<List<DisqusUser>> listMostActiveUsers(
 			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPage page);
 
 	@HttlCall("GET listMostLikedUsers.json")
-	public DisqusResponse<List<DisqusUser>> listMostLikedUsers(
+	DisqusResponse<List<DisqusUser>> listMostLikedUsers(
 			@HttlVar(name = "forum", required = true) String short_name, @HttlVar DisqusPage page);
 
 	/*
@@ -120,29 +113,29 @@ public interface ApiForums {
 	 */
 
 	@HttlCall("GET listPosts.json")
-	public DisqusResponse<List<DisqusPost>> listPosts(@HttlVar(name = "forum", required = true) String short_name,
+	DisqusResponse<List<DisqusPost>> listPosts(@HttlVar(name = "forum", required = true) String short_name,
 			@HttlVar DisqusPage page);
 
 	@HttlCall("GET listPosts.json")
-	public ListPostsBuilder listPosts(@HttlVar(name = "forum", required = true) String short_name);
+	ListPostsBuilder listPosts(@HttlVar(name = "forum", required = true) String short_name);
 
-	public static interface ListPostsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusPost>>> {
+	interface ListPostsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusPost>>> {
 
-		public ListPostsBuilder since(Date since);
+		ListPostsBuilder since(Date since);
 
-		public ListPostsBuilder since(Long since);
+		ListPostsBuilder since(Long since);
 
-		public ListPostsBuilder related(Related... related);
+		ListPostsBuilder related(Related... related);
 
-		public ListPostsBuilder cursor(String cursor);
+		ListPostsBuilder cursor(String cursor);
 
-		public ListPostsBuilder limit(int limit);
+		ListPostsBuilder limit(int limit);
 
-		public ListPostsBuilder query(String query);
+		ListPostsBuilder query(String query);
 
-		public ListPostsBuilder include(PostState... include);
+		ListPostsBuilder include(PostState... include);
 
-		public ListPostsBuilder order(Order order);
+		ListPostsBuilder order(Order order);
 
 	}
 
@@ -151,35 +144,35 @@ public interface ApiForums {
 	 */
 
 	@HttlCall("GET listThreads.json")
-	public DisqusResponse<List<DisqusThread>> listThreads(@HttlVar(name = "forum", required = true) String short_name,
+	DisqusResponse<List<DisqusThread>> listThreads(@HttlVar(name = "forum", required = true) String short_name,
 			@HttlVar DisqusPage page);
 
 	@HttlCall("GET listThreads.json")
-	public ListThreadsBuilder listThreads(@HttlVar(name = "forum", required = true) String short_name);
+	ListThreadsBuilder listThreads(@HttlVar(name = "forum", required = true) String short_name);
 
-	public static interface ListThreadsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusThread>>> {
+	interface ListThreadsBuilder extends HttlCallBuilder<DisqusResponse<List<DisqusThread>>> {
 
-		public ListThreadsBuilder thread(@HttlVar("thread") long... thread);
+		ListThreadsBuilder thread(@HttlVar("thread") long... thread);
 
-		public ListThreadsBuilder threadIdent(@HttlVar("thread:ident") String... threadIdent);
+		ListThreadsBuilder threadIdent(@HttlVar("thread:ident") String... threadIdent);
 		
-		public ListThreadsBuilder threadLink(@HttlVar("thread:link") String... threadLink);
+		ListThreadsBuilder threadLink(@HttlVar("thread:link") String... threadLink);
 		
-		public ListThreadsBuilder since(Date since);
+		ListThreadsBuilder since(Date since);
 
-		public ListThreadsBuilder since(Long since);
+		ListThreadsBuilder since(Long since);
 
-		public ListThreadsBuilder related(Related... related);
+		ListThreadsBuilder related(Related... related);
 
-		public ListThreadsBuilder cursor(String cursor);
+		ListThreadsBuilder cursor(String cursor);
 
-		public ListThreadsBuilder limit(int limit);
+		ListThreadsBuilder limit(int limit);
 
-		public ListThreadsBuilder query(String query);
+		ListThreadsBuilder query(String query);
 
-		public ListThreadsBuilder include(ThreadState... include);
+		ListThreadsBuilder include(ThreadState... include);
 
-		public ListThreadsBuilder order(Order order);
+		ListThreadsBuilder order(Order order);
 	}
 
 	/*
@@ -187,7 +180,107 @@ public interface ApiForums {
 	 */
 
 	@HttlCall("GET listUsers.json")
-	public DisqusResponse<List<DisqusUser>> listUsers(@HttlVar(name = "forum", required = true) String short_name,
+	DisqusResponse<List<DisqusUser>> listUsers(@HttlVar(name = "forum", required = true) String short_name,
 			@HttlVar DisqusPage page);
 
+
+	@HttlCall("POST update.json")
+	@HttlHeaders("X!-AUTH: true")
+	UpdateForumBuilder update(@HttlVar(name = "forum", required = true) String forum);
+
+	interface UpdateForumBuilder extends HttlCallBuilder<DisqusResponse<DisqusForum>> {
+
+
+		UpdateForumBuilder guidelines(String guidelines);
+
+		UpdateForumBuilder description(String description);
+
+		UpdateForumBuilder name(String name);
+
+		UpdateForumBuilder website(String website);
+
+		UpdateForumBuilder commentsLinkOne(String value);
+
+		UpdateForumBuilder commentsLinkZero(String value);
+
+		UpdateForumBuilder commentsLinkMultiple(String value);
+
+		UpdateForumBuilder commentPolicyText(String commentPolicyText);
+
+		/**
+		 * 1: OLDEST, 2: NEWEST, 4: HOT
+		 */
+		UpdateForumBuilder sort(Integer sort);
+
+		//flagThreshold
+
+		/**
+		 * auto, dark, light
+		 */
+		UpdateForumBuilder colorScheme(String colorScheme);
+
+		/**
+		 * 1: LOW1
+		 * 2: LOW2
+		 * 3: AVERAGE
+		 * 4: HIGH
+		 */
+		UpdateForumBuilder unapproveReputationLevel(Integer unapproveReputationLevel);
+
+		/**
+		 * auto, serif, sans-serif
+		 */
+		UpdateForumBuilder typeface(String typeface);
+
+		UpdateForumBuilder twitterName(String twitterName);
+
+		/**
+		 * Tech, Living, Style, Business, Entertainment, Celebrity, Sports, Culture, Games, News
+		 */
+		UpdateForumBuilder category(String category);
+
+		/**
+		 * Looks up a forum category by ID
+		 */
+		UpdateForumBuilder forumCategory(Integer forumCategory);
+
+		UpdateForumBuilder attach(ArgumentConfig.Attach... attach);
+
+		UpdateForumBuilder adsProductVideoEnabled(@HttlVar(name = "adsProductVideoEnabled", setter = BooleanTo1or0Setter.class) Boolean adsProductVideoEnabled);
+
+		UpdateForumBuilder adsPositionTopEnabled(@HttlVar(name = "adsPositionTopEnabled", setter = BooleanTo1or0Setter.class) Boolean adsPositionTopEnabled);
+
+		UpdateForumBuilder adsProductStoriesEnabled(@HttlVar(name = "adsProductStoriesEnabled", setter =BooleanTo1or0Setter.class) Boolean adsProductStoriesEnabled);
+
+		UpdateForumBuilder organicDiscoveryEnabled(@HttlVar(name = "organicDiscoveryEnabled", setter = BooleanTo1or0Setter.class) Boolean organicDiscoveryEnabled);
+
+		UpdateForumBuilder adsProductDisplayEnabled(@HttlVar(name = "adsProductDisplayEnabled", setter = BooleanTo1or0Setter.class) Boolean adsProductDisplayEnabled);
+
+		UpdateForumBuilder unapproveLinks(@HttlVar(name = "unapproveLinks", setter = BooleanTo1or0Setter.class) Boolean unapproveLinks);
+
+		UpdateForumBuilder disableDisqusBranding(@HttlVar(name = "disableDisqusBranding", setter = BooleanTo1or0Setter.class) Boolean disableDisqusBranding);
+
+		UpdateForumBuilder linkAffiliationEnabled(@HttlVar(name = "linkAffiliationEnabled", setter = BooleanTo1or0Setter.class) Boolean linkAffiliationEnabled);
+
+		UpdateForumBuilder adsProductLinksEnabled(@HttlVar(name = "adsProductLinksEnabled", setter = BooleanTo1or0Setter.class) Boolean adsProductLinksEnabled);
+
+		UpdateForumBuilder adsProductLinksThumbnailsEnabled(@HttlVar(name = "adsProductLinksThumbnailsEnabled", setter = BooleanTo1or0Setter.class) Boolean adsProductLinksThumbnailsEnabled);
+
+		UpdateForumBuilder adsPositionBottomEnabled(@HttlVar(name = "adsPositionBottomEnabled", setter = BooleanTo1or0Setter.class) Boolean adsPositionBottomEnabled);
+
+		UpdateForumBuilder adsPositionInthreadEnabled(@HttlVar(name = "adsPositionInthreadEnabled", setter = BooleanTo1or0Setter.class) Boolean adultContent);
+
+		UpdateForumBuilder allowAnonPost(@HttlVar(name = "allowAnonPost", setter = BooleanTo1or0Setter.class) Boolean allowAnonPost);
+
+		UpdateForumBuilder adultContent(@HttlVar(name = "adultContent", setter = BooleanTo1or0Setter.class) Boolean adultContent);
+
+		UpdateForumBuilder flaggingNotifications(@HttlVar(name = "flaggingNotifications", setter = BooleanTo1or0Setter.class) Boolean flaggingNotifications);
+
+		UpdateForumBuilder flaggingEnabled(@HttlVar(name = "flaggingEnabled", setter = BooleanTo1or0Setter.class) Boolean flaggingEnabled);
+
+		UpdateForumBuilder validateAllPosts(@HttlVar(name = "validateAllPosts", setter = BooleanTo1or0Setter.class) Boolean validateAllPosts);
+
+		UpdateForumBuilder mediaembedEnabled(@HttlVar(name = "mediaembedEnabled", setter = BooleanTo1or0Setter.class) Boolean mediaembedEnabled);
+
+	}
 }

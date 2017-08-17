@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ArgumentConfig {
 
-	public static enum PostState {
+	public enum PostState {
 		unapproved, approved, spam, deleted, flagged, highlighted;
 
 		public static PostState[] ALL = new PostState[] { unapproved, approved, spam, deleted, flagged, highlighted };
@@ -18,7 +18,7 @@ public class ArgumentConfig {
 		public static List<PostState> CALL = Arrays.asList(ALL);
 	}
 
-	public static enum ThreadState {
+	public enum ThreadState {
 		open, closed, killed;
 
 		public static ThreadState[] ALL = new ThreadState[] { open, closed, killed };
@@ -26,25 +26,29 @@ public class ArgumentConfig {
 		public static List<ThreadState> CALL = Arrays.asList(ALL);
 	}
 
-	public static enum UserInclude {
+	public enum UserInclude {
 		user, replies, following; //Users.listActivity
 	}
 
-	public static enum Related {
-		forum, thread, author, category;
+	public enum Related {
+		forum, thread, author, category
 	}
 
-	public static enum Order {
+	public enum Order {
 		asc, desc;
 	}
 
-	public static enum Vote {
+	public enum Attach {
+		followsForum, forumCanDisableAds, forumForumCategory, counters, forumDaysAlive, forumFeatures, forumIntegration, forumNewPolicy, forumPermissions
+	}
+
+	public enum Vote {
 
 		PLUS(1), ZERO(0), MINUS(-1);
 
 		public final int value;
 
-		private Vote(int value) {
+		Vote(int value) {
 			this.value = value;
 		}
 
@@ -59,7 +63,7 @@ public class ArgumentConfig {
 		}
 	}
 
-	public static enum FilterType {
+	public enum FilterType {
 
 		domain, word, ip, user, thread_slug, email;
 

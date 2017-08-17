@@ -7,13 +7,7 @@ import java.util.List;
 import net.anthavio.disquo.TestInputData;
 import net.anthavio.disquo.api.ArgumentConfig.Related;
 import net.anthavio.disquo.api.DisqusApi.Identity;
-import net.anthavio.disquo.api.response.DisqusCategory;
-import net.anthavio.disquo.api.response.DisqusFilter;
-import net.anthavio.disquo.api.response.DisqusForum;
-import net.anthavio.disquo.api.response.DisqusPost;
-import net.anthavio.disquo.api.response.DisqusResponse;
-import net.anthavio.disquo.api.response.DisqusThread;
-import net.anthavio.disquo.api.response.DisqusUser;
+import net.anthavio.disquo.api.response.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,14 +39,30 @@ public class OnlineTest {
 	}
 
 	@Test
+	public void online_forum_categories() {
+		DisqusResponse<List<DisqusForumCategory>> list = disqus.forumCategories().list();
+		assertThat(list.getCode()).isEqualTo(0);
+		assertThat(list.getResponse()).isNotNull();
+		assertThat(list.getResponse().size()).isGreaterThan(0);
+
+		DisqusResponse<DisqusForumCategory> business = disqus.forumCategories().details(1);
+		assertThat(business.getCode()).isEqualTo(0);
+		assertThat(business.getResponse()).isNotNull();
+		assertThat(business.getResponse().getId()).isEqualTo(1);
+		assertThat(business.getResponse().getName()).isEqualTo("Business");
+		assertThat(business.getResponse().getDate_added()).isInThePast();
+	}
+
+	@Test
 	public void online_applications() {
 		DisqusResponse<List<String[]>> listUsage = disqus.applications().listUsage(Identity.access(token));
 		assertThat(listUsage.getCode()).isEqualTo(0);
 		assertThat(listUsage.getResponse()).isNotNull();
+		assertThat(listUsage.getResponse().size()).isGreaterThan(0);
 	}
 
 	@Test
-	public void online_forum() {
+	public void online_forum_detail() {
 		DisqusResponse<DisqusForum> detailsSmall = disqus.forums().details(this.forum);
 		assertThat(detailsSmall.getCode()).isEqualTo(0);
 		assertThat(detailsSmall.getResponse().getFounder()).isNotNull();
@@ -62,6 +72,19 @@ public class OnlineTest {
 		assertThat(detailsBig.getCode()).isEqualTo(0);
 		assertThat(detailsBig.getResponse().getFounder()).isNotNull();
 		assertThat(detailsBig.getResponse().getAuthor()).isNotNull();
+	}
+
+	@Test
+	public void online_forum_update() {
+		DisqusResponse<DisqusForum> forumNoChange = disqus.forums().update(this.forum).execute();
+
+		DisqusResponse<DisqusForum> forum = disqus.forums().update(this.forum)
+				.commentsLinkZero("commentsLinkZero").commentsLinkOne("commentsLinkOne").commentsLinkMultiple("commentsLinkMultiple").commentPolicyText("commentPolicyText")
+				.guidelines("guidelines").description("description").name("Updated name").website("http://update.website.com/whatever")
+				.sort(4).colorScheme("light").typeface("sans-serif").unapproveReputationLevel(3).twitterName("twitterName")
+				.category("Business").forumCategory(1).attach(ArgumentConfig.Attach.forumPermissions)
+				.flaggingEnabled(true).adultContent(true).validateAllPosts(true)
+				.execute();
 	}
 
 	@Test

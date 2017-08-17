@@ -41,19 +41,6 @@ public interface ApiCategories {
 			@HttlVar(name = "forum", required = true) String forum, @HttlVar(name = "title", required = true) String title,
 			@HttlVar(name = "default", setter = BooleanTo1or0Setter.class) Boolean isDefault);
 
-	static class BooleanTo1or0Setter implements VarSetter<Boolean> {
-		@Override
-		public void set(Boolean value, String name, HttlRequestBuilder<?> builder) {
-			if (value != null) {
-				if (value.booleanValue()) {
-					builder.param(name, 1);
-				} else {
-					builder.param(name, 0);
-				}
-			}
-		}
-	}
-
 	@HttlCall("GET details.json")
 	public DisqusResponse<DisqusCategory> details(@HttlVar("category") long category);
 
